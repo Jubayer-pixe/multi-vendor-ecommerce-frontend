@@ -1,0 +1,15 @@
+.category-management { max-width: 1600px; margin-inline: auto; }
+.eyebrow { color: #7688a3; font-size: .64rem; font-weight: 800; letter-spacing: .14em; }
+.category-management h1 { color: #182945; font-weight: 800; letter-spacing: -.03em; }
+.category-form, .category-list { overflow: hidden; border-radius: 15px; }
+.category-form .card-header, .category-form .card-footer { padding: 1rem 1.15rem; border-color: #edf0f5; background: #fff; }
+.category-form .card-body { padding: 1.15rem; }
+.form-label { color: #53647e; font-size: .77rem; font-weight: 700; }
+.list-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem; border-bottom: 1px solid #edf0f5; }
+.search-box { max-width: 320px; }
+.table thead th { padding: .8rem 1rem; color: #8290a5; border-color: #edf0f5; background: #fbfcfe; font-size: .69rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.table tbody td { padding: .75rem 1rem; border-color: #edf0f5; font-size: .83rem; }
+.category-thumb, .category-icon { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; }
+.category-icon { display: grid; place-items: center; color: #4770ce; background: #edf2ff; }
+.empty-state { display: grid; justify-items: center; gap: .5rem; padding: 2.5rem; color: #8290a5; }.empty-state i { font-size: 1.7rem; }
+@media (max-width: 575.98px) { .list-toolbar { align-items: stretch; flex-direction: column; }.search-box { max-width: none; } }

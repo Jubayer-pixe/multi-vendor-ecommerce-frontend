@@ -1,0 +1,358 @@
+<div class="add-product-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        <span>Vendor</span>
+        <i class="bi bi-chevron-right"></i>
+        <span>Products</span>
+        <i class="bi bi-chevron-right"></i>
+        <strong>Add Product</strong>
+      </div>
+
+      <h2>Add New Product</h2>
+
+      <p>
+        Create a new product for your online store.
+      </p>
+
+    </div>
+
+
+    <button class="back-btn" (click)="cancel()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Products
+    </button>
+
+  </div>
+
+  @if (error) {
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  }
+
+  <!-- ================= FORM ================= -->
+
+  <form #productForm="ngForm" (ngSubmit)="saveProduct()">
+
+    <div class="form-grid">
+
+
+      <!-- ================= BASIC INFORMATION ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon purple">
+            <i class="bi bi-box-seam"></i>
+          </div>
+
+          <div>
+            <h4>Basic Information</h4>
+            <span>Enter your product details</span>
+          </div>
+
+        </div>
+
+
+        <!-- PRODUCT NAME -->
+
+        <div class="form-group">
+
+          <label>
+            Product Name
+            <span>*</span>
+          </label>
+
+          <input type="text" name="name" [(ngModel)]="product.name" placeholder="e.g. Wireless Headphone" required>
+
+        </div>
+
+
+        <div class="two-columns">
+
+          <!-- CATEGORY -->
+
+          <div class="form-group">
+
+            <label>
+              Category
+              <span>*</span>
+            </label>
+
+            <select name="category" [(ngModel)]="product.category" required [disabled]="categoriesLoading || !categories.length">
+              <option [ngValue]="null">{{ categoriesLoading ? 'Loading categories...' : 'Select Category' }}</option>
+              @for (category of categories; track category.id) {
+                <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+            @if (categoriesError) {
+              <small class="text-danger" role="alert">{{ categoriesError }}</small>
+            }
+
+          </div>
+
+
+          <!-- BRAND -->
+
+          <div class="form-group">
+
+            <label>
+              Brand
+            </label>
+
+            <select name="brand" [(ngModel)]="product.brand">
+              <option [ngValue]="null">Select Brand (optional)</option>
+              @for (brand of brands; track brand.id) {
+                <option [ngValue]="brand.id">{{ brand.name }}</option>
+              }
+            </select>
+            @if (brandsError) {
+              <small class="text-muted" role="status">{{ brandsError }}</small>
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- SKU -->
+
+        <div class="form-group">
+
+          <label>
+            SKU
+          </label>
+
+          <input type="text" name="sku" [(ngModel)]="product.sku" placeholder="e.g. WH-1001">
+
+          <small>
+            A unique product identification code.
+          </small>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+          <label>
+            Description
+          </label>
+
+          <textarea name="description" [(ngModel)]="product.description" rows="6"
+            placeholder="Write product description..."></textarea>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= PRODUCT IMAGE ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon blue">
+            <i class="bi bi-image"></i>
+          </div>
+
+          <div>
+            <h4>Product Image</h4>
+            <span>Upload product image</span>
+          </div>
+
+        </div>
+
+
+        <div class="image-upload">
+
+          @if (selectedImages.length) {
+          <div class="image-preview-grid">
+            @for (image of selectedImages; track image.preview; let index = $index) {
+              <div class="image-preview-item">
+                <img [src]="image.preview" [alt]="'Product image preview ' + (index + 1)">
+                <button type="button" class="remove-image-btn" (click)="removeImage(index)"
+                  [attr.aria-label]="'Remove image ' + (index + 1)">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+            }
+          </div>
+          } @else {
+
+          <div class="upload-placeholder">
+
+            <i class="bi bi-cloud-arrow-up"></i>
+
+            <strong>
+              Upload Product Image
+            </strong>
+
+            <span>
+              PNG or JPG, up to 5 MB each
+            </span>
+
+          </div>
+
+          }
+
+
+          <label class="upload-btn">
+
+            <i class="bi bi-upload"></i>
+
+            Choose Images
+
+            <input type="file" accept="image/png,image/jpeg" multiple (change)="onImageSelected($event)" hidden>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= PRICE & INVENTORY ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon green">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+
+          <div>
+            <h4>Price & Inventory</h4>
+            <span>Set pricing and stock</span>
+          </div>
+
+        </div>
+
+
+        <div class="two-columns">
+
+          <!-- PRICE -->
+
+          <div class="form-group">
+
+            <label>
+              Price
+              <span>*</span>
+            </label>
+
+            <div class="input-with-icon">
+
+              <span>৳</span>
+
+              <input type="number" name="price" [(ngModel)]="product.price" placeholder="0" min="0" required>
+
+            </div>
+
+          </div>
+
+
+          <!-- DISCOUNT -->
+
+          <div class="form-group">
+
+            <label>
+              Discount (%)
+            </label>
+
+            <div class="input-with-icon">
+
+              <span>%</span>
+
+              <input type="number" name="discount" [(ngModel)]="product.discount" placeholder="0" min="0" max="100">
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- STOCK -->
+
+        <div class="form-group">
+
+          <label>
+            Stock Quantity
+            <span>*</span>
+          </label>
+
+          <input type="number" name="stock" [(ngModel)]="product.stock" placeholder="Enter available quantity" min="0"
+            required>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Product Status
+          </label>
+
+          <div class="status-options">
+
+            <label class="status-option">
+
+              <input type="radio" name="status" value="Active" [(ngModel)]="product.status">
+
+              <span class="active-status">
+                <i class="bi bi-check-circle"></i>
+                Active
+              </span>
+
+            </label>
+
+
+            <label class="status-option">
+
+              <input type="radio" name="status" value="Inactive" [(ngModel)]="product.status">
+
+              <span class="inactive-status">
+                <i class="bi bi-pause-circle"></i>
+                Inactive
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= FORM ACTIONS ================= -->
+
+    <div class="form-actions">
+
+      <button type="button" class="cancel-btn" (click)="cancel()">
+        Cancel
+      </button>
+
+
+      <button type="submit" class="save-btn" [disabled]="productForm.invalid || saving || categoriesLoading || !categories.length">
+        <i class="bi bi-check-lg"></i>
+        {{ saving ? 'Saving...' : 'Save Product' }}
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

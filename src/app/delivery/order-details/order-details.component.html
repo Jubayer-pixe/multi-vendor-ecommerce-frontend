@@ -1,0 +1,718 @@
+<div class="order-details-page">
+
+  <!-- ============================
+       PAGE HEADER
+  ============================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <button
+        class="back-btn"
+        (click)="goBack()">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to Orders
+
+      </button>
+
+      <div class="title-row">
+
+        <div>
+
+          <span class="page-badge">
+
+            <i class="bi bi-receipt"></i>
+
+            Order Details
+
+          </span>
+
+          <h1>{{ order.id }}</h1>
+
+          <p>
+            Order placed on {{ order.orderDate }}
+          </p>
+
+        </div>
+
+        <span
+          class="status-badge"
+          [class]="getStatusClass(order.status)">
+
+          <i class="bi bi-circle-fill"></i>
+
+          {{ getStatusText(order.status) }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================
+       MAIN GRID
+  ============================= -->
+
+  <div class="details-grid">
+
+
+    <!-- ============================
+         LEFT COLUMN
+    ============================= -->
+
+    <div class="left-column">
+
+
+      <!-- CUSTOMER -->
+      <div class="details-card">
+
+        <div class="card-title">
+
+          <div class="title-icon customer-icon">
+            <i class="bi bi-person"></i>
+          </div>
+
+          <div>
+            <h3>Customer Information</h3>
+            <span>Customer details</span>
+          </div>
+
+        </div>
+
+
+        <div class="customer-box">
+
+          <div class="customer-avatar">
+
+            {{ order.customerName.charAt(0) }}
+
+          </div>
+
+          <div class="customer-info">
+
+            <h4>{{ order.customerName }}</h4>
+
+            <span>
+              <i class="bi bi-telephone"></i>
+              {{ order.customerPhone }}
+            </span>
+
+            <span>
+              <i class="bi bi-envelope"></i>
+              {{ order.customerEmail }}
+            </span>
+
+          </div>
+
+          <button
+            class="call-button"
+            (click)="callCustomer()">
+
+            <i class="bi bi-telephone-fill"></i>
+
+            Call
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- VENDOR -->
+      <div class="details-card">
+
+        <div class="card-title">
+
+          <div class="title-icon vendor-icon">
+            <i class="bi bi-shop"></i>
+          </div>
+
+          <div>
+            <h3>Vendor Information</h3>
+            <span>Pickup partner</span>
+          </div>
+
+        </div>
+
+
+        <div class="vendor-box">
+
+          <div class="vendor-logo">
+
+            <i class="bi bi-shop-window"></i>
+
+          </div>
+
+          <div class="vendor-info">
+
+            <h4>{{ order.vendorName }}</h4>
+
+            <span>
+              <i class="bi bi-telephone"></i>
+              {{ order.vendorPhone }}
+            </span>
+
+          </div>
+
+          <span class="verified-badge">
+
+            <i class="bi bi-patch-check-fill"></i>
+
+            Verified
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCTS -->
+      <div class="details-card">
+
+        <div class="card-title">
+
+          <div class="title-icon product-icon">
+            <i class="bi bi-box-seam"></i>
+          </div>
+
+          <div>
+            <h3>Order Items</h3>
+            <span>
+              {{ products.length }} product
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="product-list">
+
+          <div
+            class="product-row"
+            *ngFor="let product of products">
+
+            <img
+              [src]="product.image"
+              [alt]="product.name">
+
+            <div class="product-info">
+
+              <h4>{{ product.name }}</h4>
+
+              <span>
+                Quantity: {{ product.quantity }}
+              </span>
+
+            </div>
+
+            <div class="product-price">
+
+              <span>
+                ৳{{ product.price }}
+              </span>
+
+              <strong>
+                ৳{{ product.total }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ROUTE -->
+      <div class="details-card">
+
+        <div class="card-title">
+
+          <div class="title-icon route-icon">
+            <i class="bi bi-geo-alt"></i>
+          </div>
+
+          <div>
+            <h3>Delivery Route</h3>
+            <span>Pickup and delivery locations</span>
+          </div>
+
+        </div>
+
+
+        <div class="route-container">
+
+
+          <!-- PICKUP -->
+
+          <div class="route-location">
+
+            <div class="location-marker pickup-marker">
+
+              <i class="bi bi-shop"></i>
+
+            </div>
+
+            <div>
+
+              <span>Pickup From</span>
+
+              <h4>
+                {{ order.pickupAddress }}
+              </h4>
+
+              <small>
+                Vendor location
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="route-connector">
+
+            <div></div>
+
+            <i class="bi bi-arrow-down"></i>
+
+          </div>
+
+
+          <!-- DELIVERY -->
+
+          <div class="route-location">
+
+            <div class="location-marker delivery-marker">
+
+              <i class="bi bi-geo-alt-fill"></i>
+
+            </div>
+
+            <div>
+
+              <span>Deliver To</span>
+
+              <h4>
+                {{ order.deliveryAddress }}
+              </h4>
+
+              <small>
+                Customer location
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- ============================
+         RIGHT COLUMN
+    ============================= -->
+
+    <div class="right-column">
+
+
+      <!-- PAYMENT -->
+
+      <div class="details-card payment-card">
+
+        <div class="card-title">
+
+          <div class="title-icon payment-icon">
+
+            <i class="bi bi-credit-card"></i>
+
+          </div>
+
+          <div>
+
+            <h3>Payment</h3>
+
+            <span>Payment information</span>
+
+          </div>
+
+        </div>
+
+
+        <div class="payment-method">
+
+          <div>
+
+            <span>Payment Method</span>
+
+            <strong>
+              {{ order.paymentMethod }}
+            </strong>
+
+          </div>
+
+          <span class="cod-badge">
+            {{ order.paymentStatus }}
+          </span>
+
+        </div>
+
+
+        <div class="price-list">
+
+          <div>
+
+            <span>Subtotal</span>
+
+            <strong>
+              ৳{{ order.subtotal }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>Delivery Charge</span>
+
+            <strong>
+              ৳{{ order.deliveryCharge }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>Discount</span>
+
+            <strong class="discount">
+              -৳{{ order.discount }}
+            </strong>
+
+          </div>
+
+          <hr>
+
+          <div class="grand-total">
+
+            <span>Total Amount</span>
+
+            <strong>
+              ৳{{ order.total }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATUS UPDATE -->
+
+      <div class="details-card status-card">
+
+        <div class="card-title">
+
+          <div class="title-icon status-icon">
+
+            <i class="bi bi-truck"></i>
+
+          </div>
+
+          <div>
+
+            <h3>Update Delivery</h3>
+
+            <span>Change delivery status</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ASSIGNED -->
+
+        <button
+          *ngIf="order.status === 'ASSIGNED'"
+          class="status-action pickup-action"
+          (click)="updateStatus('PICKED_UP')">
+
+          <i class="bi bi-box-arrow-up"></i>
+
+          <div>
+
+            <strong>Pick Up Order</strong>
+
+            <span>Confirm that you collected the package</span>
+
+          </div>
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <!-- PICKED UP -->
+
+        <button
+          *ngIf="order.status === 'PICKED_UP'"
+          class="status-action transit-action"
+          (click)="updateStatus('IN_TRANSIT')">
+
+          <i class="bi bi-truck"></i>
+
+          <div>
+
+            <strong>Start Delivery</strong>
+
+            <span>Mark order as in transit</span>
+
+          </div>
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <!-- IN TRANSIT -->
+
+        <button
+          *ngIf="order.status === 'IN_TRANSIT'"
+          class="status-action out-action"
+          (click)="updateStatus('OUT_FOR_DELIVERY')">
+
+          <i class="bi bi-geo-alt"></i>
+
+          <div>
+
+            <strong>Out for Delivery</strong>
+
+            <span>Confirm you are near the customer</span>
+
+          </div>
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <!-- OUT -->
+
+        <button
+          *ngIf="order.status === 'OUT_FOR_DELIVERY'"
+          class="status-action delivered-action"
+          (click)="updateStatus('DELIVERED')">
+
+          <i class="bi bi-check-circle"></i>
+
+          <div>
+
+            <strong>Mark as Delivered</strong>
+
+            <span>Confirm successful delivery</span>
+
+          </div>
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <!-- COMPLETED -->
+
+        <div
+          class="delivery-complete"
+          *ngIf="order.status === 'DELIVERED'">
+
+          <div class="complete-icon">
+
+            <i class="bi bi-check-lg"></i>
+
+          </div>
+
+          <h4>Delivery Completed!</h4>
+
+          <p>
+            This order has been successfully delivered.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- TIMELINE -->
+
+      <div class="details-card">
+
+        <div class="card-title">
+
+          <div class="title-icon timeline-icon">
+
+            <i class="bi bi-clock-history"></i>
+
+          </div>
+
+          <div>
+
+            <h3>Delivery Timeline</h3>
+
+            <span>Order progress</span>
+
+          </div>
+
+        </div>
+
+
+        <div class="timeline">
+
+
+          <div
+            class="timeline-item completed">
+
+            <div class="timeline-dot">
+
+              <i class="bi bi-check"></i>
+
+            </div>
+
+            <div>
+
+              <strong>Order Assigned</strong>
+
+              <span>
+                Order assigned to you
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [class.completed]="
+              order.status === 'PICKED_UP' ||
+              order.status === 'IN_TRANSIT' ||
+              order.status === 'OUT_FOR_DELIVERY' ||
+              order.status === 'DELIVERED'
+            ">
+
+            <div class="timeline-dot">
+
+              <i class="bi bi-box"></i>
+
+            </div>
+
+            <div>
+
+              <strong>Picked Up</strong>
+
+              <span>
+                Package collected
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [class.completed]="
+              order.status === 'IN_TRANSIT' ||
+              order.status === 'OUT_FOR_DELIVERY' ||
+              order.status === 'DELIVERED'
+            ">
+
+            <div class="timeline-dot">
+
+              <i class="bi bi-truck"></i>
+
+            </div>
+
+            <div>
+
+              <strong>In Transit</strong>
+
+              <span>
+                Package is on the way
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [class.completed]="
+              order.status === 'OUT_FOR_DELIVERY' ||
+              order.status === 'DELIVERED'
+            ">
+
+            <div class="timeline-dot">
+
+              <i class="bi bi-geo-alt"></i>
+
+            </div>
+
+            <div>
+
+              <strong>Out for Delivery</strong>
+
+              <span>
+                Near customer
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="timeline-item"
+            [class.completed]="
+              order.status === 'DELIVERED'
+            ">
+
+            <div class="timeline-dot">
+
+              <i class="bi bi-check-circle"></i>
+
+            </div>
+
+            <div>
+
+              <strong>Delivered</strong>
+
+              <span>
+                Order completed
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

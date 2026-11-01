@@ -1,0 +1,270 @@
+<div class="delivery-layout" [class.sidebar-collapsed]="!sidebarOpen">
+
+
+  <!-- =========================================
+       SIDEBAR
+  ========================================== -->
+
+  <aside class="sidebar">
+
+    <!-- Logo -->
+
+    <div class="sidebar-logo">
+
+      <div class="logo-icon">
+        <i class="bi bi-truck"></i>
+      </div>
+
+      <div class="logo-text">
+        <strong>Delivery</strong>
+        <span>Partner Panel</span>
+      </div>
+
+    </div>
+
+
+    <!-- User Mini Profile -->
+
+    <div class="mini-profile">
+
+      <div class="mini-avatar">
+        {{ currentUser?.name?.charAt(0) || 'D' }}
+      </div>
+
+      <div class="mini-info">
+
+        <strong>
+          {{ currentUser?.name || 'Delivery Partner' }}
+        </strong>
+
+        <span>
+          <i class="bi bi-circle-fill"></i>
+          Online
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Navigation -->
+
+    <div class="menu-title">
+      MAIN MENU
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+      <!-- Dashboard -->
+
+      <a routerLink="/delivery" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="menu-item">
+
+        <div class="menu-icon dashboard-icon">
+          <i class="bi bi-grid-1x2-fill"></i>
+        </div>
+
+        <span>Dashboard</span>
+
+      </a>
+
+
+      <!-- Orders -->
+
+      <a routerLink="/delivery/orders" routerLinkActive="active" class="menu-item">
+
+        <div class="menu-icon order-icon">
+          <i class="bi bi-box-seam-fill"></i>
+        </div>
+
+        <span>My Orders</span>
+
+        <span class="menu-badge">
+          12
+        </span>
+
+      </a>
+
+
+      <!-- Pickups -->
+
+      <a routerLink="/delivery/pickups" routerLinkActive="active" class="menu-item">
+
+        <div class="menu-icon pickup-icon">
+          <i class="bi bi-geo-alt-fill"></i>
+        </div>
+
+        <span>Pickups</span>
+
+        <span class="menu-badge orange">
+          3
+        </span>
+
+      </a>
+
+
+      <!-- Profile -->
+
+      <a routerLink="/delivery/profile" routerLinkActive="active" class="menu-item">
+
+        <div class="menu-icon profile-icon">
+          <i class="bi bi-person-fill"></i>
+        </div>
+
+        <span>My Profile</span>
+
+      </a>
+
+
+      <div class="menu-title second-title">
+        ACCOUNT
+      </div>
+
+
+      <!-- Notifications -->
+
+      <a routerLink="/delivery/notifications" routerLinkActive="active" class="menu-item">
+
+        <div class="menu-icon notification-icon">
+          <i class="bi bi-bell-fill"></i>
+        </div>
+
+        <span>Notifications</span>
+
+        <span class="menu-badge red">
+          4
+        </span>
+
+      </a>
+
+
+      <!-- Settings -->
+
+      <a routerLink="/delivery/settings" routerLinkActive="active" class="menu-item">
+
+        <div class="menu-icon settings-icon">
+          <i class="bi bi-gear-fill"></i>
+        </div>
+
+        <span>Settings</span>
+
+      </a>
+
+    </nav>
+
+
+    <!-- Bottom -->
+
+    <div class="sidebar-bottom">
+
+      <button class="logout-menu" (click)="logout()">
+
+        <div class="logout-icon">
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+
+        <span>Logout</span>
+
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =========================================
+       MAIN CONTENT
+  ========================================== -->
+
+  <main class="main-content">
+
+
+    <!-- TOP NAVBAR -->
+
+    <header class="top-navbar">
+
+      <div class="navbar-left">
+
+        <button class="sidebar-toggle" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+
+
+        <div class="page-title">
+
+          <span>Welcome back 👋</span>
+
+          <strong>
+            {{ currentUser?.name || 'Delivery Partner' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="navbar-right">
+
+
+        <!-- Online status -->
+
+        <div class="online-control">
+
+          <span class="online-dot"></span>
+
+          <span>Online</span>
+
+        </div>
+
+
+        <!-- Notification -->
+
+        <button class="notification-btn">
+
+          <i class="bi bi-bell"></i>
+
+          <span>4</span>
+
+        </button>
+
+
+        <!-- Profile -->
+
+        <a routerLink="/delivery/profile" class="top-profile">
+
+          <div class="top-avatar">
+            {{ currentUser?.name?.charAt(0) || 'D' }}
+          </div>
+
+          <div class="top-user">
+
+            <strong>
+              {{ currentUser?.name || 'Delivery' }}
+            </strong>
+
+            <span>
+              Delivery Partner
+            </span>
+
+          </div>
+
+          <i class="bi bi-chevron-down"></i>
+
+        </a>
+
+      </div>
+
+    </header>
+
+
+    <!-- PAGE CONTENT -->
+
+  
+    <section class="delivery-page">
+      <router-outlet></router-outlet>
+    </section>
+
+
+  </main>
+
+</div>

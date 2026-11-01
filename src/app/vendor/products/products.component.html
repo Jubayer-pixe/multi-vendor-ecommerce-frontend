@@ -1,0 +1,324 @@
+<div class="products-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h2>Products</h2>
+      <p>Manage your store products, pricing and inventory.</p>
+    </div>
+
+    <button
+      type="button"
+      class="add-product-btn"
+      (click)="addProduct()"
+    >
+      <i class="bi bi-plus-lg"></i>
+      Add Product
+    </button>
+  </div>
+
+  <!-- LOADING MESSAGE -->
+  @if (loading) {
+    <div class="alert alert-info" role="status">
+      <i class="bi bi-arrow-repeat"></i>
+      Loading products from server...
+    </div>
+  }
+
+  <!-- ERROR MESSAGE -->
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      {{ error }}
+
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-danger ms-2"
+        (click)="loadProducts()"
+        [disabled]="loading"
+      >
+        <i class="bi bi-arrow-clockwise"></i>
+        Retry
+      </button>
+    </div>
+  }
+
+  <!-- SUCCESS MESSAGE -->
+  @if (success) {
+    <div class="alert alert-success" role="status">
+      <i class="bi bi-check-circle-fill"></i>
+      {{ success }}
+    </div>
+  }
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+
+    <div class="summary-card purple">
+      <div class="summary-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+      <div>
+        <span>Total Products</span>
+        <h3>{{ totalProducts }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card green">
+      <div class="summary-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <div>
+        <span>Active Products</span>
+        <h3>{{ activeProducts }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card red">
+      <div class="summary-icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+      <div>
+        <span>Out of Stock</span>
+        <h3>{{ outOfStockProducts }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card orange">
+      <div class="summary-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <div>
+        <span>Low Stock</span>
+        <h3>{{ lowStockProducts }}</h3>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PRODUCT TABLE CARD -->
+  <div class="product-card">
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+
+      <!-- SEARCH -->
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          placeholder="Search product..."
+          aria-label="Search products by name"
+          [(ngModel)]="searchText"
+        />
+      </div>
+
+      <!-- CATEGORY FILTER -->
+      <select
+        [(ngModel)]="selectedCategory"
+        aria-label="Filter by category"
+      >
+        <option value="All">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Wearable">Wearable</option>
+        <option value="Computer">Computer</option>
+        <option value="Accessories">Accessories</option>
+      </select>
+
+      <!-- STATUS FILTER -->
+      <select
+        [(ngModel)]="selectedStatus"
+        aria-label="Filter by status"
+      >
+        <option value="All">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Out of Stock">Out of Stock</option>
+      </select>
+
+      <!-- REFRESH -->
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="loadProducts()"
+        [disabled]="loading"
+        title="Refresh products"
+      >
+        <i class="bi bi-arrow-clockwise"></i>
+        Refresh
+      </button>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+      <table>
+
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (product of filteredProducts; track product.id) {
+            <tr>
+
+              <!-- PRODUCT INFORMATION -->
+              <td>
+                <div class="product-info">
+
+                  <div class="product-image">
+                    @if (product.imageUrl) {
+                      <img
+                        [src]="product.imageUrl"
+                        [alt]="product.name"
+                        loading="lazy"
+                      />
+                    } @else {
+                      <i class="bi bi-image"></i>
+                    }
+                  </div>
+
+                  <div>
+                    <strong>{{ product.name }}</strong>
+                    <small>Product #{{ product.id }}</small>
+                  </div>
+
+                </div>
+              </td>
+
+              <!-- CATEGORY -->
+              <td>
+                <span class="category-badge">
+                  {{ product.category }}
+                </span>
+              </td>
+
+              <!-- PRICE -->
+              <td>
+                <strong class="price">
+                  ৳ {{ product.price | number:'1.2-2' }}
+                </strong>
+              </td>
+
+              <!-- STOCK -->
+              <td>
+                @if (product.stock === 0) {
+                  <span class="stock out">
+                    <i class="bi bi-x-circle"></i>
+                    Out of Stock
+                  </span>
+                } @else if (product.stock <= 10) {
+                  <span class="stock low">
+                    <i class="bi bi-exclamation-circle"></i>
+                    {{ product.stock }} left
+                  </span>
+                } @else {
+                  <span class="stock available">
+                    <i class="bi bi-check-circle"></i>
+                    {{ product.stock }}
+                  </span>
+                }
+              </td>
+
+              <!-- STATUS -->
+              <td>
+                <span
+                  class="status"
+                  [ngClass]="getStatus(product).toLowerCase().replace(' ', '-')"
+                >
+                  {{ getStatus(product) }}
+                </span>
+              </td>
+
+              <!-- ACTIONS -->
+              <td>
+                <div class="actions">
+
+                  <button
+                    type="button"
+                    class="view"
+                    title="View product"
+                    aria-label="View product"
+                    (click)="viewProduct(product)"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="edit"
+                    title="Edit product"
+                    aria-label="Edit product"
+                    (click)="editProduct(product)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+
+               
+@if (!product.catalogProduct) {
+<button
+  type="button"
+  class="delete"
+  title="Delete product"
+  [attr.aria-label]="'Delete ' + product.name"
+  [disabled]="deletingProductId === product.id"
+  (click)="deleteProduct(product)"
+>
+  @if (deletingProductId === product.id) {
+    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+  } @else {
+    <i class="bi bi-trash"></i>
+  }
+</button>
+}
+
+
+                </div>
+              </td>
+
+            </tr>
+          }
+
+          <!-- EMPTY STATE -->
+          @if (!loading && !error && filteredProducts.length === 0) {
+            <tr>
+              <td colspan="6" class="empty-state">
+                <i class="bi bi-search"></i>
+                <h4>No products found</h4>
+                <p>Try changing your search or filters.</p>
+
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="searchText = ''; selectedCategory = 'All'; selectedStatus = 'All'"
+                >
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                  Reset Filters
+                </button>
+              </td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TABLE FOOTER -->
+    <div class="table-footer">
+      <span>
+        Showing {{ filteredProducts.length }} of {{ totalProducts }} products
+      </span>
+    </div>
+
+  </div>
+
+</div>

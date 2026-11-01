@@ -1,0 +1,18 @@
+.intro, .panel-heading, .activity, .quick-actions a { display: flex; align-items: center; }
+.intro { justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+h2, h3, p { margin-top: 0; }
+h2 { margin-bottom: .3rem; color: #172554; font-size: 1.5rem; }
+.intro p, .stat-card p, .activity p { margin-bottom: 0; color: #64748b; }
+.primary-action { padding: .65rem 1rem; border-radius: .5rem; color: #fff; background: #1d4ed8; text-decoration: none; white-space: nowrap; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card, .panel { border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; box-shadow: 0 2px 5px rgb(15 23 42 / 4%); }
+.stat-card { display: flex; gap: .8rem; align-items: center; padding: 1.1rem; }
+.stat-icon { display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border-radius: .6rem; font-size: 1.25rem; }
+.blue { color: #1d4ed8; background: #dbeafe; }.green { color: #15803d; background: #dcfce7; }.amber { color: #b45309; background: #fef3c7; }.purple { color: #7e22ce; background: #f3e8ff; }
+.stat-card strong { color: #172554; font-size: 1.45rem; }.stat-card p { font-size: .82rem; }
+.dashboard-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.5rem; }.panel { padding: 1.25rem; }
+.panel-heading { justify-content: space-between; }.panel h3 { margin-bottom: 1rem; color: #172554; font-size: 1rem; }.panel-heading span { padding: .2rem .45rem; border-radius: .25rem; color: #15803d; background: #dcfce7; font-size: .65rem; font-weight: 700; }
+.activity { gap: .8rem; padding: .85rem 0; border-top: 1px solid #edf2f7; }.activity i { color: #1d4ed8; font-size: 1.15rem; }.activity p { color: #334155; font-size: .9rem; }.activity small { color: #94a3b8; }
+.quick-actions { display: grid; align-content: start; gap: .7rem; }.quick-actions h3 { margin: 0; }.quick-actions a { gap: .65rem; padding: .8rem; border-radius: .5rem; color: #334155; background: #f8fafc; text-decoration: none; }.quick-actions a:hover { color: #1d4ed8; background: #eff6ff; }
+@media (max-width: 992px) { .stats-grid { grid-template-columns: repeat(2, 1fr); }.dashboard-grid { grid-template-columns: 1fr; } }
+@media (max-width: 576px) { .intro { align-items: flex-start; flex-direction: column; }.stats-grid { grid-template-columns: 1fr; } }

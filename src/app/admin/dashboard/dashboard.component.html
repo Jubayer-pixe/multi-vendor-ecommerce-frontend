@@ -1,0 +1,86 @@
+<section class="container-fluid py-4 admin-dashboard" aria-labelledby="admin-dashboard-title">
+  <div class="dashboard-heading d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <div>
+      <p class="eyebrow mb-1">OVERVIEW</p>
+      <h1 id="admin-dashboard-title" class="h2 mb-1">Admin Dashboard</h1>
+      @if (dashboard) { <p class="text-secondary mb-0">Welcome back, {{ dashboard.username }}. Here is the current platform snapshot.</p> }
+    </div>
+    <button class="btn btn-primary refresh-button" type="button" (click)="loadDashboard()" [disabled]="loading">
+      <i class="bi bi-arrow-clockwise me-2" [class.spin]="loading"></i>{{ loading ? 'Refreshing…' : 'Refresh data' }}
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="alert alert-info" role="status">Loading dashboard data…</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+      <button class="btn btn-sm btn-outline-danger ms-2" type="button" (click)="loadDashboard()" [disabled]="loading">Retry</button>
+    </div>
+  }
+
+  @if (dashboard; as data) {
+    <div class="row g-3 mb-4">
+      @for (metric of metricCards; track metric.key) {
+        <div class="col-12 col-sm-6 col-xl-3">
+          <article class="card metric-card h-100 border-0 shadow-sm" [ngClass]="'tone-' + metric.tone">
+            <div class="card-body d-flex align-items-center justify-content-between">
+              <div><p class="metric-label mb-2">{{ metric.label }}</p><p class="metric-value mb-0">{{ metric.value | number }}</p></div>
+              <span class="metric-icon"><i class="bi" [ngClass]="metric.icon"></i></span>
+            </div>
+          </article>
+        </div>
+      }
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-12 col-xl-7">
+        <section class="card dashboard-card h-100 border-0 shadow-sm" aria-labelledby="recent-orders-title">
+          <div class="card-header"><div><p class="eyebrow mb-1">LATEST ACTIVITY</p><h2 id="recent-orders-title" class="h5 mb-0">Recent orders</h2></div><a routerLink="/admin/orders" class="btn btn-sm btn-outline-primary">View orders</a></div>
+          @if (data.recentOrders.length) {
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+              <thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col">Status</th><th scope="col" class="text-end">Total</th></tr></thead>
+              <tbody>@for (order of data.recentOrders; track order.id) {
+                <tr><td class="fw-semibold">{{ order.orderNumber }}</td><td>{{ order.customerName || '—' }}</td><td><span class="badge rounded-pill text-bg-light">{{ order.status }}</span></td><td class="text-end">{{ order.totalAmount | currency:'BDT':'symbol':'1.2-2' }}</td></tr>
+              }</tbody>
+            </table></div>
+          } @else { <p class="empty-state">No orders have been recorded.</p> }
+        </section>
+      </div>
+      <div class="col-12 col-xl-5">
+        <section class="card dashboard-card h-100 border-0 shadow-sm" aria-labelledby="registrations-title">
+          <div class="card-header"><div><p class="eyebrow mb-1">COMMUNITY</p><h2 id="registrations-title" class="h5 mb-0">Recent registrations</h2></div><a routerLink="/admin/users" class="btn btn-sm btn-outline-primary">View users</a></div>
+          @if (data.recentRegistrations.length) {
+            <ul class="list-group list-group-flush">@for (user of data.recentRegistrations; track user.username) {
+              <li class="list-group-item registration-row"><span class="avatar">{{ user.username.slice(0, 1).toUpperCase() }}</span><span class="min-width-0"><strong class="d-block text-truncate">{{ user.username }}</strong><small class="text-secondary text-truncate d-block">{{ user.email }}</small></span><span class="badge" [class.text-bg-success]="user.enabled" [class.text-bg-secondary]="!user.enabled">{{ user.enabled ? 'Enabled' : 'Disabled' }}</span></li>
+            }</ul>
+          } @else { <p class="empty-state">No registrations are available.</p> }
+        </section>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-xl-5">
+        <section class="card dashboard-card h-100 border-0 shadow-sm" aria-labelledby="category-chart-title">
+          <div class="card-header"><div><p class="eyebrow mb-1">CATALOG SNAPSHOT</p><h2 id="category-chart-title" class="h5 mb-0">Active products by category</h2></div></div>
+          @if (categoryChart.length) {
+            <div class="chart-list">@for (item of categoryChart; track item.label) {
+              <div class="chart-row"><div class="d-flex justify-content-between mb-1"><span>{{ item.label || 'Uncategorized' }}</span><strong>{{ item.value }}</strong></div><div class="chart-track"><div class="chart-bar" [style.width.%]="categoryBarWidth(item.value)"></div></div></div>
+            }</div>
+          } @else { <p class="empty-state">No category data is available.</p> }
+        </section>
+      </div>
+      <div class="col-12 col-xl-7">
+        <section class="card dashboard-card h-100 border-0 shadow-sm" aria-labelledby="products-title">
+          <div class="card-header"><div><p class="eyebrow mb-1">LEGACY CATALOG</p><h2 id="products-title" class="h5 mb-0">Active legacy products</h2></div><a routerLink="/admin/products" class="btn btn-sm btn-outline-primary">Manage products</a></div>
+          @if (data.products.length) {
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th scope="col">Product</th><th scope="col">Category</th><th scope="col">Price</th><th scope="col">Stock</th></tr></thead><tbody>
+              @for (product of data.products; track product.id) { <tr><td class="fw-semibold">{{ product.name }}</td><td>{{ product.category }}</td><td>{{ product.price | currency:'BDT':'symbol':'1.2-2' }}</td><td>{{ product.stock }}</td></tr> }
+            </tbody></table></div>
+          } @else { <p class="empty-state">No active legacy products were returned.</p> }
+        </section>
+      </div>
+    </div>
+  }
+</section>

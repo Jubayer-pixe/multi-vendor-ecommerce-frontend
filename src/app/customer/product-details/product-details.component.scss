@@ -1,0 +1,172 @@
+.product-details-section {
+  background: #fff;
+  min-height: 80vh;
+}
+
+.product-image {
+  height: 500px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.sale-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  background: #dc3545;
+  color: #fff;
+
+  padding: 7px 15px;
+  border-radius: 5px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.product-title {
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.rating {
+  color: #ffc107;
+
+  i {
+    margin-right: 3px;
+  }
+}
+
+.rating-number {
+  color: #333;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.current-price {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.old-price {
+  font-size: 18px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.description {
+  color: #666;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+
+  width: fit-content;
+
+  border: 1px solid #ddd;
+  border-radius: 7px;
+
+  overflow: hidden;
+}
+
+.quantity-btn {
+  width: 45px;
+  height: 42px;
+
+  border: none;
+  background: #f8f9fa;
+
+  font-size: 18px;
+
+  &:hover {
+    background: #e9ecef;
+  }
+}
+
+.quantity {
+  width: 50px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .btn {
+    min-width: 140px;
+  }
+}
+
+.product-features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  i {
+    font-size: 28px;
+    color: #0d6efd;
+  }
+
+  strong {
+    display: block;
+  }
+
+  small {
+    color: #777;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .product-image {
+    height: 350px;
+  }
+
+  .product-title {
+    font-size: 30px;
+  }
+
+  .current-price {
+    font-size: 26px;
+  }
+
+  .action-buttons {
+
+    .btn {
+      width: 100%;
+    }
+
+  }
+
+}

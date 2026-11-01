@@ -1,0 +1,46 @@
+<section class="super-admin-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/super-admin">
+      <i class="bi bi-shield-lock-fill"></i>
+      <span>Super Admin</span>
+    </a>
+
+    <p class="menu-label">CONTROL CENTER</p>
+
+    <nav class="nav-menu">
+      <a routerLink="/super-admin" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+      </a>
+      <a routerLink="/super-admin/admins" routerLinkActive="active">
+        <i class="bi bi-person-gear"></i> Admins
+      </a>
+      <a routerLink="/super-admin/vendors" routerLinkActive="active">
+        <i class="bi bi-shop"></i> Vendor approvals
+      </a>
+      <a routerLink="/super-admin/settings" routerLinkActive="active">
+        <i class="bi bi-sliders"></i> System settings
+      </a>
+    </nav>
+
+    <a class="back-to-store" routerLink="/home">
+      <i class="bi bi-arrow-left"></i> Back to store
+    </a>
+  </aside>
+
+  <div class="content-area">
+    <header class="page-header">
+      <div>
+        <p>PLATFORM MANAGEMENT</p>
+        <h1>Super Admin Portal</h1>
+      </div>
+      <div class="account-badge">
+        <i class="bi bi-person-circle"></i>
+        <span>Super Admin</span>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</section>

@@ -1,0 +1,254 @@
+<div class="notification-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <span class="header-badge">
+        <i class="bi bi-bell"></i>
+        Delivery Center
+      </span>
+
+      <h1>Notifications</h1>
+
+      <p>
+        Stay updated with your delivery activities
+        and important alerts.
+      </p>
+
+    </div>
+
+
+    <div class="header-icon">
+
+      <i class="bi bi-bell-fill"></i>
+
+      <span *ngIf="unreadCount > 0">
+        {{ unreadCount }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= STATS ================= -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon unread-icon">
+        <i class="bi bi-envelope"></i>
+      </div>
+
+      <div>
+        <span>Unread</span>
+        <h2>{{ unreadCount }}</h2>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon read-icon">
+        <i class="bi bi-envelope-open"></i>
+      </div>
+
+      <div>
+        <span>Read</span>
+        <h2>{{ readCount }}</h2>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon total-icon">
+        <i class="bi bi-bell"></i>
+      </div>
+
+      <div>
+        <span>Total</span>
+        <h2>{{ notifications.length }}</h2>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TOOLBAR ================= -->
+
+  <div class="notification-toolbar">
+
+    <div class="filter-buttons">
+
+      <button
+        [class.active]="selectedFilter === 'ALL'"
+        (click)="selectedFilter = 'ALL'"
+      >
+        All
+      </button>
+
+      <button
+        [class.active]="selectedFilter === 'UNREAD'"
+        (click)="selectedFilter = 'UNREAD'"
+      >
+        Unread
+      </button>
+
+      <button
+        [class.active]="selectedFilter === 'READ'"
+        (click)="selectedFilter = 'READ'"
+      >
+        Read
+      </button>
+
+    </div>
+
+
+    <button
+      class="mark-all-btn"
+      (click)="markAllAsRead()"
+      [disabled]="unreadCount === 0"
+    >
+
+      <i class="bi bi-check2-all"></i>
+
+      Mark All as Read
+
+    </button>
+
+  </div>
+
+
+  <!-- ================= NOTIFICATION LIST ================= -->
+
+  <div class="notification-list">
+
+    <div
+      class="notification-card"
+      *ngFor="let notification of filteredNotifications"
+      [class.unread]="!notification.isRead"
+    >
+
+      <!-- Icon -->
+
+      <div
+        class="notification-icon"
+        [ngClass]="getIconClass(notification.type)"
+      >
+
+        <i
+          class="bi"
+          [ngClass]="getIcon(notification.type)"
+        ></i>
+
+      </div>
+
+
+      <!-- Content -->
+
+      <div class="notification-content">
+
+        <div class="notification-top">
+
+          <h3>
+            {{ notification.title }}
+          </h3>
+
+          <span class="notification-time">
+            <i class="bi bi-clock"></i>
+            {{ notification.time }}
+          </span>
+
+        </div>
+
+
+        <p>
+          {{ notification.message }}
+        </p>
+
+
+        <div class="notification-actions">
+
+          <button
+            *ngIf="notification.orderId"
+            class="view-btn"
+            (click)="viewOrder(notification)"
+          >
+
+            <i class="bi bi-eye"></i>
+
+            View Order
+
+          </button>
+
+
+          <button
+            *ngIf="!notification.isRead"
+            class="read-btn"
+            (click)="markAsRead(notification)"
+          >
+
+            <i class="bi bi-check2"></i>
+
+            Mark as Read
+
+          </button>
+
+
+          <button
+            class="delete-btn"
+            (click)="deleteNotification(notification)"
+          >
+
+            <i class="bi bi-trash"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Unread Dot -->
+
+      <span
+        *ngIf="!notification.isRead"
+        class="unread-dot"
+      ></span>
+
+    </div>
+
+
+    <!-- Empty State -->
+
+    <div
+      class="empty-state"
+      *ngIf="filteredNotifications.length === 0"
+    >
+
+      <div class="empty-icon">
+
+        <i class="bi bi-bell-slash"></i>
+
+      </div>
+
+      <h3>No Notifications</h3>
+
+      <p>
+        You don't have any notifications
+        in this category.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

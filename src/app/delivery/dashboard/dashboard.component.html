@@ -1,0 +1,313 @@
+<div class="dashboard-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <span class="welcome-badge">
+        <i class="bi bi-speedometer2"></i>
+        Delivery Dashboard
+      </span>
+
+      <h1>Good Morning, Delivery Partner 👋</h1>
+
+      <p>
+        Here is your delivery activity and performance overview.
+      </p>
+    </div>
+
+    <div class="date-box">
+      <i class="bi bi-calendar3"></i>
+      {{ currentDate | date:'EEEE, MMMM d, y' }}
+    </div>
+
+  </div>
+
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <!-- Total -->
+    <div class="stat-card total">
+
+      <div class="stat-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+
+      <div class="stat-content">
+        <span>Total Orders</span>
+        <h2>{{ totalOrders }}</h2>
+        <small>
+          <i class="bi bi-arrow-up"></i>
+          12% from last week
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Pending -->
+    <div class="stat-card pending">
+
+      <div class="stat-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+      <div class="stat-content">
+        <span>Pending Orders</span>
+        <h2>{{ pendingOrders }}</h2>
+        <small>
+          Need your attention
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Picked Up -->
+    <div class="stat-card pickup">
+
+      <div class="stat-icon">
+        <i class="bi bi-truck"></i>
+      </div>
+
+      <div class="stat-content">
+        <span>Picked Up</span>
+        <h2>{{ pickedUpOrders }}</h2>
+        <small>
+          Currently in transit
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Delivered -->
+    <div class="stat-card delivered">
+
+      <div class="stat-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+      <div class="stat-content">
+        <span>Delivered</span>
+        <h2>{{ deliveredOrders }}</h2>
+        <small>
+          <i class="bi bi-check2"></i>
+          Successfully completed
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Main Content -->
+  <div class="dashboard-grid">
+
+
+    <!-- Delivery Progress -->
+    <div class="dashboard-card progress-card">
+
+      <div class="card-header">
+
+        <div>
+          <h3>Today's Delivery Progress</h3>
+          <p>Your delivery performance today</p>
+        </div>
+
+        <div class="progress-percent">
+          75%
+        </div>
+
+      </div>
+
+      <div class="progress-container">
+
+        <div class="progress">
+          <div
+            class="progress-bar"
+            style="width: 75%">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="progress-info">
+        <span>9 of 12 deliveries completed</span>
+        <span>3 remaining</span>
+      </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="dashboard-card quick-card">
+
+      <div class="card-header">
+
+        <div>
+          <h3>Quick Actions</h3>
+          <p>Manage your deliveries</p>
+        </div>
+
+      </div>
+
+      <div class="quick-actions">
+
+        <a
+          routerLink="/delivery/orders"
+          class="quick-action blue">
+
+          <i class="bi bi-box-seam"></i>
+
+          <div>
+            <strong>My Orders</strong>
+            <span>View assigned orders</span>
+          </div>
+
+          <i class="bi bi-chevron-right arrow"></i>
+
+        </a>
+
+
+        <a
+          routerLink="/delivery/pickups"
+          class="quick-action purple">
+
+          <i class="bi bi-truck"></i>
+
+          <div>
+            <strong>Pickups</strong>
+            <span>Manage pickup requests</span>
+          </div>
+
+          <i class="bi bi-chevron-right arrow"></i>
+
+        </a>
+
+
+        <a
+          routerLink="/delivery/profile"
+          class="quick-action orange">
+
+          <i class="bi bi-person-circle"></i>
+
+          <div>
+            <strong>My Profile</strong>
+            <span>Update your information</span>
+          </div>
+
+          <i class="bi bi-chevron-right arrow"></i>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Delivery Timeline -->
+  <div class="dashboard-card timeline-card">
+
+    <div class="card-header">
+
+      <div>
+        <h3>Delivery Process</h3>
+        <p>Track your current delivery workflow</p>
+      </div>
+
+    </div>
+
+
+    <div class="timeline">
+
+      <div class="timeline-item completed">
+
+        <div class="timeline-icon">
+          <i class="bi bi-person-check"></i>
+        </div>
+
+        <div>
+          <strong>Assigned</strong>
+          <span>Order assigned to you</span>
+        </div>
+
+      </div>
+
+
+      <div class="timeline-line"></div>
+
+
+      <div class="timeline-item completed">
+
+        <div class="timeline-icon">
+          <i class="bi bi-box-arrow-up"></i>
+        </div>
+
+        <div>
+          <strong>Picked Up</strong>
+          <span>Package collected</span>
+        </div>
+
+      </div>
+
+
+      <div class="timeline-line active"></div>
+
+
+      <div class="timeline-item active">
+
+        <div class="timeline-icon">
+          <i class="bi bi-truck"></i>
+        </div>
+
+        <div>
+          <strong>In Transit</strong>
+          <span>On the way to customer</span>
+        </div>
+
+      </div>
+
+
+      <div class="timeline-line"></div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-icon">
+          <i class="bi bi-geo-alt"></i>
+        </div>
+
+        <div>
+          <strong>Out for Delivery</strong>
+          <span>Arriving at customer</span>
+        </div>
+
+      </div>
+
+
+      <div class="timeline-line"></div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-icon">
+          <i class="bi bi-check-lg"></i>
+        </div>
+
+        <div>
+          <strong>Delivered</strong>
+          <span>Order completed</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

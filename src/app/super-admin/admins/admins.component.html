@@ -1,0 +1,21 @@
+<div class="page-title">
+  <div><h2>Admin management</h2><p>Control who can operate the marketplace administration panel.</p></div>
+  <button type="button" (click)="inviteAdmin()"><i class="bi bi-person-plus"></i> Invite admin</button>
+</div>
+
+<section class="table-panel">
+  <div class="table-header"><h3>Admin accounts</h3><span>{{ admins.length }} accounts</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Admin</th><th>Access scope</th><th>Status</th><th class="action-cell">Action</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td><strong>{{ admin.name }}</strong><small>{{ admin.email }}</small></td>
+          <td>{{ admin.access }}</td>
+          <td><span class="status" [class.suspended]="admin.status === 'Suspended'">{{ admin.status }}</span></td>
+          <td class="action-cell"><button class="secondary" type="button" (click)="toggleStatus(admin)">{{ admin.status === 'Active' ? 'Suspend' : 'Activate' }}</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

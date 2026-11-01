@@ -1,0 +1,515 @@
+<footer class="shop-footer" *ngIf="isCustomerExperience; else panelFooter">
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+
+    <div class="container">
+
+      <div class="newsletter-card">
+
+        <div class="newsletter-content">
+
+          <div class="newsletter-icon">
+            <i class="bi bi-envelope-heart"></i>
+          </div>
+
+          <div>
+            <span class="newsletter-label">
+              STAY UPDATED
+            </span>
+
+            <h3>
+              Get the latest deals & offers
+            </h3>
+
+            <p>
+              Subscribe to our newsletter and never miss
+              exclusive discounts, new arrivals and special offers.
+            </p>
+          </div>
+
+        </div>
+
+
+        <form
+          class="newsletter-form"
+          (ngSubmit)="subscribe()">
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-envelope"></i>
+
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="Enter your email address"
+              required>
+
+          </div>
+
+          <button
+            type="submit"
+            class="subscribe-btn">
+
+            Subscribe
+
+            <i class="bi bi-arrow-right"></i>
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Main Footer -->
+  <section class="footer-main">
+
+    <div class="container">
+
+      <div class="row g-5">
+
+
+        <!-- Brand -->
+        <div class="col-lg-4 col-md-6">
+
+          <div class="footer-brand">
+
+            <a
+              routerLink="/home"
+              class="footer-logo">
+
+              <span class="logo-icon">
+                <i class="bi bi-bag-heart-fill"></i>
+              </span>
+
+              <span>
+                Shop<span>Nest</span>
+              </span>
+
+            </a>
+
+
+            <p class="brand-description">
+
+              Your trusted multi-vendor marketplace for
+              quality products, amazing deals and a
+              seamless shopping experience.
+
+            </p>
+
+
+            <!-- Social Media -->
+            <div class="social-links">
+
+              <a
+                href="#"
+                title="Facebook">
+
+                <i class="bi bi-facebook"></i>
+
+              </a>
+
+              <a
+                href="#"
+                title="Instagram">
+
+                <i class="bi bi-instagram"></i>
+
+              </a>
+
+              <a
+                href="#"
+                title="Twitter">
+
+                <i class="bi bi-twitter-x"></i>
+
+              </a>
+
+              <a
+                href="#"
+                title="YouTube">
+
+                <i class="bi bi-youtube"></i>
+
+              </a>
+
+              <a
+                href="#"
+                title="LinkedIn">
+
+                <i class="bi bi-linkedin"></i>
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6">
+
+          <div class="footer-column">
+
+            <h5>
+              Quick Links
+            </h5>
+
+            <ul>
+
+              <li>
+                <a routerLink="/home">
+                  <i class="bi bi-chevron-right"></i>
+                  Home
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/products">
+                  <i class="bi bi-chevron-right"></i>
+                  Products
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/categories">
+                  <i class="bi bi-chevron-right"></i>
+                  Categories
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/wishlist">
+                  <i class="bi bi-chevron-right"></i>
+                  Wishlist
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/cart">
+                  <i class="bi bi-chevron-right"></i>
+                  Shopping Cart
+                </a>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+
+        <!-- Customer Service -->
+        <div class="col-lg-3 col-md-6">
+
+          <div class="footer-column">
+
+            <h5>
+              Customer Service
+            </h5>
+
+            <ul>
+
+              <li>
+                <a routerLink="/orders">
+                  <i class="bi bi-chevron-right"></i>
+                  Track Order
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <i class="bi bi-chevron-right"></i>
+                  Shipping & Delivery
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <i class="bi bi-chevron-right"></i>
+                  Returns & Refunds
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <i class="bi bi-chevron-right"></i>
+                  Payment Methods
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <i class="bi bi-chevron-right"></i>
+                  Help Center
+                </a>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+
+        <!-- Contact -->
+        <div class="col-lg-3 col-md-6">
+
+          <div class="footer-column">
+
+            <h5>
+              Contact Us
+            </h5>
+
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+              </div>
+
+              <div>
+                <span>Address</span>
+                <strong>
+                  Dhaka, Bangladesh
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                <i class="bi bi-telephone-fill"></i>
+              </div>
+
+              <div>
+                <span>Phone</span>
+                <strong>
+                  +880 1712-345678
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                <i class="bi bi-envelope-fill"></i>
+              </div>
+
+              <div>
+                <span>Email</span>
+                <strong>
+                  support&#64;shopnest.com
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                <i class="bi bi-clock-fill"></i>
+              </div>
+
+              <div>
+                <span>Support Hours</span>
+                <strong>
+                  9:00 AM - 10:00 PM
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Trust Features -->
+      <div class="trust-section">
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            <i class="bi bi-truck"></i>
+          </div>
+
+          <div>
+            <strong>Fast Delivery</strong>
+            <span>Quick & reliable delivery</span>
+          </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+
+          <div>
+            <strong>Secure Shopping</strong>
+            <span>100% secure transactions</span>
+          </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+
+          <div>
+            <strong>Easy Returns</strong>
+            <span>Simple return policy</span>
+          </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+
+          <div>
+            <strong>24/7 Support</strong>
+            <span>We're here to help</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Payment -->
+      <div class="payment-section">
+
+        <div>
+
+          <span class="payment-title">
+            Secure Payment
+          </span>
+
+          <div class="payment-methods">
+
+            <span>
+              <i class="bi bi-credit-card"></i>
+              Visa
+            </span>
+
+            <span>
+              <i class="bi bi-credit-card-2-front"></i>
+              Mastercard
+            </span>
+
+            <span>
+              <i class="bi bi-phone"></i>
+              bKash
+            </span>
+
+            <span>
+              <i class="bi bi-wallet2"></i>
+              Nagad
+            </span>
+
+            <span>
+              <i class="bi bi-cash-stack"></i>
+              COD
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="secure-badge">
+
+          <i class="bi bi-lock-fill"></i>
+
+          <span>
+            SSL Secured
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Bottom Footer -->
+  <section class="footer-bottom">
+
+    <div class="container">
+
+      <div class="bottom-content">
+
+        <p>
+          © 2026
+          <strong>ShopNest</strong>.
+          All Rights Reserved.
+        </p>
+
+
+        <div class="bottom-links">
+
+          <a href="#">
+            Privacy Policy
+          </a>
+
+          <a href="#">
+            Terms & Conditions
+          </a>
+
+          <a href="#">
+            Cookie Policy
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</footer>
+
+<ng-template #panelFooter>
+  <footer class="panel-footer">
+    <div class="panel-footer-content">
+      <div class="panel-footer-brand">
+        <i class="bi bi-shield-check"></i>
+        <span><strong>ShopNest</strong> {{ roleLabel }} Workspace</span>
+      </div>
+
+      <div class="panel-footer-links">
+        <a [routerLink]="dashboardRoute"><i class="bi bi-grid"></i> Dashboard</a>
+        <a routerLink="/home"><i class="bi bi-shop"></i> View store</a>
+        <button type="button" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </div>
+    </div>
+  </footer>
+</ng-template>

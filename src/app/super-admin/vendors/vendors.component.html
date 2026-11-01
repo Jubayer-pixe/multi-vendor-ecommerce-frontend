@@ -1,0 +1,9 @@
+<div class="page-title"><div><h2>Vendor approvals</h2><p>Verify stores before they can list products on the marketplace.</p></div><span class="pending-count"><i class="bi bi-hourglass-split"></i> {{ vendors.length - 1 }} pending</span></div>
+
+<section class="vendor-list">
+  <article class="vendor-card" *ngFor="let vendor of vendors">
+    <div class="store-icon"><i class="bi bi-shop"></i></div>
+    <div class="vendor-info"><div class="vendor-heading"><div><h3>{{ vendor.store }}</h3><p>Owner: {{ vendor.owner }}</p></div><span class="status" [class.approved]="vendor.status === 'Approved'" [class.rejected]="vendor.status === 'Rejected'">{{ vendor.status }}</span></div><div class="meta"><span><i class="bi bi-tag"></i> {{ vendor.category }}</span><span><i class="bi bi-clock"></i> {{ vendor.submittedAt }}</span></div></div>
+    <div class="actions" *ngIf="vendor.status === 'Pending'"><button type="button" class="reject" (click)="updateStatus(vendor, 'Rejected')">Reject</button><button type="button" (click)="updateStatus(vendor, 'Approved')">Approve</button></div>
+  </article>
+</section>

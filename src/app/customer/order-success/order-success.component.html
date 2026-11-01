@@ -1,0 +1,179 @@
+<section class="success-section py-5">
+
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-7">
+
+        <div class="success-card text-center">
+
+          <!-- Success Icon -->
+
+          <div class="success-icon">
+
+            <i class="bi bi-check-lg"></i>
+
+          </div>
+
+
+          <!-- Message -->
+
+          <h2 class="fw-bold mt-4">
+            Order Placed Successfully!
+          </h2>
+
+          <p class="text-muted">
+            Thank you for your purchase.
+            Your order has been received successfully.
+          </p>
+
+
+          <!-- Order ID -->
+
+          <div class="order-id">
+
+            <span>
+              Order ID
+            </span>
+
+            <strong>
+              #{{ order?.id }}
+            </strong>
+
+          </div>
+
+          <div class="order-id mt-2">
+            <span>Order Number</span>
+            <strong>{{ order?.orderNumber }}</strong>
+          </div>
+
+
+          <hr>
+
+
+          <!-- Order Information -->
+
+          <div class="order-info text-start">
+
+            <div class="info-row">
+
+              <span>
+                <i class="bi bi-calendar3"></i>
+                Order Date
+              </span>
+
+              <strong>
+                {{ orderDate }}
+              </strong>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span>
+                <i class="bi bi-credit-card"></i>
+                Payment Method
+              </span>
+
+              <strong>
+                {{ order?.paymentMethod }}
+              </strong>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span>
+                <i class="bi bi-box-seam"></i>
+                Order Status
+              </span>
+
+              <span class="badge bg-warning text-dark">
+                {{ order?.status }}
+              </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span>
+                <i class="bi bi-person"></i>
+                Customer
+              </span>
+
+              <strong>
+                {{ order?.customerName }}
+              </strong>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span>
+                <i class="bi bi-geo-alt"></i>
+                Delivery Address
+              </span>
+
+              <strong>
+                {{ order?.address }}, {{ order?.city }} {{ order?.postalCode }}
+              </strong>
+
+            </div>
+
+
+            <div class="info-row total-row">
+
+              <span>
+                Total Amount
+              </span>
+
+              <strong>
+                ৳{{ order?.totalAmount | number }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- Buttons -->
+
+          <div class="action-buttons mt-4">
+
+            <a
+              routerLink="/orders"
+              class="btn btn-primary">
+
+              <i class="bi bi-box-seam"></i>
+
+              View My Orders
+
+            </a>
+
+
+            <a
+              routerLink="/products"
+              class="btn btn-outline-secondary">
+
+              <i class="bi bi-shop"></i>
+
+              Continue Shopping
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

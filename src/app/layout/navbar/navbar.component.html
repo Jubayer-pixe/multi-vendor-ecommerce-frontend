@@ -1,0 +1,367 @@
+<nav class="main-navbar" [class.panel-navbar]="!isCustomerExperience">
+
+  <ng-container *ngIf="isCustomerExperience; else panelNavigation">
+
+  <div class="navbar-container">
+
+    <!-- ================= LOGO ================= -->
+
+    <a
+      routerLink="/home"
+      class="brand"
+    >
+
+      <div class="brand-icon">
+        <i class="bi bi-bag-heart-fill"></i>
+      </div>
+
+      <div class="brand-text">
+        <strong>ShopNest</strong>
+        <span>Everything You Love</span>
+      </div>
+
+    </a>
+
+
+    <!-- ================= NAV LINKS ================= -->
+
+    <div class="nav-links">
+
+      <a
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="bi bi-house-door"></i>
+        <span>Home</span>
+      </a>
+
+      <a
+        routerLink="/products"
+        routerLinkActive="active"
+      >
+        <i class="bi bi-grid"></i>
+        <span>Products</span>
+      </a>
+
+      <a
+        routerLink="/categories"
+        routerLinkActive="active"
+      >
+        <i class="bi bi-tags"></i>
+        <span>Categories</span>
+      </a>
+
+    </div>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div class="search-wrapper">
+
+      <i class="bi bi-search search-icon"></i>
+
+      <input
+        type="text"
+        placeholder="Search products, brands & categories..."
+        [(ngModel)]="searchText"
+        (keyup.enter)="searchProducts()"
+      />
+
+      <button
+        type="button"
+        class="search-button"
+        (click)="searchProducts()"
+      >
+        Search
+      </button>
+
+    </div>
+
+
+    <!-- ================= RIGHT ACTIONS ================= -->
+
+    <div class="nav-actions">
+
+
+      <!-- Wishlist -->
+
+      <a
+        routerLink="/wishlist"
+        class="action-button"
+        title="Wishlist"
+      >
+
+        <i class="bi bi-heart"></i>
+
+        <span
+          class="action-badge wishlist-badge"
+          *ngIf="wishlistCount > 0"
+        >
+          {{ wishlistCount }}
+        </span>
+
+      </a>
+
+
+      <!-- Cart -->
+
+      <a
+        routerLink="/cart"
+        class="action-button"
+        title="Shopping Cart"
+      >
+
+        <i class="bi bi-cart3"></i>
+
+        <span
+          class="action-badge cart-badge"
+          *ngIf="(cartCount$ | async) as cartCount"
+        >
+          {{ cartCount }}
+        </span>
+
+      </a>
+
+
+      <!-- User -->
+
+      <div
+        class="user-area"
+        *ngIf="isLoggedIn"
+      >
+
+        <div class="user-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+
+        <div class="user-info">
+
+          <span>Hello,</span>
+
+          <strong>
+            {{ currentUser?.name || 'User' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= THREE DOT MENU ================= -->
+
+      <div class="more-menu">
+
+        <button
+          type="button"
+          class="more-button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          title="More options"
+        >
+
+          <i class="bi bi-three-dots-vertical"></i>
+
+        </button>
+
+
+        <ul class="dropdown-menu dropdown-menu-end">
+
+
+          <li class="dropdown-header">
+
+            <div class="menu-user">
+
+              <div class="menu-user-icon">
+                <i class="bi bi-person-fill"></i>
+              </div>
+
+              <div>
+
+                <strong>
+                  {{ currentUser?.name || 'Guest User' }}
+                </strong>
+
+                <small>
+                  {{ currentUser?.email || 'Welcome to ShopNest' }}
+                </small>
+
+              </div>
+
+            </div>
+
+          </li>
+
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/profile"
+            >
+
+              <i class="bi bi-person"></i>
+
+              <span>My Profile</span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/orders"
+            >
+
+              <i class="bi bi-box-seam"></i>
+
+              <span>My Orders</span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/wishlist"
+            >
+
+              <i class="bi bi-heart"></i>
+
+              <span>My Wishlist</span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/cart"
+            >
+
+              <i class="bi bi-cart3"></i>
+
+              <span>Shopping Cart</span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/notifications"
+            >
+
+              <i class="bi bi-bell"></i>
+
+              <span>Notifications</span>
+
+              <span class="menu-notification">
+                3
+              </span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a
+              class="dropdown-item"
+              routerLink="/settings"
+            >
+
+              <i class="bi bi-gear"></i>
+
+              <span>Settings</span>
+
+            </a>
+
+          </li>
+
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+
+          <li>
+
+            <button
+              type="button"
+              class="dropdown-item logout-item"
+              (click)="logout()"
+            >
+
+              <i class="bi bi-box-arrow-right"></i>
+
+              <span>Logout</span>
+
+            </button>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  </ng-container>
+
+  <ng-template #panelNavigation>
+
+    <div class="panel-navbar-container">
+
+      <a class="panel-brand" [routerLink]="panelDashboardRoute">
+        <i class="bi bi-shield-check"></i>
+        <span>{{ roleLabel }} Panel</span>
+      </a>
+
+      <div class="panel-links">
+        <a
+          *ngFor="let link of panelLinks"
+          [routerLink]="link.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: link.exact || false }"
+        >
+          <i class="bi" [ngClass]="link.icon"></i>
+          <span>{{ link.label }}</span>
+        </a>
+      </div>
+
+      <div class="panel-user-actions">
+        <a [routerLink]="panelProfileRoute" title="Account settings">
+          <i class="bi bi-person-circle"></i>
+          <span>{{ currentUser?.name || roleLabel }}</span>
+        </a>
+        <button type="button" (click)="logout()" title="Logout">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+  </ng-template>
+
+</nav>

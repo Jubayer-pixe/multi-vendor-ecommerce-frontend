@@ -1,0 +1,246 @@
+<section class="products-page">
+    <!-- Hero Banner -->
+    <div class="products-hero">
+        <div class="hero-content">
+            <span class="hero-badge">
+                <i class="bi bi-stars"></i>
+                YOUR NEXT FAVORITE IS HERE
+            </span>
+
+            <h1>Discover Amazing <span>Products</span></h1>
+
+            <p>
+                Explore quality products, exciting deals and everyday essentials
+                picked just for you.
+            </p>
+
+            <div class="hero-stats">
+                <div>
+                    <strong>{{ products.length }}+</strong>
+                    <span>Products</span>
+                </div>
+                <div>
+                    <strong>Best</strong>
+                    <span>Quality</span>
+                </div>
+                <div>
+                    <strong>Easy</strong>
+                    <span>Shopping</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-decoration">
+            <div class="hero-icon hero-icon-one">
+                <i class="bi bi-bag-heart-fill"></i>
+            </div>
+            <div class="hero-icon hero-icon-two">
+                <i class="bi bi-gift-fill"></i>
+            </div>
+            <div class="hero-icon hero-icon-three">
+                <i class="bi bi-stars"></i>
+            </div>
+            <div class="hero-circle">
+                <i class="bi bi-shop"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="products-toolbar">
+        <div class="toolbar-heading">
+            <div>
+                <span class="section-eyebrow">OUR COLLECTION</span>
+                <h2>Shop Products</h2>
+                <p>Find something you'll love.</p>
+            </div>
+
+            <span class="result-count">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+                {{ filteredProducts.length }} items
+            </span>
+        </div>
+
+        <div class="filter-row">
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search" placeholder="Search products..." [(ngModel)]="searchText"
+                    (ngModelChange)="applyFilters()" aria-label="Search products" />
+                @if (searchText) {
+                <button type="button" class="clear-search" (click)="searchText = ''" aria-label="Clear search">
+                    <i class="bi bi-x-circle-fill"></i>
+                </button>
+                }
+            </div>
+
+            <div class="category-select">
+                <i class="bi bi-funnel"></i>
+                <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()" aria-label="Filter by category">
+                    <option value="All">All Categories</option>
+                    @for (category of categories; track category) {
+                    <option [value]="category">{{ category }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="sort-select">
+                <i class="bi bi-sort-down"></i>
+                <select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()" aria-label="Sort products">
+                    <option value="featured">Featured</option>
+                    <option value="priceLow">Price: Low to High</option>
+                    <option value="priceHigh">Price: High to Low</option>
+                    <option value="name">Name: A to Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="category-chips">
+            <button type="button" [class.active]="selectedCategory === 'All'" (click)="selectedCategory = 'All'">
+                <i class="bi bi-grid-fill"></i>
+                All Products
+            </button>
+
+            @for (category of categories; track category) {
+            <button type="button" [class.active]="selectedCategory === category" (click)="selectedCategory = category">
+                {{ category }}
+            </button>
+            }
+        </div>
+    </div>
+
+    <!-- Loading -->
+    @if (loading) {
+    <div class="status-panel loading-panel">
+        <div class="loading-spinner"></div>
+        <h3>Finding your favorites...</h3>
+        <p>Please wait while we load products.</p>
+    </div>
+    }
+
+    <!-- Error -->
+    @if (!loading && errorMessage) {
+    <div class="status-panel error-panel">
+        <div class="status-icon">
+            <i class="bi bi-cloud-slash"></i>
+        </div>
+        <h3>Unable to load products</h3>
+        <p>{{ errorMessage }}</p>
+        <button type="button" class="retry-btn" (click)="loadProducts()">
+            <i class="bi bi-arrow-clockwise"></i>
+            Try Again
+        </button>
+    </div>
+    }
+
+    <!-- Product Grid -->
+    @if (!loading && !errorMessage && filteredProducts.length > 0) {
+    <div class="products-grid">
+        @for (product of filteredProducts; track product.id) {
+        <article class="product-card">
+            <div class="product-image-wrap">
+                @if (product.badge) {
+                <span class="product-badge">{{ product.badge }}</span>
+                } @else if (product.premium) {
+                <span class="product-badge premium-badge">
+                    <i class="bi bi-gem"></i> Premium
+                </span>
+                }
+
+                @if (product.oldPrice && product.oldPrice > product.price) {
+                <span class="discount-badge">
+                    -{{ getDiscount(product.price, product.oldPrice) }}%
+                </span>
+                }
+
+                <button type="button" class="wishlist-btn" aria-label="Add product to wishlist"
+                    (click)="addToWishlist(product)">
+                    <i class="bi bi-heart"></i>
+                </button>
+
+                <div class="product-image">
+                    @if (product.image) {
+                    <img [src]="product.image" [alt]="product.name" loading="lazy" (error)="onImageError($event)" />
+                    } @else {
+                    <div class="image-placeholder">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                    }
+                </div>
+
+                <button type="button" class="quick-add-btn" (click)="addToCart(product)">
+                    <i class="bi bi-bag-plus"></i>
+                    Quick Add
+                </button>
+            </div>
+
+            <div class="product-info">
+                <span class="product-category">{{ product.category }}</span>
+
+                <h3>{{ product.name }}</h3>
+
+                <button type="button" class="view-details-btn" [routerLink]="['/products', product.id]">
+                    <i class="bi bi-eye"></i>
+                    View Details
+                </button>
+
+
+                <div class="product-rating">
+                    <span class="stars">
+                        <i class="bi bi-star-fill"></i>
+                    </span>
+                    <strong>{{ product.rating || 0 }}</strong>
+                    <span class="review-count">
+                        ({{ product.reviews || 0 }} reviews)
+                    </span>
+                </div>
+
+                <div class="product-price-row">
+                    <div class="price-group">
+                        <strong class="current-price">
+                            ৳{{ product.price | number:'1.0-2' }}
+                        </strong>
+
+                        @if (product.oldPrice && product.oldPrice > product.price) {
+                        <del class="old-price">
+                            ৳{{ product.oldPrice | number:'1.0-2' }}
+                        </del>
+                        }
+                    </div>
+
+                    <button type="button" class="cart-btn" aria-label="Add to cart" (click)="addToCart(product)">
+                        <i class="bi bi-cart-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </article>
+        }
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && !errorMessage && filteredProducts.length === 0) {
+    <div class="status-panel empty-panel">
+        <div class="status-icon">
+            <i class="bi bi-search"></i>
+        </div>
+        <h3>No products found</h3>
+        <p>Try another search term or select a different category.</p>
+        <button type="button" class="retry-btn" (click)="resetFilters()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Clear Filters
+        </button>
+    </div>
+    }
+
+    <!-- Bottom Banner -->
+    <div class="shopping-promo">
+        <div class="promo-icon">
+            <i class="bi bi-truck"></i>
+        </div>
+        <div>
+            <h3>Shopping made simple</h3>
+            <p>Discover your favorites and enjoy a smooth shopping experience.</p>
+        </div>
+        <i class="bi bi-stars promo-decoration"></i>
+    </div>
+</section>

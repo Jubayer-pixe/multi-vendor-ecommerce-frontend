@@ -1,0 +1,351 @@
+<div class="dashboard">
+
+  <!-- ================= PAGE HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>Vendor Dashboard</h2>
+
+      <p>
+        Welcome back! Here's what's happening with your store today.
+      </p>
+    </div>
+
+    <button class="add-product-btn">
+      <i class="bi bi-plus-lg"></i>
+      Add Product
+    </button>
+
+  </div>
+
+
+  <!-- ================= STAT CARDS ================= -->
+
+  <div class="stats-grid">
+
+    @for (stat of stats; track stat.title) {
+
+      <div class="stat-card">
+
+        <div class="stat-icon" [ngClass]="stat.color">
+          <i class="bi" [ngClass]="stat.icon"></i>
+        </div>
+
+        <div class="stat-info">
+
+          <span>{{ stat.title }}</span>
+
+          <h3>{{ stat.value }}</h3>
+
+          <small>
+            <i class="bi bi-arrow-up"></i>
+            {{ stat.change }} this month
+          </small>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- ================= MAIN GRID ================= -->
+
+  <div class="dashboard-grid">
+
+
+    <!-- ================= SALES OVERVIEW ================= -->
+
+    <div class="dashboard-card sales-card">
+
+      <div class="card-header">
+
+        <div>
+          <h4>Sales Overview</h4>
+          <span>Monthly sales performance</span>
+        </div>
+
+        <select>
+          <option>Last 7 Days</option>
+          <option>Last 30 Days</option>
+          <option>Last 6 Months</option>
+          <option>This Year</option>
+        </select>
+
+      </div>
+
+
+      <div class="chart-area">
+
+        <div class="chart-placeholder">
+
+          <i class="bi bi-bar-chart-line"></i>
+
+          <strong>Sales Chart</strong>
+
+          <span>
+            Chart will be connected with real sales data later.
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= QUICK SUMMARY ================= -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h4>Store Summary</h4>
+          <span>Current store status</span>
+        </div>
+
+      </div>
+
+      <div class="summary-list">
+
+        <div class="summary-item">
+          <span>
+            <i class="bi bi-box"></i>
+            Active Products
+          </span>
+
+          <strong>118</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>
+            <i class="bi bi-eye"></i>
+            Product Views
+          </span>
+
+          <strong>12,845</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>
+            <i class="bi bi-star"></i>
+            Store Rating
+          </span>
+
+          <strong>4.8 ⭐</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>
+            <i class="bi bi-arrow-return-left"></i>
+            Return Orders
+          </span>
+
+          <strong>6</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= BOTTOM GRID ================= -->
+
+  <div class="bottom-grid">
+
+
+    <!-- ================= RECENT ORDERS ================= -->
+
+    <div class="dashboard-card orders-card">
+
+      <div class="card-header">
+
+        <div>
+          <h4>Recent Orders</h4>
+          <span>Latest customer orders</span>
+        </div>
+
+        <button class="view-btn">
+          View All
+          <i class="bi bi-arrow-right"></i>
+        </button>
+
+      </div>
+
+
+      <div class="table-responsive">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Product</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (order of recentOrders; track order.id) {
+
+              <tr>
+
+                <td>
+                  <strong>{{ order.id }}</strong>
+                </td>
+
+                <td>{{ order.customer }}</td>
+
+                <td>{{ order.product }}</td>
+
+                <td>
+                  <strong>৳ {{ order.amount | number }}</strong>
+                </td>
+
+                <td>
+
+                  <span
+                    class="status"
+                    [ngClass]="order.status.toLowerCase()"
+                  >
+                    {{ order.status }}
+                  </span>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= LOW STOCK ================= -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h4>Low Stock</h4>
+          <span>Products need attention</span>
+        </div>
+
+        <i class="bi bi-exclamation-triangle warning-icon"></i>
+
+      </div>
+
+
+      <div class="stock-list">
+
+        @for (product of lowStockProducts; track product.name) {
+
+          <div class="stock-item">
+
+            <div class="product-icon">
+              <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="product-info">
+
+              <strong>{{ product.name }}</strong>
+
+              <small>
+                Only {{ product.stock }} items left
+              </small>
+
+            </div>
+
+            <span class="stock-badge">
+              Low
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TOP PRODUCTS ================= -->
+
+  <div class="dashboard-card top-products">
+
+    <div class="card-header">
+
+      <div>
+        <h4>Top Selling Products</h4>
+        <span>Best performing products in your store</span>
+      </div>
+
+      <button class="view-btn">
+        View Products
+        <i class="bi bi-arrow-right"></i>
+      </button>
+
+    </div>
+
+
+    <div class="product-grid">
+
+      @for (product of topProducts; track product.name) {
+
+        <div class="product-card">
+
+          <div class="product-image">
+            <i class="bi bi-image"></i>
+          </div>
+
+          <div class="product-details">
+
+            <span class="category">
+              {{ product.category }}
+            </span>
+
+            <h5>{{ product.name }}</h5>
+
+            <div class="product-meta">
+
+              <span>
+                <i class="bi bi-cart"></i>
+                {{ product.sales }} sold
+              </span>
+
+              <strong>
+                ৳ {{ product.revenue | number }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>

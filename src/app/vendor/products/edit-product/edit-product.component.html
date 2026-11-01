@@ -1,0 +1,501 @@
+<div class="edit-product-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+
+        <span>Vendor</span>
+
+        <i class="bi bi-chevron-right"></i>
+
+        <span>Products</span>
+
+        <i class="bi bi-chevron-right"></i>
+
+        <strong>Edit Product</strong>
+
+      </div>
+
+      <h2>Edit Product</h2>
+
+      <p>
+        Update your product information and inventory.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="cancel()"
+    >
+      <i class="bi bi-arrow-left"></i>
+
+      Back to Products
+    </button>
+
+  </div>
+
+
+  <!-- ================= FORM ================= -->
+
+  <form
+    #productForm="ngForm"
+    (ngSubmit)="updateProduct()"
+  >
+
+    <div class="form-grid">
+
+
+      <!-- ================= BASIC INFORMATION ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon purple">
+
+            <i class="bi bi-pencil-square"></i>
+
+          </div>
+
+          <div>
+
+            <h4>Product Information</h4>
+
+            <span>
+              Update product details
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+          <label>
+            Product Name
+            <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="product.name"
+            required
+          >
+
+        </div>
+
+
+        <div class="two-columns">
+
+          <!-- CATEGORY -->
+
+          <div class="form-group">
+
+            <label>
+              Category
+              <span>*</span>
+            </label>
+
+            <select
+              name="category"
+              [(ngModel)]="product.category"
+              required
+            >
+
+              <option value="">
+                Select Category
+              </option>
+
+              <option value="Electronics">
+                Electronics
+              </option>
+
+              <option value="Computer">
+                Computer
+              </option>
+
+              <option value="Wearable">
+                Wearable
+              </option>
+
+              <option value="Accessories">
+                Accessories
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- BRAND -->
+
+          <div class="form-group">
+
+            <label>
+              Brand
+            </label>
+
+            <select
+              name="brand"
+              [(ngModel)]="product.brand"
+            >
+
+              <option value="">
+                Select Brand
+              </option>
+
+              <option value="Sony">
+                Sony
+              </option>
+
+              <option value="Samsung">
+                Samsung
+              </option>
+
+              <option value="Apple">
+                Apple
+              </option>
+
+              <option value="JBL">
+                JBL
+              </option>
+
+              <option value="Logitech">
+                Logitech
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- SKU -->
+
+        <div class="form-group">
+
+          <label>
+            SKU
+          </label>
+
+          <input
+            type="text"
+            name="sku"
+            [(ngModel)]="product.sku"
+          >
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            name="description"
+            [(ngModel)]="product.description"
+            rows="7"
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= IMAGE ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon blue">
+
+            <i class="bi bi-image"></i>
+
+          </div>
+
+          <div>
+
+            <h4>Product Image</h4>
+
+            <span>
+              Update product image
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="image-upload">
+
+          @if (selectedImage) {
+
+            <img
+              [src]="selectedImage"
+              alt="Product Preview"
+            >
+
+          } @else {
+
+            <div class="upload-placeholder">
+
+              <i class="bi bi-image"></i>
+
+              <strong>
+                Current Product Image
+              </strong>
+
+              <span>
+                Upload a new image if needed
+              </span>
+
+            </div>
+
+          }
+
+
+          <label class="upload-btn">
+
+            <i class="bi bi-upload"></i>
+
+            Change Image
+
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              (change)="onImageSelected($event)"
+            >
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= PRICE ================= -->
+
+      <div class="form-card">
+
+        <div class="card-title">
+
+          <div class="title-icon green">
+
+            <i class="bi bi-cash-stack"></i>
+
+          </div>
+
+          <div>
+
+            <h4>Price & Inventory</h4>
+
+            <span>
+              Update pricing and stock
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="two-columns">
+
+          <!-- PRICE -->
+
+          <div class="form-group">
+
+            <label>
+              Price
+              <span>*</span>
+            </label>
+
+            <div class="input-with-icon">
+
+              <span>৳</span>
+
+              <input
+                type="number"
+                name="price"
+                [(ngModel)]="product.price"
+                min="0"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- DISCOUNT -->
+
+          <div class="form-group">
+
+            <label>
+              Discount (%)
+            </label>
+
+            <div class="input-with-icon">
+
+              <span>%</span>
+
+              <input
+                type="number"
+                name="discount"
+                [(ngModel)]="product.discount"
+                min="0"
+                max="100"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- STOCK -->
+
+        <div class="form-group">
+
+          <label>
+            Stock Quantity
+            <span>*</span>
+          </label>
+
+          <input
+            type="number"
+            name="stock"
+            [(ngModel)]="product.stock"
+            min="0"
+            required
+          >
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Product Status
+          </label>
+
+          <div class="status-options">
+
+            <label class="status-option">
+
+              <input
+                type="radio"
+                name="status"
+                value="Active"
+                [(ngModel)]="product.status"
+              >
+
+              <span class="active-status">
+
+                <i class="bi bi-check-circle"></i>
+
+                Active
+
+              </span>
+
+            </label>
+
+
+            <label class="status-option">
+
+              <input
+                type="radio"
+                name="status"
+                value="Inactive"
+                [(ngModel)]="product.status"
+              >
+
+              <span class="inactive-status">
+
+                <i class="bi bi-pause-circle"></i>
+
+                Inactive
+
+              </span>
+
+            </label>
+
+
+            <label class="status-option">
+
+              <input
+                type="radio"
+                name="status"
+                value="Out of Stock"
+                [(ngModel)]="product.status"
+              >
+
+              <span class="out-status">
+
+                <i class="bi bi-x-circle"></i>
+
+                Out of Stock
+
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= ACTIONS ================= -->
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+
+
+      <button
+        type="submit"
+        class="update-btn"
+        [disabled]="productForm.invalid"
+      >
+
+        <i class="bi bi-check-lg"></i>
+
+        Update Product
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

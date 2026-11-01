@@ -1,0 +1,116 @@
+<section class="auth-section">
+
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-md-6 col-lg-5">
+
+        <div class="auth-card">
+
+          <!-- Logo -->
+          <div class="text-center mb-4">
+
+            <div class="auth-icon">
+              <i class="bi bi-person-circle"></i>
+            </div>
+
+            <h2 class="fw-bold">
+              Welcome Back
+            </h2>
+
+            <p class="text-muted">
+              Login to your account
+            </p>
+
+          </div>
+
+
+          <!-- Login Form -->
+         
+<form (ngSubmit)="login()" #loginForm="ngForm">
+
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="bi bi-person"></i>
+      </span>
+
+      <input
+        type="text"
+        class="form-control"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+        required>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="bi bi-lock"></i>
+      </span>
+
+      <input
+        type="password"
+        class="form-control"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        required>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <button
+    type="submit"
+    class="btn btn-primary w-100"
+    [disabled]="loading || loginForm.invalid">
+
+    @if (loading) {
+      <span class="spinner-border spinner-border-sm me-2"></span>
+      Logging in...
+    } @else {
+      <i class="bi bi-box-arrow-in-right me-2"></i>
+      Login
+    }
+  </button>
+
+</form>
+
+
+
+          <!-- Register -->
+          <div class="text-center mt-4">
+
+            <span class="text-muted">
+              Don't have an account?
+            </span>
+
+            <a routerLink="/register" class="register-link">
+
+              Register
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

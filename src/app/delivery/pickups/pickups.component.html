@@ -1,0 +1,262 @@
+<div class="pickup-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <span class="header-badge">
+        <i class="bi bi-box-seam"></i>
+        Delivery Management
+      </span>
+
+      <h1>Pickup Orders</h1>
+
+      <p>
+        Manage your assigned vendor pickups
+        and collect orders on time.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <i class="bi bi-truck"></i>
+    </div>
+
+  </div>
+
+
+  <!-- Stats -->
+  <div class="stats-grid">
+
+    <div class="stat-card pending-card">
+      <div class="stat-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+      <div>
+        <span>Pending Pickup</span>
+        <h2>{{ pendingPickups }}</h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card completed-card">
+      <div class="stat-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+      <div>
+        <span>Picked Up</span>
+        <h2>{{ completedPickups }}</h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card total-card">
+      <div class="stat-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+
+      <div>
+        <span>Total Orders</span>
+        <h2>{{ pickups.length }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Pickup List -->
+  <div class="section-title">
+
+    <div>
+      <h2>Today's Pickups</h2>
+      <p>Orders assigned for collection</p>
+    </div>
+
+    <span class="order-count">
+      {{ pickups.length }} Orders
+    </span>
+
+  </div>
+
+
+  <div class="pickup-list">
+
+    <div
+      class="pickup-card"
+      *ngFor="let pickup of pickups"
+    >
+
+      <!-- Card Header -->
+      <div class="card-top">
+
+        <div class="order-info">
+
+          <span class="order-label">
+            ORDER
+          </span>
+
+          <h3>{{ pickup.id }}</h3>
+
+          <span
+            class="status-badge"
+            [ngClass]="getStatusClass(pickup.status)"
+          >
+            <i
+              class="bi"
+              [ngClass]="
+                pickup.status === 'PENDING'
+                  ? 'bi-clock'
+                  : 'bi-check-circle'
+              "
+            ></i>
+
+            {{ getStatusText(pickup.status) }}
+          </span>
+
+        </div>
+
+        <div class="pickup-time">
+
+          <i class="bi bi-alarm"></i>
+
+          <div>
+            <small>Pickup Time</small>
+            <strong>{{ pickup.pickupTime }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Vendor -->
+      <div class="vendor-section">
+
+        <div class="vendor-icon">
+          <i class="bi bi-shop"></i>
+        </div>
+
+        <div class="vendor-info">
+
+          <span>Pickup From</span>
+
+          <h4>{{ pickup.vendorName }}</h4>
+
+          <p>
+            <i class="bi bi-geo-alt"></i>
+            {{ pickup.pickupAddress }}
+          </p>
+
+        </div>
+
+        <button
+          class="call-btn"
+          (click)="callVendor(pickup.vendorPhone)"
+        >
+          <i class="bi bi-telephone-fill"></i>
+          Call
+        </button>
+
+      </div>
+
+
+      <!-- Route -->
+      <div class="route-section">
+
+        <div class="route-item">
+
+          <div class="route-icon pickup">
+            <i class="bi bi-shop"></i>
+          </div>
+
+          <div>
+            <small>Pickup</small>
+            <strong>{{ pickup.vendorName }}</strong>
+          </div>
+
+        </div>
+
+
+        <div class="route-line">
+          <i class="bi bi-arrow-down"></i>
+        </div>
+
+
+        <div class="route-item">
+
+          <div class="route-icon delivery">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+
+          <div>
+            <small>Deliver To</small>
+            <strong>{{ pickup.customerName }}</strong>
+
+            <p>{{ pickup.deliveryAddress }}</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="card-footer">
+
+        <div class="amount">
+
+          <span>Order Amount</span>
+
+          <strong>
+            ৳{{ pickup.amount | number:'1.0-0' }}
+          </strong>
+
+          <small
+            [class.cod]="pickup.paymentStatus === 'COD'"
+          >
+            {{ pickup.paymentStatus }}
+          </small>
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            class="view-btn"
+            (click)="viewOrder(pickup)"
+          >
+            <i class="bi bi-eye"></i>
+            View
+          </button>
+
+
+          <button
+            *ngIf="pickup.status === 'PENDING'"
+            class="pickup-btn"
+            (click)="completePickup(pickup)"
+          >
+            <i class="bi bi-box-arrow-up"></i>
+            Confirm Pickup
+          </button>
+
+
+          <button
+            *ngIf="pickup.status === 'PICKED_UP'"
+            class="completed-btn"
+            disabled
+          >
+            <i class="bi bi-check-circle-fill"></i>
+            Picked Up
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

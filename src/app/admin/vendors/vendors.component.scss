@@ -1,0 +1,16 @@
+.vendor-management { max-width: 1680px; margin-inline: auto; }
+.eyebrow { color: #7688a3; font-size: .64rem; font-weight: 800; letter-spacing: .14em; }
+.vendor-management h1 { color: #182945; font-weight: 800; letter-spacing: -.03em; }
+.create-vendor-card, .vendor-list-card, .vendor-details { overflow: hidden; border-radius: 15px; }
+.create-vendor-card .card-header, .create-vendor-card .card-footer, .vendor-details .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.15rem; border-color: #edf0f5; background: #fff; }
+.create-vendor-card .card-body, .vendor-details .card-body { padding: 1.15rem; }
+.form-label { color: #53647e; font-size: .77rem; font-weight: 700; }
+.list-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem; border-bottom: 1px solid #edf0f5; }
+.filter-controls { display: flex; gap: .5rem; width: min(590px, 65%); }.filter-controls .form-select { max-width: 160px; }
+.table thead th { padding: .8rem 1rem; color: #8290a5; border-color: #edf0f5; background: #fbfcfe; font-size: .68rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+.table tbody td { padding: .8rem 1rem; color: #40516c; border-color: #edf0f5; font-size: .81rem; }.table tbody small { font-size: .72rem; }.selected-row td { background: #f4f7ff; }
+.empty-state { display: grid; justify-items: center; gap: .5rem; padding: 2.5rem 1rem; color: #8290a5; text-align: center; }.empty-state i { color: #8ca3cc; font-size: 1.7rem; }.empty-state strong { color: #41516c; }
+.detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 0; }.detail-grid dt { color: #8592a6; font-size: .66rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }.detail-grid dd { margin: .2rem 0 0; color: #33445f; font-size: .84rem; font-weight: 650; overflow-wrap: anywhere; }
+.related-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }.related-summary div { display: flex; align-items: center; gap: .6rem; padding: .8rem; border-radius: 11px; background: #f4f7fc; }.related-summary strong { color: #315fc3; font-size: 1.2rem; }.related-summary span { color: #73829a; font-size: .74rem; }
+.related-row { display: flex; justify-content: space-between; gap: .5rem; padding: .55rem 0; border-bottom: 1px solid #edf0f5; color: #40516c; font-size: .78rem; }.related-row small { color: #8190a5; text-align: right; }
+@media (max-width: 767.98px) { .list-toolbar { align-items: stretch; flex-direction: column; }.filter-controls { width: 100%; flex-direction: column; }.filter-controls .form-select { max-width: none; } }

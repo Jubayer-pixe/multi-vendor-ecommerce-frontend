@@ -1,0 +1,19 @@
+<div class="page-title"><h2>System settings</h2><p>Configure marketplace-wide rules and platform contact details.</p></div>
+
+<form (ngSubmit)="save()" class="settings-form">
+  <section class="settings-card">
+    <h3>General</h3>
+    <div class="field-grid">
+      <label>Platform name<input name="platformName" [(ngModel)]="platformName" required></label>
+      <label>Support email<input name="supportEmail" type="email" [(ngModel)]="supportEmail" required></label>
+    </div>
+  </section>
+
+  <section class="settings-card">
+    <h3>Marketplace policies</h3>
+    <label class="toggle-row"><span><strong>Vendor approval</strong><small>Require Super Admin approval before a vendor can publish products.</small></span><input name="vendorApprovalRequired" type="checkbox" [(ngModel)]="vendorApprovalRequired"></label>
+    <label class="toggle-row"><span><strong>Maintenance mode</strong><small>Temporarily restrict customer-facing access for scheduled maintenance.</small></span><input name="maintenanceMode" type="checkbox" [(ngModel)]="maintenanceMode"></label>
+  </section>
+
+  <div class="form-actions"><button type="submit"><i class="bi bi-check2"></i> Save settings</button></div>
+</form>

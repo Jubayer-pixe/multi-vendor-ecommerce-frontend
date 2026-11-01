@@ -1,0 +1,19 @@
+.user-management { max-width: 1600px; margin-inline: auto; }
+.eyebrow { color: #7688a3; font-size: .64rem; font-weight: 800; letter-spacing: .14em; }
+.user-management h1 { color: #182945; font-weight: 800; letter-spacing: -.03em; }
+.user-card { overflow: hidden; border-radius: 15px; }
+.filter-bar { padding: 1.1rem 1.2rem; border-bottom: 1px solid #edf0f5; }
+.form-label { margin-bottom: .35rem; color: #53647e; font-size: .77rem; font-weight: 700; }
+.table { --bs-table-hover-bg: #f7f9fd; }
+.table thead th { padding: .85rem 1rem; color: #8290a5; border-color: #edf0f5; background: #fbfcfe; font-size: .69rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.table tbody td { padding: .8rem 1rem; color: #40516c; border-color: #edf0f5; font-size: .83rem; }
+.user-avatar { display: grid; place-items: center; width: 36px; height: 36px; color: #fff; border-radius: 12px; background: linear-gradient(135deg, #4c77e5, #8b64d7); font-weight: 750; }
+.role-badge { display: inline-block; margin: .12rem; padding: .25rem .45rem; color: #415e9a; border-radius: 20px; background: #edf2ff; font-size: .66rem; font-weight: 750; }
+.loading-state, .empty-state { padding: 2.5rem 1.2rem; color: #8290a5; text-align: center; }
+.empty-state { display: grid; justify-items: center; gap: .45rem; }.empty-state i { color: #8ca3cc; font-size: 1.8rem; }.empty-state strong { color: #41516c; }
+.table-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1.15rem; color: #73829a; border-top: 1px solid #edf0f5; font-size: .77rem; }
+.details-row td { background: #f7f9fd; }
+.user-details { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
+.user-details > div { display: grid; gap: .2rem; }.detail-label { color: #8190a5; font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; }.user-details strong { color: #34445f; font-size: .82rem; }
+.role-options { display: flex; flex-wrap: wrap; gap: .5rem; }.role-options .form-check { display: inline-flex; align-items: center; gap: .2rem; margin: 0; }
+@media (max-width: 575.98px) { .table-footer { align-items: flex-start; flex-direction: column; } }

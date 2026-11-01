@@ -1,0 +1,48 @@
+.orders-section {
+  background: #f8f9fa;
+  min-height: 80vh;
+}
+
+.orders-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.table {
+
+  th {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td {
+    white-space: nowrap;
+  }
+}
+
+.badge {
+  padding: 7px 10px;
+  font-weight: 500;
+}
+
+.empty-orders {
+
+  i {
+    font-size: 70px;
+    color: #adb5bd;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .orders-card {
+    padding: 12px;
+  }
+
+}

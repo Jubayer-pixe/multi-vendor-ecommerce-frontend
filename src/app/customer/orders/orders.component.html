@@ -1,0 +1,200 @@
+<section class="orders-section py-5">
+
+  <div class="container">
+
+    <!-- Header -->
+
+    <div class="page-header mb-4">
+
+      <h2 class="fw-bold">
+        My Orders
+      </h2>
+
+      <p class="text-muted">
+        Track and manage your orders
+      </p>
+
+    </div>
+
+
+    <!-- No Orders -->
+
+    @if (orders.length === 0) {
+
+      <div class="empty-orders text-center py-5">
+
+        <i class="bi bi-box-seam"></i>
+
+        <h3 class="mt-3">
+          No Orders Found
+        </h3>
+
+        <p class="text-muted">
+          You haven't placed any orders yet.
+        </p>
+
+        <a
+          routerLink="/products"
+          class="btn btn-primary">
+
+          <i class="bi bi-shop"></i>
+
+          Start Shopping
+
+        </a>
+
+      </div>
+
+    } @else {
+
+
+      <!-- Orders -->
+
+      <div class="orders-card">
+
+        <div class="table-responsive">
+
+          <table class="table align-middle">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Order ID
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Total
+                </th>
+
+                <th>
+                  Payment
+                </th>
+
+                <th>
+                  Payment Status
+                </th>
+
+                <th>
+                  Order Status
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (order of orders; track order.id) {
+
+                <tr>
+
+                  <!-- Order ID -->
+
+                  <td>
+
+                    <strong>
+                      #{{ order.orderNumber }}
+                    </strong>
+
+                  </td>
+
+
+                  <!-- Date -->
+
+                  <td>
+                    {{ order.orderDate }}
+                  </td>
+
+
+                  <!-- Total -->
+
+                  <td>
+
+                    <strong>
+                      ৳{{ order.totalAmount }}
+                    </strong>
+
+                  </td>
+
+
+                  <!-- Payment -->
+
+                  <td>
+                    {{ order.paymentMethod }}
+                  </td>
+
+
+                  <!-- Payment Status -->
+
+                  <td>
+
+                    <span
+                      class="badge"
+                      [class]="getPaymentStatusClass(order.paymentStatus)">
+
+                      {{ order.paymentStatus }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- Order Status -->
+
+                  <td>
+
+                    <span
+                      class="badge"
+                      [class]="getOrderStatusClass(order.orderStatus)">
+
+                      {{ order.orderStatus }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- Action -->
+
+                  <td>
+
+                    <a
+                      [routerLink]="['/orders', order.id]"
+                      class="btn btn-sm btn-outline-primary">
+
+                      <i class="bi bi-eye"></i>
+
+                      View
+
+                    </a>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</section>

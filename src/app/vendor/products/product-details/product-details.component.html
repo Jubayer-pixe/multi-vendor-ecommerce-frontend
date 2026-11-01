@@ -1,0 +1,181 @@
+
+<div class="product-details-page">
+  <div class="details-topbar">
+    <button class="back-btn" type="button" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Products
+    </button>
+
+    <span class="breadcrumb">
+      Home <i class="bi bi-chevron-right"></i>
+      Products <i class="bi bi-chevron-right"></i>
+      Details
+    </span>
+  </div>
+
+  @if (loading) {
+    <div class="state-card">
+      <div class="spinner"></div>
+      <h3>Loading product...</h3>
+      <p>Please wait while we load the product details.</p>
+    </div>
+  } @else if (error) {
+    <div class="state-card error-card">
+      <i class="bi bi-exclamation-circle"></i>
+      <h3>Unable to Load Product</h3>
+      <p>{{ error }}</p>
+      <button type="button" class="primary-btn" (click)="goBack()">
+        Browse Products
+      </button>
+    </div>
+  } @else if (product) {
+    <div class="details-layout">
+      <div class="product-gallery">
+        <div class="main-image">
+          @if (galleryImages.length > selectedImageIndex ? galleryImages[selectedImageIndex].url : (product.imageUrl || product.image)) {
+            <img
+              [src]="galleryImages.length > selectedImageIndex ? galleryImages[selectedImageIndex].url : (product.imageUrl || product.image)"
+              [alt]="product.name"
+            />
+          } @else {
+            <div class="image-placeholder">
+              <i class="bi bi-image"></i>
+              <span>No image available</span>
+            </div>
+          }
+
+          @if (product.premium) {
+            <span class="premium-badge">
+              <i class="bi bi-gem"></i> Premium
+            </span>
+          }
+        </div>
+
+        @if (galleryImages.length > 1) {
+          <div class="image-thumbnails" aria-label="Product image thumbnails">
+            @for (image of galleryImages; track image.id; let index = $index) {
+              <button type="button" [class.selected]="selectedImageIndex === index"
+                (click)="selectImage(index)" [attr.aria-label]="'Show product image ' + (index + 1)">
+                <img [src]="image.url" [alt]="product.name + ' image ' + (index + 1)">
+              </button>
+            }
+          </div>
+        }
+
+        <div class="gallery-note">
+          <i class="bi bi-shield-check"></i>
+          Quality products from our marketplace
+        </div>
+      </div>
+
+      <div class="product-information">
+        <span class="category-badge">
+          <i class="bi bi-grid"></i>
+          {{ product.category }}
+        </span>
+
+        <h1>{{ product.name }}</h1>
+
+        <div class="rating-row">
+          <span class="stars">
+            <i class="bi bi-star-fill"></i>
+          </span>
+          <strong>{{ product.rating || 0 }}</strong>
+          <span class="review-count">
+            ({{ product.reviews || 0 }} reviews)
+          </span>
+        </div>
+
+        <div class="price-section">
+          <span class="current-price">
+            {{ product.price | currency:'BDT':'symbol':'1.0-2' }}
+          </span>
+
+          @if (product.oldPrice > product.price) {
+            <span class="old-price">
+              {{ product.oldPrice | currency:'BDT':'symbol':'1.0-2' }}
+            </span>
+            <span class="save-badge">
+              Save {{ product.oldPrice - product.price | currency:'BDT':'symbol':'1.0-2' }}
+            </span>
+          }
+        </div>
+
+        <div class="stock-status"
+          [class.out-of-stock]="product.stock < 1">
+          @if (product.stock > 0) {
+            <i class="bi bi-check-circle-fill"></i>
+            In Stock — {{ product.stock }} available
+          } @else {
+            <i class="bi bi-x-circle-fill"></i>
+            Out of Stock
+          }
+        </div>
+
+        <div class="description-section">
+          <h3>Product Description</h3>
+          <p>
+            {{ product.description || 'No description is available for this product yet.' }}
+          </p>
+        </div>
+
+        <div class="quantity-section">
+          <label>Quantity</label>
+
+          <div class="quantity-control">
+            <button
+              type="button"
+              aria-label="Decrease quantity"
+              [disabled]="quantity <= 1"
+              (click)="decreaseQuantity()">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <span>{{ quantity }}</span>
+
+            <button
+              type="button"
+              aria-label="Increase quantity"
+              [disabled]="!product.stock || quantity >= product.stock"
+              (click)="increaseQuantity()">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button
+            type="button"
+            class="add-cart-btn"
+            [disabled]="product.stock < 1"
+            (click)="addToCart()">
+            <i class="bi bi-cart-plus"></i>
+            {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+          </button>
+
+          <button
+            type="button"
+            class="continue-btn"
+            (click)="goBack()">
+            Continue Shopping
+          </button>
+        </div>
+
+        <div class="benefits">
+          <div>
+            <i class="bi bi-truck"></i>
+            <span>Delivery available</span>
+          </div>
+          <div>
+            <i class="bi bi-lock"></i>
+            <span>Secure checkout</span>
+          </div>
+          <div>
+            <i class="bi bi-headset"></i>
+            <span>Customer support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

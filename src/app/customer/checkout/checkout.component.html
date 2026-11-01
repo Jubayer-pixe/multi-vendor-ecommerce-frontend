@@ -1,0 +1,410 @@
+<section class="checkout-section py-5">
+
+  <div class="container">
+
+    <!-- Page Header -->
+
+    <div class="mb-4">
+
+      <h2 class="fw-bold">
+        Checkout
+      </h2>
+
+      <p class="text-muted">
+        Complete your order
+      </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+      <!-- ========================= -->
+      <!-- Delivery Information -->
+      <!-- ========================= -->
+
+      <div class="col-lg-7">
+
+        <div class="checkout-card">
+
+          <h4 class="fw-bold mb-4">
+            Delivery Information
+          </h4>
+
+
+          <!-- Full Name -->
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter your full name"
+              [(ngModel)]="customerName">
+
+          </div>
+
+
+          <!-- Phone -->
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Phone Number
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="01XXXXXXXXX"
+              [(ngModel)]="phone">
+
+          </div>
+
+
+          <!-- Address -->
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Delivery Address
+            </label>
+
+            <textarea
+              class="form-control"
+              rows="3"
+              placeholder="House, Road, Area"
+              [(ngModel)]="address">
+            </textarea>
+
+          </div>
+
+
+          <div class="row">
+
+
+            <!-- City -->
+
+            <div class="col-md-6 mb-3">
+
+              <label class="form-label">
+                City
+              </label>
+
+              <select
+                class="form-select"
+                [(ngModel)]="city">
+
+                <option value="">
+                  Select City
+                </option>
+
+                <option value="Dhaka">
+                  Dhaka
+                </option>
+
+                <option value="Chattogram">
+                  Chattogram
+                </option>
+
+                <option value="Sylhet">
+                  Sylhet
+                </option>
+
+                <option value="Rajshahi">
+                  Rajshahi
+                </option>
+
+                <option value="Khulna">
+                  Khulna
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- Postal Code -->
+
+            <div class="col-md-6 mb-3">
+
+              <label class="form-label">
+                Postal Code
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                placeholder="1200"
+                [(ngModel)]="postalCode">
+
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="customerNote">Order note (optional)</label>
+            <textarea id="customerNote" class="form-control" rows="2" maxlength="1000"
+              placeholder="Add delivery instructions" [(ngModel)]="customerNote"></textarea>
+          </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Payment Method -->
+        <!-- ========================= -->
+
+        <div class="checkout-card mt-4">
+
+          <h4 class="fw-bold mb-4">
+            Payment Method
+          </h4>
+
+
+          <!-- Cash on Delivery -->
+
+          <div class="payment-option">
+
+            <input
+              type="radio"
+              id="cod"
+              name="payment"
+              value="COD"
+              [(ngModel)]="paymentMethod">
+
+            <label for="cod">
+
+              <i class="bi bi-cash-coin"></i>
+
+              <div>
+
+                <strong>
+                  Cash on Delivery
+                </strong>
+
+                <small>
+                  Pay when your order arrives
+                </small>
+
+              </div>
+
+            </label>
+
+          </div>
+
+
+          <!-- Card -->
+
+          <div class="payment-option">
+
+            <input
+              type="radio"
+              id="card"
+              name="payment"
+              value="CARD"
+              disabled
+              [(ngModel)]="paymentMethod">
+
+            <label for="card">
+
+              <i class="bi bi-credit-card"></i>
+
+              <div>
+
+                <strong>
+                  Credit / Debit Card
+                </strong>
+
+                <small>
+                  Online card payments are not available yet
+                </small>
+
+              </div>
+
+            </label>
+
+          </div>
+
+
+          <!-- Mobile Banking -->
+
+          <div class="payment-option">
+
+            <input
+              type="radio"
+              id="mobile"
+              name="payment"
+              value="MOBILE_BANKING"
+              disabled
+              [(ngModel)]="paymentMethod">
+
+            <label for="mobile">
+
+              <i class="bi bi-phone"></i>
+
+              <div>
+
+                <strong>
+                  Mobile Banking
+                </strong>
+
+                <small>
+                  Mobile payments are not available yet
+                </small>
+
+              </div>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- Order Summary -->
+      <!-- ========================= -->
+
+      <div class="col-lg-5">
+
+        <div class="order-summary">
+
+          <h4 class="fw-bold mb-4">
+            Order Summary
+          </h4>
+
+
+          <!-- Products -->
+
+          @for (item of cartItems; track item.id) {
+
+            <div class="summary-product">
+
+              <img
+                [src]="item.image"
+                [alt]="item.name">
+
+              <div class="product-info">
+
+                <strong>
+                  {{ item.name }}
+                </strong>
+
+                <small>
+                  {{ item.quantity }} × ৳{{ item.price }}
+                </small>
+
+              </div>
+
+              <strong>
+                ৳{{ item.quantity * item.price }}
+              </strong>
+
+            </div>
+
+          }
+
+
+          <hr>
+
+
+          <!-- Subtotal -->
+
+          <div class="summary-row">
+
+            <span>
+              Subtotal
+            </span>
+
+            <strong>
+              ৳{{ getSubtotal() }}
+            </strong>
+
+          </div>
+
+
+          <!-- Delivery -->
+
+          <div class="summary-row">
+
+            <span>
+              Delivery
+            </span>
+
+            <strong>
+              ৳{{ deliveryCharge }}
+            </strong>
+
+          </div>
+
+
+          <hr>
+
+
+          <!-- Grand Total -->
+
+          <div class="summary-row total">
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+              ৳{{ getGrandTotal() }}
+            </strong>
+
+          </div>
+
+
+          <!-- Place Order -->
+
+          @if (message) {
+            <div class="alert alert-danger mt-3" role="alert">{{ message }}</div>
+          }
+
+          <button
+            type="button"
+            class="btn btn-primary btn-lg w-100 mt-4"
+            [disabled]="submitting"
+            (click)="placeOrder()">
+
+            @if (submitting) {
+              <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+              Placing order…
+            } @else {
+              <i class="bi bi-check-circle"></i>
+              Place Order
+            }
+
+          </button>
+
+
+          <!-- Back To Cart -->
+
+          <a
+            routerLink="/cart"
+            class="btn btn-outline-secondary w-100 mt-2">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back to Cart
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

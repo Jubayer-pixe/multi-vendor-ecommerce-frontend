@@ -1,0 +1,6 @@
+.admin-inventory { max-width: 1550px; margin-inline: auto; }
+.eyebrow { color: #7688a3; font-size: .64rem; font-weight: 800; letter-spacing: .14em; }
+.admin-inventory h1 { color: #182945; font-weight: 800; letter-spacing: -.03em; }
+.inventory-card { overflow: hidden; border-radius: 15px; }.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem; border-bottom: 1px solid #edf0f5; }.filters { display: flex; align-items: center; gap: 1rem; width: min(570px, 65%); }.filters .form-check { flex: 0 0 auto; margin: 0; }
+.table thead th { padding: .8rem 1rem; color: #8290a5; border-color: #edf0f5; background: #fbfcfe; font-size: .68rem; font-weight: 800; text-transform: uppercase; white-space: nowrap; }.table tbody td { padding: .8rem 1rem; color: #40516c; border-color: #edf0f5; font-size: .82rem; }.empty-state { padding: 2.5rem; color: #8290a5; text-align: center; }
+@media(max-width:767.98px) { .toolbar,.filters { align-items: stretch; flex-direction: column; width: 100%; } }

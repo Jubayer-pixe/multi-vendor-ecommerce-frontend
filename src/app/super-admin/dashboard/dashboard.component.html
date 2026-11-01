@@ -1,0 +1,33 @@
+<div class="intro">
+  <div>
+    <h2>Platform overview</h2>
+    <p>Monitor access, vendor onboarding, and marketplace activity.</p>
+  </div>
+  <a class="primary-action" routerLink="/super-admin/vendors">
+    Review approvals <i class="bi bi-arrow-right"></i>
+  </a>
+</div>
+
+<div class="stats-grid">
+  <article class="stat-card" *ngFor="let stat of stats">
+    <div class="stat-icon" [ngClass]="stat.tone"><i class="bi" [ngClass]="stat.icon"></i></div>
+    <div><p>{{ stat.label }}</p><strong>{{ stat.value }}</strong></div>
+  </article>
+</div>
+
+<div class="dashboard-grid">
+  <section class="panel">
+    <div class="panel-heading"><h3>Recent platform activity</h3><span>LIVE</span></div>
+    <div class="activity" *ngFor="let activity of activities">
+      <i class="bi" [ngClass]="activity.icon"></i>
+      <div><p>{{ activity.text }}</p><small>{{ activity.time }}</small></div>
+    </div>
+  </section>
+
+  <section class="panel quick-actions">
+    <h3>Quick actions</h3>
+    <a routerLink="/super-admin/admins"><i class="bi bi-person-plus"></i> Manage admin access</a>
+    <a routerLink="/super-admin/vendors"><i class="bi bi-patch-check"></i> Verify vendors</a>
+    <a routerLink="/super-admin/settings"><i class="bi bi-gear"></i> Update system rules</a>
+  </section>
+</div>

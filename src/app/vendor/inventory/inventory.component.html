@@ -1,0 +1,1517 @@
+<div class="inventory-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div class="header-left">
+
+      <div class="breadcrumb-area">
+
+        <span class="breadcrumb-muted">
+          <i class="bi bi-shop"></i>
+          Vendor
+        </span>
+
+        <i class="bi bi-chevron-right"></i>
+
+        <span class="breadcrumb-active">
+          Inventory
+        </span>
+
+      </div>
+
+
+      <div class="title-area">
+
+        <div class="title-icon">
+          <i class="bi bi-boxes"></i>
+        </div>
+
+        <div>
+
+          <h2>
+            Inventory Management
+          </h2>
+
+          <p>
+            Monitor your stock levels, product availability and inventory.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Header Action -->
+
+    <div class="header-action">
+
+      <div class="inventory-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+          Inventory Active
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       SUMMARY CARDS
+  ====================================================== -->
+
+  <div class="summary-grid">
+
+
+    <!-- Total Products -->
+
+    <div class="summary-card products">
+
+      <div class="summary-card-top">
+
+        <div class="summary-icon">
+          <i class="bi bi-box-seam"></i>
+        </div>
+
+        <span class="summary-label">
+          Products
+        </span>
+
+      </div>
+
+
+      <div class="summary-content">
+
+        <h3>
+          {{ totalProducts }}
+        </h3>
+
+        <p>
+          Products in inventory
+        </p>
+
+      </div>
+
+
+      <div class="summary-footer">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+        <span>
+          Inventory items
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Total Stock -->
+
+    <div class="summary-card stock">
+
+      <div class="summary-card-top">
+
+        <div class="summary-icon">
+          <i class="bi bi-stack"></i>
+        </div>
+
+        <span class="summary-label">
+          Total Stock
+        </span>
+
+      </div>
+
+
+      <div class="summary-content">
+
+        <h3>
+          {{ totalStock }}
+        </h3>
+
+        <p>
+          Available units
+        </p>
+
+      </div>
+
+
+      <div class="summary-footer">
+
+        <i class="bi bi-boxes"></i>
+
+        <span>
+          Units available
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Low Stock -->
+
+    <div class="summary-card low-stock">
+
+      <div class="summary-card-top">
+
+        <div class="summary-icon">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+
+        <span class="summary-label">
+          Low Stock
+        </span>
+
+      </div>
+
+
+      <div class="summary-content">
+
+        <h3>
+          {{ lowStockProducts }}
+        </h3>
+
+        <p>
+          Need restocking
+        </p>
+
+      </div>
+
+
+      <div class="summary-footer warning">
+
+        <i class="bi bi-arrow-up-circle-fill"></i>
+
+        <span>
+          Restock required
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Out Of Stock -->
+
+    <div class="summary-card out-stock">
+
+      <div class="summary-card-top">
+
+        <div class="summary-icon">
+          <i class="bi bi-x-circle"></i>
+        </div>
+
+        <span class="summary-label">
+          Out of Stock
+        </span>
+
+      </div>
+
+
+      <div class="summary-content">
+
+        <h3>
+          {{ outOfStockProducts }}
+        </h3>
+
+        <p>
+          Currently unavailable
+        </p>
+
+      </div>
+
+
+      <div class="summary-footer danger">
+
+        <i class="bi bi-exclamation-circle-fill"></i>
+
+        <span>
+          Immediate attention
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       INVENTORY CARD
+  ====================================================== -->
+
+  <div class="inventory-card">
+
+
+    <!-- Card Header -->
+
+    <div class="inventory-card-header">
+
+      <div class="card-title-area">
+
+        <div class="card-title-icon">
+
+          <i class="bi bi-list-check"></i>
+
+        </div>
+
+
+        <div class="card-title-content">
+
+          <h4>
+            Inventory List
+          </h4>
+
+          <p>
+            Monitor and manage your product stock.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="result-count">
+
+        <i class="bi bi-boxes"></i>
+
+        <span>
+          {{ filteredProducts.length }} Products
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FILTER TOOLBAR
+    ====================================================== -->
+
+    <div class="filter-toolbar">
+
+
+      <!-- Search -->
+
+      <div class="search-box">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search product name or SKU..."
+        />
+
+        <span
+          class="search-clear"
+          *ngIf="searchText"
+          (click)="searchText = ''"
+        >
+
+          <i class="bi bi-x-circle-fill"></i>
+
+        </span>
+
+      </div>
+
+
+
+      <!-- Category -->
+
+      <div class="filter-box">
+
+        <i class="bi bi-tags"></i>
+
+        <select
+          [(ngModel)]="selectedCategory"
+        >
+
+          <option
+            *ngFor="let category of categories"
+            [value]="category"
+          >
+            {{ category }}
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- Status -->
+
+      <div class="filter-box">
+
+        <i class="bi bi-funnel"></i>
+
+        <select
+          [(ngModel)]="selectedStatus"
+        >
+
+          <option value="All">
+            All Status
+          </option>
+
+          <option value="In Stock">
+            In Stock
+          </option>
+
+          <option value="Low Stock">
+            Low Stock
+          </option>
+
+          <option value="Out of Stock">
+            Out of Stock
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- Reset -->
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="clearFilters()"
+      >
+
+        <i class="bi bi-arrow-counterclockwise"></i>
+
+        <span>
+          Reset
+        </span>
+
+      </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ACTIVE FILTER INFO
+    ====================================================== -->
+
+    <div
+      class="filter-info"
+      *ngIf="
+        searchText ||
+        selectedCategory !== 'All' ||
+        selectedStatus !== 'All'
+      "
+    >
+
+      <div class="filter-info-left">
+
+        <i class="bi bi-funnel-fill"></i>
+
+        <span>
+          Filters are active
+        </span>
+
+      </div>
+
+      <span>
+        {{ filteredProducts.length }} result(s) found
+      </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         INVENTORY TABLE
+    ====================================================== -->
+
+    <div class="table-wrapper">
+
+      <table class="inventory-table">
+
+
+        <!-- Table Head -->
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Product
+            </th>
+
+            <th>
+              SKU
+            </th>
+
+            <th>
+              Category
+            </th>
+
+            <th>
+              Price
+            </th>
+
+            <th>
+              Stock
+            </th>
+
+            <th>
+              Stock Level
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th class="action-column">
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+
+        <!-- Table Body -->
+
+        <tbody>
+
+          <tr
+            *ngFor="let product of filteredProducts"
+            class="inventory-row"
+          >
+
+
+            <!-- Product -->
+
+            <td>
+
+              <div class="product-info">
+
+                <div class="product-image">
+
+                  <i class="bi bi-box-seam"></i>
+
+                </div>
+
+
+                <div class="product-details">
+
+                  <strong>
+                    {{ product.name }}
+                  </strong>
+
+                  <small>
+                    Product ID #{{ product.id }}
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- SKU -->
+
+            <td>
+
+              <span class="sku-badge">
+
+                <i class="bi bi-upc-scan"></i>
+
+                {{ product.sku }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Category -->
+
+            <td>
+
+              <span class="category-badge">
+
+                <i class="bi bi-tag-fill"></i>
+
+                {{ product.category }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Price -->
+
+            <td>
+
+              <div class="price-area">
+
+                <strong>
+                  ৳{{ product.price | number:'1.0-0' }}
+                </strong>
+
+                <small>
+                  per unit
+                </small>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- Stock -->
+
+            <td>
+
+              <div class="stock-number">
+
+                <strong>
+                  {{ product.stock }}
+                </strong>
+
+                <span>
+                  units
+                </span>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- Stock Level -->
+
+            <td>
+
+              <div class="stock-progress">
+
+                <div class="progress-header">
+
+                  <span>
+                    Stock level
+                  </span>
+
+                  <strong>
+                    {{ product.stock }}
+                  </strong>
+
+                </div>
+
+
+                <div class="progress">
+
+                  <div
+                    class="progress-bar"
+                    [ngClass]="{
+                      'bg-success': product.status === 'In Stock',
+                      'bg-warning': product.status === 'Low Stock',
+                      'bg-danger': product.status === 'Out of Stock'
+                    }"
+                    [style.width.%]="getStockPercentage(product)"
+                  >
+                  </div>
+
+                </div>
+
+
+                <small>
+                  Minimum:
+                  {{ product.lowStockLevel }}
+                  units
+                </small>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- Status -->
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="{
+                  'in-stock': product.status === 'In Stock',
+                  'low-stock': product.status === 'Low Stock',
+                  'out-stock': product.status === 'Out of Stock'
+                }"
+              >
+
+                <span class="status-indicator"></span>
+
+                {{ product.status }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Action -->
+
+            <td>
+
+              <button
+                type="button"
+                class="update-button"
+                (click)="openStockModal(product)"
+              >
+
+                <i class="bi bi-pencil-square"></i>
+
+                <span>
+                  Update
+                </span>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+
+
+          <!-- Empty State -->
+
+          <tr
+            *ngIf="filteredProducts.length === 0"
+          >
+
+            <td colspan="8">
+
+              <div class="empty-state">
+
+                <div class="empty-icon">
+
+                  <i class="bi bi-box-seam"></i>
+
+                </div>
+
+                <h5>
+                  No Products Found
+                </h5>
+
+                <p>
+                  We couldn't find any products matching
+                  your search or selected filters.
+                </p>
+
+                <button
+                  type="button"
+                  class="empty-reset-button"
+                  (click)="clearFilters()"
+                >
+
+                  <i class="bi bi-arrow-counterclockwise"></i>
+
+                  Reset Filters
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       STOCK HISTORY
+  ====================================================== -->
+
+  <div class="history-card">
+
+
+    <!-- History Header -->
+
+    <div class="history-header">
+
+      <div class="card-title-area">
+
+        <div class="card-title-icon history-icon">
+
+          <i class="bi bi-clock-history"></i>
+
+        </div>
+
+
+        <div class="card-title-content">
+
+          <h4>
+            Stock History
+          </h4>
+
+          <p>
+            Track all stock-in and stock-out activities.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="result-count">
+
+        <i class="bi bi-clock-history"></i>
+
+        <span>
+          {{ filteredStockHistory.length }} Records
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HISTORY FILTER TOOLBAR
+    ====================================================== -->
+
+    <div class="history-filter-toolbar">
+
+
+      <!-- Product Filter -->
+
+      <div class="history-filter-box">
+
+        <i class="bi bi-box-seam"></i>
+
+        <select
+          [(ngModel)]="selectedHistoryProduct"
+        >
+
+          <option value="All">
+            All Products
+          </option>
+
+          <option
+            *ngFor="let product of historyProducts"
+            [value]="product"
+          >
+            {{ product }}
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- Movement Type -->
+
+      <div class="history-filter-box">
+
+        <i class="bi bi-arrow-left-right"></i>
+
+        <select
+          [(ngModel)]="selectedHistoryType"
+        >
+
+          <option value="All">
+            All Movements
+          </option>
+
+          <option value="Stock In">
+            Stock In
+          </option>
+
+          <option value="Stock Out">
+            Stock Out
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- Reset -->
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="clearHistoryFilters()"
+      >
+
+        <i class="bi bi-arrow-counterclockwise"></i>
+
+        <span>
+          Reset
+        </span>
+
+      </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HISTORY TABLE
+    ====================================================== -->
+
+    <div class="history-table-wrapper">
+
+      <table class="history-table">
+
+
+        <!-- Table Head -->
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Date & Time
+            </th>
+
+            <th>
+              Product
+            </th>
+
+            <th>
+              SKU
+            </th>
+
+            <th>
+              Movement
+            </th>
+
+            <th>
+              Previous
+            </th>
+
+            <th>
+              Quantity
+            </th>
+
+            <th>
+              Current Stock
+            </th>
+
+            <th>
+              Reason
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+
+        <!-- Table Body -->
+
+        <tbody>
+
+          <tr
+            *ngFor="let history of filteredStockHistory"
+            class="history-row"
+          >
+
+
+            <!-- Date -->
+
+            <td>
+
+              <div class="history-date">
+
+                <i class="bi bi-calendar3"></i>
+
+                <span>
+                  {{ history.date }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- Product -->
+
+            <td>
+
+              <div class="history-product">
+
+                <div class="history-product-icon">
+
+                  <i class="bi bi-box-seam"></i>
+
+                </div>
+
+
+                <div class="history-product-info">
+
+                  <strong>
+                    {{ history.productName }}
+                  </strong>
+
+                  <small>
+                    Product ID #{{ history.productId }}
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+
+            <!-- SKU -->
+
+            <td>
+
+              <span class="history-sku">
+
+                <i class="bi bi-upc-scan"></i>
+
+                {{ history.sku }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Movement -->
+
+            <td>
+
+              <span
+                class="movement-badge stock-in"
+                *ngIf="history.type === 'Stock In'"
+              >
+
+                <i class="bi bi-arrow-down-circle-fill"></i>
+
+                Stock In
+
+              </span>
+
+
+              <span
+                class="movement-badge stock-out"
+                *ngIf="history.type === 'Stock Out'"
+              >
+
+                <i class="bi bi-arrow-up-circle-fill"></i>
+
+                Stock Out
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Previous Stock -->
+
+            <td>
+
+              <span class="stock-history-number">
+
+                {{ history.previousStock }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Quantity -->
+
+            <td>
+
+              <span
+                class="history-change positive"
+                *ngIf="history.type === 'Stock In'"
+              >
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                +{{ history.quantity }}
+
+              </span>
+
+
+              <span
+                class="history-change negative"
+                *ngIf="history.type === 'Stock Out'"
+              >
+
+                <i class="bi bi-dash-circle-fill"></i>
+
+                -{{ history.quantity }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Current Stock -->
+
+            <td>
+
+              <span class="new-stock-value">
+
+                {{ history.currentStock }}
+
+              </span>
+
+            </td>
+
+
+
+            <!-- Reason -->
+
+            <td>
+
+              <div class="history-note">
+
+                <i class="bi bi-info-circle"></i>
+
+                <span>
+                  {{ history.reason }}
+                </span>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+
+          <!-- Empty History -->
+
+          <tr
+            *ngIf="filteredStockHistory.length === 0"
+          >
+
+            <td colspan="8">
+
+              <div class="history-empty-state">
+
+                <div class="history-empty-icon">
+
+                  <i class="bi bi-clock-history"></i>
+
+                </div>
+
+                <h5>
+                  No Stock History Found
+                </h5>
+
+                <p>
+                  No stock movement matches your selected filters.
+                </p>
+
+                <button
+                  type="button"
+                  class="empty-reset-button"
+                  (click)="clearHistoryFilters()"
+                >
+
+                  <i class="bi bi-arrow-counterclockwise"></i>
+
+                  Reset Filters
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       STOCK UPDATE MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-backdrop-custom"
+    *ngIf="showStockModal"
+    (click)="closeStockModal()"
+  >
+
+    <div
+      class="stock-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+
+      <!-- Modal Header -->
+
+      <div class="modal-header-custom">
+
+        <div class="modal-title-wrapper">
+
+          <div class="modal-icon">
+
+            <i class="bi bi-box-seam"></i>
+
+          </div>
+
+
+          <div>
+
+            <span class="modal-label">
+              INVENTORY
+            </span>
+
+            <h4>
+              Update Stock
+            </h4>
+
+            <p>
+              Adjust product inventory quantity
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-close-custom"
+          (click)="closeStockModal()"
+        >
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- Modal Body -->
+
+      <div class="modal-body-custom">
+
+
+        <!-- Product -->
+
+        <div
+          class="product-info-box"
+          *ngIf="selectedProduct"
+        >
+
+          <div class="product-modal-icon">
+
+            <i class="bi bi-box"></i>
+
+          </div>
+
+
+          <div class="product-modal-details">
+
+            <span>
+              PRODUCT
+            </span>
+
+            <h5>
+              {{ selectedProduct.name }}
+            </h5>
+
+
+            <div class="product-meta">
+
+              <span>
+
+                <i class="bi bi-upc"></i>
+
+                {{ selectedProduct.sku }}
+
+              </span>
+
+
+              <span>
+
+                <i class="bi bi-tag"></i>
+
+                {{ selectedProduct.category }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Stock Cards -->
+
+        <div class="stock-info-row">
+
+
+          <div class="stock-info-card current">
+
+            <div class="stock-info-icon">
+
+              <i class="bi bi-box"></i>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Current Stock
+              </span>
+
+              <strong>
+                {{ selectedProduct?.stock }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="stock-info-card minimum">
+
+            <div class="stock-info-icon">
+
+              <i class="bi bi-exclamation-circle"></i>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Minimum Level
+              </span>
+
+              <strong>
+                {{ selectedProduct?.lowStockLevel }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- New Stock -->
+
+        <div class="stock-input-section">
+
+          <label>
+            New Stock Quantity
+          </label>
+
+          <span class="input-help">
+            Enter the total available quantity
+          </span>
+
+
+          <div class="stock-input-wrapper">
+
+            <i class="bi bi-boxes"></i>
+
+            <input
+              type="number"
+              min="0"
+              [(ngModel)]="newStock"
+              class="form-control"
+              placeholder="Enter quantity"
+            />
+
+            <span class="input-unit">
+              units
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Change Preview -->
+
+        <div
+          class="stock-change-preview"
+          *ngIf="selectedProduct && newStock !== null"
+        >
+
+          <div class="change-preview-header">
+
+            <span>
+
+              <i class="bi bi-arrow-left-right"></i>
+
+              Stock Adjustment
+
+            </span>
+
+          </div>
+
+
+          <div class="change-preview-content">
+
+
+            <div class="change-stock">
+
+              <small>
+                Current
+              </small>
+
+              <strong>
+                {{ selectedProduct.stock }}
+              </strong>
+
+            </div>
+
+
+            <i class="bi bi-arrow-right"></i>
+
+
+            <div class="change-stock">
+
+              <small>
+                New
+              </small>
+
+              <strong>
+                {{ newStock }}
+              </strong>
+
+            </div>
+
+
+            <div
+              class="change-value"
+              [class.increase]="stockChange > 0"
+              [class.decrease]="stockChange < 0"
+              [class.no-change]="stockChange === 0"
+            >
+
+              <i
+                class="bi"
+                [ngClass]="{
+                  'bi-arrow-up-circle-fill': stockChange > 0,
+                  'bi-arrow-down-circle-fill': stockChange < 0,
+                  'bi-dash-circle-fill': stockChange === 0
+                }"
+              >
+              </i>
+
+
+              <span *ngIf="stockChange > 0">
+                +{{ stockChange }} Stock In
+              </span>
+
+
+              <span *ngIf="stockChange < 0">
+                {{ stockChange }} Stock Out
+              </span>
+
+
+              <span *ngIf="stockChange === 0">
+                No Change
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Modal Footer -->
+
+      <div class="modal-footer-custom">
+
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="closeStockModal()"
+        >
+
+          <i class="bi bi-x-circle"></i>
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-update"
+          (click)="saveStockUpdate()"
+        >
+
+          <i class="bi bi-check-circle"></i>
+
+          Update Stock
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

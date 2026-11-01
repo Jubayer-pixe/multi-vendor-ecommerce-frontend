@@ -1,0 +1,207 @@
+<section class="cart-section py-5">
+  <div class="container position-relative">
+
+    <!-- Page Header -->
+    <div class="cart-header mb-4">
+      <div>
+        <span class="cart-label">
+          <i class="bi bi-bag-check-fill"></i>
+          SHOPPING BAG
+        </span>
+
+        <h2 class="fw-bold mt-3 mb-1 cart-title">
+          Shopping Cart
+        </h2>
+
+        <p class="cart-subtitle mb-0">
+          Review your selected products before checkout
+        </p>
+      </div>
+
+      @if (cartItems.length > 0) {
+        <div class="cart-count">
+          <i class="bi bi-cart3"></i>
+          <span>{{ cartItems.length }}</span> Items
+        </div>
+      }
+    </div>
+
+
+    <!-- Empty Cart -->
+    @if (cartItems.length === 0) {
+
+      <div class="empty-cart text-center">
+
+        <div class="empty-cart-icon">
+          <i class="bi bi-cart-x"></i>
+        </div>
+
+        <h3 class="mt-4 fw-bold empty-title">
+          Your cart is empty
+        </h3>
+
+        <p class="empty-text mx-auto">
+          You haven't added any products yet.
+          Start shopping and add your favorite products.
+        </p>
+
+        <a routerLink="/products" class="btn btn-primary btn-shop px-4 mt-2">
+          <i class="bi bi-shop me-2"></i>
+          Continue Shopping
+        </a>
+
+      </div>
+
+    } @else {
+
+      <div class="row g-4">
+
+        <!-- Cart Products -->
+        <div class="col-lg-8">
+          <div class="cart-products">
+
+            @for (item of cartItems; track item.id) {
+
+              <div class="cart-item">
+
+                <div class="row align-items-center g-3">
+
+                  <!-- Product Image -->
+                  <div class="col-4 col-md-2">
+                    <div class="product-image-wrapper">
+                      <img [src]="item.image" [alt]="item.name" class="cart-image">
+                    </div>
+                  </div>
+
+                  <!-- Product Information -->
+                  <div class="col-8 col-md-4">
+                    <h5 class="product-name mb-1">{{ item.name }}</h5>
+                    <div class="product-price">৳{{ item.price | number }}</div>
+                    <small class="product-unit">Unit price</small>
+                  </div>
+
+                  <!-- Quantity -->
+                  <div class="col-6 col-md-3">
+                    <small class="quantity-label">Quantity</small>
+
+                    <div class="quantity-control">
+                      <button type="button"
+                              (click)="decreaseQuantity(item.id)"
+                              aria-label="Decrease quantity">
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+
+                      <span>{{ item.quantity }}</span>
+
+                      <button type="button"
+                              (click)="increaseQuantity(item.id)"
+                              aria-label="Increase quantity">
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Item Total -->
+                  <div class="col-4 col-md-2">
+                    <small class="quantity-label">Total</small>
+                    <strong class="item-total">
+                      ৳{{ item.price * item.quantity | number }}
+                    </strong>
+                  </div>
+
+                  <!-- Remove -->
+                  <div class="col-2 col-md-1 text-end">
+                    <button type="button"
+                            class="remove-btn"
+                            (click)="removeItem(item.id)"
+                            title="Remove item">
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+            }
+
+          </div>
+
+          <!-- Clear Cart -->
+          <div class="clear-cart-wrapper">
+            <button type="button" class="btn btn-clear" (click)="clearCart()">
+              <i class="bi bi-trash3 me-2"></i>
+              Clear Cart
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+          <div class="cart-summary">
+
+            <div class="summary-header">
+              <div class="summary-icon">
+                <i class="bi bi-receipt-cutoff"></i>
+              </div>
+
+              <div>
+                <h4 class="fw-bold mb-1">Order Summary</h4>
+                <small class="summary-hint">Your shopping summary</small>
+              </div>
+            </div>
+
+            <!-- Subtotal -->
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong>৳{{ getSubtotal() | number }}</strong>
+            </div>
+
+            <!-- Delivery -->
+            <div class="summary-row">
+              <span>Delivery Charge</span>
+              <strong class="delivery-value">৳{{ deliveryCharge | number }}</strong>
+            </div>
+
+            <hr class="summary-divider">
+
+            <!-- Total -->
+            <div class="summary-row total">
+              <div>
+                <span class="total-label">Grand Total</span>
+                <small class="d-block total-hint">Including delivery</small>
+              </div>
+
+              <strong class="grand-total">৳{{ getGrandTotal() | number }}</strong>
+            </div>
+
+            <!-- Checkout -->
+            <a routerLink="/checkout" class="btn checkout-btn w-100 mt-4">
+              <span>Proceed to Checkout</span>
+              <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+
+            <!-- Continue Shopping -->
+            <a routerLink="/products" class="btn continue-btn w-100 mt-2">
+              <i class="bi bi-shop me-2"></i>
+              Continue Shopping
+            </a>
+
+            <!-- Secure Checkout -->
+            <div class="secure-checkout">
+              <i class="bi bi-shield-check"></i>
+              <div>
+                <strong>Secure Checkout</strong>
+                <small>Your shopping information is protected</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+</section>

@@ -1,0 +1,54 @@
+<section class="container-fluid py-4" aria-labelledby="payments-title">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 id="payments-title" class="h3 mb-1">Payments</h1>
+      <p class="text-muted mb-0">Payment records returned by the backend.</p>
+    </div>
+    <button class="btn btn-outline-primary" type="button" (click)="loadPayments()" [disabled]="loading">
+      {{ loading ? 'Loading…' : 'Refresh' }}
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="alert alert-info" role="status">Loading payment records…</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+      <button class="btn btn-sm btn-outline-danger ms-2" type="button" (click)="loadPayments()" [disabled]="loading">Retry</button>
+    </div>
+  }
+
+  @if (!loading && !errorMessage) {
+    <div class="card shadow-sm">
+      @if (payments.length) {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Payment</th><th scope="col">Order</th><th scope="col">Method</th>
+                <th scope="col">Gateway</th><th scope="col">Amount</th><th scope="col">Status</th>
+                <th scope="col">Transaction</th><th scope="col">Paid at</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (payment of payments; track payment.id) {
+                <tr>
+                  <td>#{{ payment.id }}</td>
+                  <td>{{ payment.orderId ?? '—' }}</td>
+                  <td>{{ payment.paymentMethod }}</td>
+                  <td>{{ payment.paymentGateway }}</td>
+                  <td>{{ payment.amount | currency:'BDT':'symbol':'1.2-2' }}</td>
+                  <td><span class="badge text-bg-secondary">{{ payment.status }}</span></td>
+                  <td>{{ payment.transactionId || '—' }}</td>
+                  <td>{{ payment.paidAt ? (payment.paidAt | date:'medium') : '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="text-muted p-3 mb-0">No payment records were returned.</p>
+      }
+    </div>
+  }

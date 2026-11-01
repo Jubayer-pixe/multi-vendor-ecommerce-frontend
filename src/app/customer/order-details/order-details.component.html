@@ -1,0 +1,414 @@
+<section class="order-details-section py-5">
+
+  <div class="container">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+      <div>
+
+        <h2 class="fw-bold">
+          Order Details
+        </h2>
+
+        <p class="text-muted mb-0">
+          Order #{{ order.orderNumber }}
+        </p>
+
+      </div>
+
+      <a
+        routerLink="/orders"
+        class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to Orders
+
+      </a>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+      <!-- ===================== -->
+      <!-- Left Side -->
+      <!-- ===================== -->
+
+      <div class="col-lg-8">
+
+
+        <!-- Order Information -->
+
+        <div class="details-card mb-4">
+
+          <div class="card-header-custom">
+
+            <h5 class="fw-bold mb-0">
+              Order Information
+            </h5>
+
+            <span
+              class="badge"
+              [class]="getStatusClass(order.orderStatus)">
+
+              {{ order.orderStatus }}
+
+            </span>
+
+          </div>
+
+
+          <div class="row mt-4">
+
+            <div class="col-md-6 mb-3">
+
+              <small class="text-muted">
+                Order ID
+              </small>
+
+              <strong class="d-block">
+                #{{ order.orderNumber }}
+              </strong>
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+              <small class="text-muted">
+                Order Date
+              </small>
+
+              <strong class="d-block">
+                {{ order.orderDate }}
+              </strong>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+              <small class="text-muted">
+                Payment Method
+              </small>
+
+              <strong class="d-block">
+                {{ order.paymentMethod }}
+              </strong>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+              <small class="text-muted">
+                Payment Status
+              </small>
+
+              <strong
+                class="d-block"
+                [class.text-success]="order.paymentStatus === 'Paid'"
+                [class.text-warning]="order.paymentStatus === 'Pending'">
+
+                {{ order.paymentStatus }}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Products -->
+
+        <div class="details-card mb-4">
+
+          <h5 class="fw-bold mb-4">
+            Ordered Products
+          </h5>
+
+
+          @for (item of order.items; track item.id) {
+
+            <div class="order-product">
+
+              <img
+                [src]="item.image"
+                [alt]="item.name">
+
+
+              <div class="product-info">
+
+                <h6 class="mb-1">
+                  {{ item.name }}
+                </h6>
+
+                <small class="text-muted">
+                  Quantity: {{ item.quantity }}
+                </small>
+
+              </div>
+
+
+              <div class="product-price">
+
+                <span>
+                  ৳{{ item.price }}
+                </span>
+
+                <strong>
+                  ৳{{ item.price * item.quantity }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Delivery Address -->
+
+        <div class="details-card">
+
+          <h5 class="fw-bold mb-4">
+            Delivery Address
+          </h5>
+
+
+          <div class="address-box">
+
+            <i class="bi bi-geo-alt"></i>
+
+            <div>
+
+              <strong>
+                {{ order.customerName }}
+              </strong>
+
+              <p class="mb-1">
+                {{ order.phone }}
+              </p>
+
+              <p class="mb-0 text-muted">
+
+                {{ order.address }},
+                {{ order.city }} -
+                {{ order.postalCode }}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================== -->
+      <!-- Right Side -->
+      <!-- ===================== -->
+
+      <div class="col-lg-4">
+
+
+        <!-- Order Summary -->
+
+        <div class="details-card mb-4">
+
+          <h5 class="fw-bold mb-4">
+            Order Summary
+          </h5>
+
+
+          <div class="summary-row">
+
+            <span>
+              Subtotal
+            </span>
+
+            <strong>
+              ৳{{ getSubtotal() }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Delivery
+            </span>
+
+            <strong>
+              ৳{{ order.deliveryCharge }}
+            </strong>
+
+          </div>
+
+
+          <hr>
+
+
+          <div class="summary-row total">
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+              ৳{{ getGrandTotal() }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- Order Timeline -->
+
+        <div class="details-card">
+
+          <h5 class="fw-bold mb-4">
+            Order Status
+          </h5>
+
+
+          <div class="timeline">
+
+
+            <div class="timeline-item completed">
+
+              <div class="timeline-icon">
+
+                <i class="bi bi-check"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Order Placed
+                </strong>
+
+                <small>
+                  Your order has been placed
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="timeline-item completed">
+
+              <div class="timeline-icon">
+
+                <i class="bi bi-check"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Confirmed
+                </strong>
+
+                <small>
+                  Order confirmed by seller
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="timeline-item active">
+
+              <div class="timeline-icon">
+
+                <i class="bi bi-box-seam"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Processing
+                </strong>
+
+                <small>
+                  Seller is preparing your order
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+              <div class="timeline-icon">
+
+                <i class="bi bi-truck"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Shipped
+                </strong>
+
+                <small>
+                  Order will be shipped soon
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+              <div class="timeline-icon">
+
+                <i class="bi bi-house-check"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Delivered
+                </strong>
+
+                <small>
+                  Order delivered to you
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

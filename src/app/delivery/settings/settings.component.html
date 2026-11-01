@@ -1,0 +1,595 @@
+<div class="settings-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <span class="header-badge">
+        <i class="bi bi-gear"></i>
+        Delivery Configuration
+      </span>
+
+      <h1>Settings</h1>
+
+      <p>
+        Manage your delivery preferences,
+        notifications and account security.
+      </p>
+
+    </div>
+
+    <div class="header-icon">
+      <i class="bi bi-sliders"></i>
+    </div>
+
+  </div>
+
+
+  <!-- ================= MAIN GRID ================= -->
+
+  <div class="settings-grid">
+
+
+    <!-- =========================================
+         AVAILABILITY
+    ========================================== -->
+
+    <div class="settings-card">
+
+      <div class="card-header">
+
+        <div class="card-icon availability-icon">
+          <i class="bi bi-toggle-on"></i>
+        </div>
+
+        <div>
+          <h2>Availability</h2>
+          <p>Manage your delivery availability</p>
+        </div>
+
+      </div>
+
+
+      <div class="online-box">
+
+        <div class="online-info">
+
+          <div
+            class="status-dot"
+            [class.offline]="!isOnline"
+          ></div>
+
+          <div>
+
+            <strong>
+              {{ isOnline ? 'You are Online' : 'You are Offline' }}
+            </strong>
+
+            <small>
+              {{
+                isOnline
+                  ? 'You can receive new delivery orders.'
+                  : 'You will not receive new orders.'
+              }}
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="online-toggle"
+          [class.offline]="!isOnline"
+          (click)="toggleOnline()"
+        >
+
+          {{ isOnline ? 'Online' : 'Offline' }}
+
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Auto Accept Orders</strong>
+
+          <p>
+            Automatically accept assigned delivery orders.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="autoAcceptOrders"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+         NOTIFICATIONS
+    ========================================== -->
+
+    <div class="settings-card">
+
+      <div class="card-header">
+
+        <div class="card-icon notification-icon">
+          <i class="bi bi-bell"></i>
+        </div>
+
+        <div>
+
+          <h2>Notifications</h2>
+
+          <p>
+            Control your delivery notifications
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>New Order</strong>
+
+          <p>
+            Get notified when a new order is assigned.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="orderNotification"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Pickup Reminder</strong>
+
+          <p>
+            Receive reminders for upcoming pickups.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="pickupReminder"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Delivery Reminder</strong>
+
+          <p>
+            Get reminders about pending deliveries.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="deliveryReminder"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Sound Notification</strong>
+
+          <p>
+            Play a sound for important alerts.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="soundNotification"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Promotional Notifications</strong>
+
+          <p>
+            Receive promotional messages.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="promotionalNotification"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+         DELIVERY PREFERENCES
+    ========================================== -->
+
+    <div class="settings-card">
+
+      <div class="card-header">
+
+        <div class="card-icon delivery-icon">
+          <i class="bi bi-truck"></i>
+        </div>
+
+        <div>
+
+          <h2>Delivery Preferences</h2>
+
+          <p>
+            Configure your delivery area
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Preferred Area</label>
+
+        <select
+          class="form-control"
+          [(ngModel)]="preferredArea"
+        >
+
+          <option value="Dhaka">
+            Dhaka
+          </option>
+
+          <option value="Uttara">
+            Uttara
+          </option>
+
+          <option value="Mirpur">
+            Mirpur
+          </option>
+
+          <option value="Dhanmondi">
+            Dhanmondi
+          </option>
+
+          <option value="Gulshan">
+            Gulshan
+          </option>
+
+          <option value="Banani">
+            Banani
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Vehicle Type</label>
+
+        <select
+          class="form-control"
+          [(ngModel)]="vehicleType"
+        >
+
+          <option value="Motorcycle">
+            Motorcycle
+          </option>
+
+          <option value="Bicycle">
+            Bicycle
+          </option>
+
+          <option value="Car">
+            Car
+          </option>
+
+          <option value="Van">
+            Delivery Van
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Delivery Radius:
+          <strong>{{ deliveryRadius }} KM</strong>
+        </label>
+
+        <input
+          type="range"
+          class="range-input"
+          min="1"
+          max="30"
+          [(ngModel)]="deliveryRadius"
+        >
+
+        <div class="range-labels">
+
+          <span>1 KM</span>
+
+          <span>30 KM</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+         COD SETTINGS
+    ========================================== -->
+
+    <div class="settings-card">
+
+      <div class="card-header">
+
+        <div class="card-icon money-icon">
+          <i class="bi bi-cash-stack"></i>
+        </div>
+
+        <div>
+
+          <h2>COD Settings</h2>
+
+          <p>
+            Manage Cash on Delivery preferences
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>Accept COD Orders</strong>
+
+          <p>
+            Allow Cash on Delivery orders.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="acceptCOD"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div
+        class="form-group"
+        *ngIf="acceptCOD"
+      >
+
+        <label>
+          Maximum COD Amount
+        </label>
+
+        <div class="money-input">
+
+          <span>৳</span>
+
+          <input
+            type="number"
+            [(ngModel)]="codLimit"
+          >
+
+        </div>
+
+        <small>
+          Maximum COD amount you are allowed
+          to collect per order.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+         SECURITY
+    ========================================== -->
+
+    <div class="settings-card security-card">
+
+      <div class="card-header">
+
+        <div class="card-icon security-icon">
+          <i class="bi bi-shield-lock"></i>
+        </div>
+
+        <div>
+
+          <h2>Security</h2>
+
+          <p>
+            Protect your delivery account
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Current Password</label>
+
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter current password"
+          [(ngModel)]="currentPassword"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>New Password</label>
+
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter new password"
+          [(ngModel)]="newPassword"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Confirm New Password</label>
+
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Confirm new password"
+          [(ngModel)]="confirmPassword"
+        >
+
+      </div>
+
+
+      <button
+        class="password-btn"
+        (click)="changePassword()"
+      >
+
+        <i class="bi bi-key"></i>
+
+        Change Password
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= ACTION BAR ================= -->
+
+  <div class="action-bar">
+
+    <button
+      class="reset-btn"
+      (click)="resetSettings()"
+    >
+
+      <i class="bi bi-arrow-counterclockwise"></i>
+
+      Reset
+
+    </button>
+
+
+    <button
+      class="save-btn"
+      (click)="saveSettings()"
+    >
+
+      <i class="bi bi-check-lg"></i>
+
+      Save Settings
+
+    </button>
+
+  </div>
+
+</div>

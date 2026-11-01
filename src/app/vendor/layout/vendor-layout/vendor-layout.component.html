@@ -1,0 +1,275 @@
+<div class="vendor-layout">
+
+  <!-- ================= HEADER ================= -->
+  <header class="vendor-header">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="bi bi-shop"></i>
+      </div>
+
+      <div class="brand-text">
+        <strong>Vendor Panel</strong>
+        <small>Manage your store</small>
+      </div>
+    </div>
+
+
+    <!-- Header Right -->
+    <div class="header-right">
+
+      <!-- Notification -->
+      <button class="icon-btn" type="button" title="Notifications">
+        <i class="bi bi-bell"></i>
+        <span class="notification-badge">3</span>
+      </button>
+
+
+      <!-- Divider -->
+      <div class="header-divider"></div>
+
+
+      <!-- Vendor User -->
+      <div class="vendor-user">
+
+        <div class="avatar-wrapper">
+          <div class="avatar">
+            JA
+          </div>
+
+          <span class="online-dot"></span>
+        </div>
+
+        <div class="user-info">
+          <strong>Jubayer Ahmed</strong>
+          <small>
+            <i class="bi bi-patch-check-fill"></i>
+            Vendor
+          </small>
+        </div>
+
+        <i class="bi bi-chevron-down user-arrow"></i>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= BODY ================= -->
+  <div class="vendor-body">
+
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="vendor-sidebar">
+
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+
+        <div class="sidebar-profile">
+          <div class="mini-avatar">
+            JA
+          </div>
+
+          <div>
+            <strong>Jubayer Ahmed</strong>
+            <span>
+              <i class="bi bi-circle-fill"></i>
+              Online
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Menu Title -->
+      <div class="sidebar-title">
+        <span>MAIN MENU</span>
+      </div>
+
+
+      <!-- Navigation -->
+      <nav class="sidebar-menu">
+
+        <!-- Dashboard -->
+        <a
+          routerLink="/vendor"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-speedometer2"></i>
+          </span>
+
+          <span class="menu-text">
+            Dashboard
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+
+        <!-- Products -->
+        <a
+          routerLink="/vendor/products"
+          routerLinkActive="active"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-box-seam"></i>
+          </span>
+
+          <span class="menu-text">
+            Products
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+
+        <!-- Orders -->
+        <a
+          routerLink="/vendor/orders"
+          routerLinkActive="active"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-cart-check"></i>
+          </span>
+
+          <span class="menu-text">
+            Orders
+          </span>
+
+          <span class="menu-count">
+            5
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+
+        <!-- Inventory -->
+        <a
+          routerLink="/vendor/inventory"
+          routerLinkActive="active"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-boxes"></i>
+          </span>
+
+          <span class="menu-text">
+            Inventory
+          </span>
+
+          <span class="menu-count warning">
+            3
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+
+        <!-- Wallet -->
+        <a
+          routerLink="/vendor/wallet"
+          routerLinkActive="active"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-wallet2"></i>
+          </span>
+
+          <span class="menu-text">
+            Wallet
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+
+        <!-- Profile -->
+        <a
+          routerLink="/vendor/profile"
+          routerLinkActive="active"
+          class="menu-item">
+
+          <span class="menu-icon">
+            <i class="bi bi-person-circle"></i>
+          </span>
+
+          <span class="menu-text">
+            Profile
+          </span>
+
+          <i class="bi bi-chevron-right menu-arrow"></i>
+
+        </a>
+
+      </nav>
+
+
+      <!-- Sidebar Bottom -->
+      <div class="sidebar-bottom">
+
+        <!-- Store Status -->
+        <div class="store-status">
+
+          <div class="store-status-icon">
+            <i class="bi bi-shop-window"></i>
+          </div>
+
+          <div>
+            <strong>Store Status</strong>
+            <span>
+              <i class="bi bi-circle-fill"></i>
+              Active
+            </span>
+          </div>
+
+        </div>
+
+
+        <!-- Logout -->
+        <button
+          type="button"
+          class="logout-btn"
+          (click)="logout()">
+
+          <span class="logout-icon">
+            <i class="bi bi-box-arrow-right"></i>
+          </span>
+
+          <span>Logout</span>
+
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================= CONTENT ================= -->
+    <main class="vendor-content">
+
+      <div class="content-wrapper">
+
+        <router-outlet></router-outlet>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
