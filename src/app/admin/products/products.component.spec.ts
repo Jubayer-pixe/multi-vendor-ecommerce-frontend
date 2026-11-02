@@ -23,4 +23,15 @@ describe('ProductsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('keeps the create form visible while entering a product name', () => {
+    const nameInput: HTMLInputElement =
+      fixture.nativeElement.querySelector('#product-name');
+
+    nameInput.value = 'Sample product';
+    nameInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#product-name')).toBeTruthy();
+  });
 });

@@ -1,31 +1,497 @@
-<section class="container-fluid py-4 admin-products" aria-labelledby="products-heading">
-  <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><p class="eyebrow mb-1">COMMERCE CATALOG</p><h1 id="products-heading" class="h2 mb-1">Product management</h1><p class="text-secondary mb-0">Manage canonical catalog products and their stored images.</p></div><div class="d-flex gap-2"><button class="btn btn-outline-primary" type="button" (click)="load()" [disabled]="loading"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button><button class="btn btn-primary" type="button" (click)="startCreate()"><i class="bi bi-plus-lg me-2"></i>Add product</button></div></div>
-  @if (successMessage) { <div class="alert alert-success" role="status">{{ successMessage }}</div> }
-  @if (errorMessage) { <div class="alert alert-danger" role="alert">{{ errorMessage }}</div> }
-  @if (editId !== null || form.name === '' && !selectedProduct) {
-    <form class="card border-0 shadow-sm product-form mb-4" #productForm="ngForm" (ngSubmit)="save()"><div class="card-header"><div><p class="eyebrow mb-1">{{ editId === null ? 'NEW CATALOG RECORD' : 'EDIT CATALOG RECORD' }}</p><h2 class="h5 mb-0">{{ editId === null ? 'Add product' : 'Edit product' }}</h2></div>@if (editId !== null) { <button type="button" class="btn-close" aria-label="Close editor" (click)="selectedProduct = null; editId = null; form = { name: '', slug: '', description: null, sku: '', basePrice: 0, salePrice: null, stockQuantity: 0, active: true, categoryId: null, categoryName: null, subCategoryId: null, brandId: null, brandName: null, vendorId: null }"></button> }</div>
+<section
+  class="container-fluid py-4 admin-products"
+  aria-labelledby="products-heading"
+>
+  <div
+    class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"
+  >
+    <div>
+      <p class="eyebrow mb-1">COMMERCE CATALOG</p>
+      <h1 id="products-heading" class="h2 mb-1">Product management</h1>
+      <p class="text-secondary mb-0">
+        Manage canonical catalog products and their stored images.
+      </p>
+    </div>
+    <div class="d-flex gap-2">
+      <button
+        class="btn btn-outline-primary"
+        type="button"
+        (click)="load()"
+        [disabled]="loading"
+      >
+        <i class="bi bi-arrow-clockwise me-2"></i>Refresh</button
+      ><button class="btn btn-primary" type="button" (click)="startCreate()">
+        <i class="bi bi-plus-lg me-2"></i>Add product
+      </button>
+    </div>
+  </div>
+  @if (successMessage) {
+    <div class="alert alert-success" role="status">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+  }
+  @if (editId !== null || !selectedProduct) {
+    <form
+      class="card border-0 shadow-sm product-form mb-4"
+      #productForm="ngForm"
+      (ngSubmit)="save()"
+    >
+      <div class="card-header">
+        <div>
+          <p class="eyebrow mb-1">
+            {{ editId === null ? "NEW CATALOG RECORD" : "EDIT CATALOG RECORD" }}
+          </p>
+          <h2 class="h5 mb-0">
+            {{ editId === null ? "Add product" : "Edit product" }}
+          </h2>
+        </div>
+        @if (editId !== null) {
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close editor"
+            (click)="
+              selectedProduct = null;
+              editId = null;
+              form = {
+                name: '',
+                slug: '',
+                description: null,
+                sku: '',
+                basePrice: 0,
+                salePrice: null,
+                stockQuantity: 0,
+                active: true,
+                categoryId: null,
+                categoryName: null,
+                subCategoryId: null,
+                brandId: null,
+                brandName: null,
+                vendorId: null,
+              }
+            "
+          ></button>
+        }
+      </div>
       <div class="card-body row g-3">
-        <div class="col-12 col-md-6"><label class="form-label" for="product-name">Name</label><input id="product-name" class="form-control" name="name" required maxlength="150" [(ngModel)]="form.name" (ngModelChange)="onNameChange()"></div>
-        <div class="col-12 col-md-6"><label class="form-label" for="product-slug">Slug</label><input id="product-slug" class="form-control" name="slug" required maxlength="180" [(ngModel)]="form.slug"></div>
-        <div class="col-12 col-md-4"><label class="form-label" for="product-sku">SKU</label><input id="product-sku" class="form-control" name="sku" required maxlength="100" [(ngModel)]="form.sku"></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-price">Base price</label><input id="product-price" class="form-control" name="basePrice" type="number" required min="0.01" step="0.01" [(ngModel)]="form.basePrice"></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-sale-price">Sale price</label><input id="product-sale-price" class="form-control" name="salePrice" type="number" min="0" step="0.01" [(ngModel)]="form.salePrice"></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-stock">Stock quantity</label><input id="product-stock" class="form-control" name="stockQuantity" type="number" required min="0" step="1" [(ngModel)]="form.stockQuantity"></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-category">Category</label><select id="product-category" class="form-select" name="categoryId" [(ngModel)]="form.categoryId"><option [ngValue]="null">No category</option>@for (category of categories; track category.id) { <option [ngValue]="category.id">{{ category.name }}</option> }</select></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-brand">Brand</label><select id="product-brand" class="form-select" name="brandId" [(ngModel)]="form.brandId"><option [ngValue]="null">No brand</option>@for (brand of brands; track brand.id) { <option [ngValue]="brand.id">{{ brand.name }}</option> }</select></div>
-        <div class="col-6 col-md-4"><label class="form-label" for="product-vendor">Vendor</label><select id="product-vendor" class="form-select" name="vendorId" [(ngModel)]="form.vendorId"><option [ngValue]="null">No vendor</option>@for (vendor of vendors; track vendor.id) { <option [ngValue]="vendor.id">{{ vendor.businessName }} · {{ vendor.userName }}</option> }</select></div>
-        <div class="col-12"><label class="form-label" for="product-description">Description</label><textarea id="product-description" class="form-control" name="description" rows="2" maxlength="2000" [(ngModel)]="form.description"></textarea></div>
-        <div class="col-12 col-lg-7"><label class="form-label" for="product-images">Product images</label><input id="product-images" class="form-control" type="file" accept="image/*" multiple (change)="onFilesChanged($event)"><small class="form-text">Images upload after product creation returns its ID.</small>@if (previews.length) { <div class="image-previews mt-2">@for (preview of previews; track preview; let i = $index) { <div class="image-preview"><img [src]="preview" [alt]="selectedImages[i].name"><button type="button" class="btn btn-sm btn-danger" (click)="removeFile(i)" [attr.aria-label]="'Remove ' + selectedImages[i].name"><i class="bi bi-x"></i></button><small>{{ selectedImages[i].name }}</small></div> }</div> }</div>
-        <div class="col-12 col-lg-5 d-flex align-items-end"><label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="active" [(ngModel)]="form.active"><span class="form-check-label">Product is active</span></label></div>
-        <div class="col-12 small text-secondary"><i class="bi bi-info-circle me-1"></i>This page uses canonical <code>/api/catalog/products</code>. Legacy <code>/api/products</code> records remain a separate model.</div>
-      </div><div class="card-footer d-flex justify-content-end gap-2"><button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || saving">{{ saving ? 'Saving…' : editId === null ? 'Create product' : 'Save product' }}</button></div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="product-name">Name</label
+          ><input
+            id="product-name"
+            class="form-control"
+            name="name"
+            required
+            maxlength="150"
+            [(ngModel)]="form.name"
+            (ngModelChange)="onNameChange()"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="product-slug">Slug</label
+          ><input
+            id="product-slug"
+            class="form-control"
+            name="slug"
+            required
+            maxlength="180"
+            [(ngModel)]="form.slug"
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label" for="product-sku">SKU</label
+          ><input
+            id="product-sku"
+            class="form-control"
+            name="sku"
+            required
+            maxlength="100"
+            [(ngModel)]="form.sku"
+          />
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-price">Base price</label
+          ><input
+            id="product-price"
+            class="form-control"
+            name="basePrice"
+            type="number"
+            required
+            min="0.01"
+            step="0.01"
+            [(ngModel)]="form.basePrice"
+          />
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-sale-price">Sale price</label
+          ><input
+            id="product-sale-price"
+            class="form-control"
+            name="salePrice"
+            type="number"
+            min="0"
+            step="0.01"
+            [(ngModel)]="form.salePrice"
+          />
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-stock">Stock quantity</label
+          ><input
+            id="product-stock"
+            class="form-control"
+            name="stockQuantity"
+            type="number"
+            required
+            min="0"
+            step="1"
+            [(ngModel)]="form.stockQuantity"
+          />
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-category">Category</label
+          ><select
+            id="product-category"
+            class="form-select"
+            name="categoryId"
+            [(ngModel)]="form.categoryId"
+          >
+            <option [ngValue]="null">No category</option>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-brand">Brand</label
+          ><select
+            id="product-brand"
+            class="form-select"
+            name="brandId"
+            [(ngModel)]="form.brandId"
+          >
+            <option [ngValue]="null">No brand</option>
+            @for (brand of brands; track brand.id) {
+              <option [ngValue]="brand.id">{{ brand.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label" for="product-vendor">Vendor</label
+          ><select
+            id="product-vendor"
+            class="form-select"
+            name="vendorId"
+            [(ngModel)]="form.vendorId"
+          >
+            <option [ngValue]="null">No vendor</option>
+            @for (vendor of vendors; track vendor.id) {
+              <option [ngValue]="vendor.id">
+                {{ vendor.businessName }} · {{ vendor.userName }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="product-description">Description</label
+          ><textarea
+            id="product-description"
+            class="form-control"
+            name="description"
+            rows="2"
+            maxlength="2000"
+            [(ngModel)]="form.description"
+          ></textarea>
+        </div>
+        <div class="col-12 col-lg-7">
+          <label class="form-label" for="product-images">Product images</label
+          ><input
+            id="product-images"
+            class="form-control"
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onFilesChanged($event)"
+          /><small class="form-text"
+            >Images upload after product creation returns its ID.</small
+          >
+          @if (previews.length) {
+            <div class="image-previews mt-2">
+              @for (preview of previews; track preview; let i = $index) {
+                <div class="image-preview">
+                  <img [src]="preview" [alt]="selectedImages[i].name" /><button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="removeFile(i)"
+                    [attr.aria-label]="'Remove ' + selectedImages[i].name"
+                  >
+                    <i class="bi bi-x"></i></button
+                  ><small>{{ selectedImages[i].name }}</small>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="col-12 col-lg-5 d-flex align-items-end">
+          <label class="form-check mb-2"
+            ><input
+              class="form-check-input"
+              type="checkbox"
+              name="active"
+              [(ngModel)]="form.active"
+            /><span class="form-check-label">Product is active</span></label
+          >
+        </div>
+        <div class="col-12 small text-secondary">
+          <i class="bi bi-info-circle me-1"></i>This page uses canonical
+          <code>/api/catalog/products</code>. Legacy
+          <code>/api/products</code> records remain a separate model.
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="productForm.invalid || saving"
+        >
+          {{
+            saving
+              ? "Saving…"
+              : editId === null
+                ? "Create product"
+                : "Save product"
+          }}
+        </button>
+      </div>
     </form>
   }
-  <div class="card border-0 shadow-sm product-list"><div class="list-toolbar"><div><h2 class="h5 mb-0">Catalog products</h2><small class="text-secondary">{{ filteredProducts.length }} records</small></div><div class="filter-controls"><div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span><input class="form-control" type="search" placeholder="Search name, SKU or slug" aria-label="Search products" [(ngModel)]="searchTerm" (ngModelChange)="page = 1"></div><select class="form-select" aria-label="Filter product status" [(ngModel)]="activeFilter" (ngModelChange)="page = 1"><option value="">All status</option><option value="true">Active</option><option value="false">Inactive</option></select></div></div>
-    @if (loading) { <div class="empty-state"><span class="spinner-border spinner-border-sm me-2"></span>Loading catalog products…</div> }
-    @if (!loading && visibleProducts.length) { <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Product</th><th>Category / brand</th><th>Vendor</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr></thead><tbody>@for (product of visibleProducts; track product.id) { <tr><td><div class="product-cell">@if (imageUrl(product); as src) { <img [src]="src" [alt]="product.name"> } @else { <span class="product-placeholder"><i class="bi bi-image"></i></span> }<span><strong>{{ product.name }}</strong><small>{{ product.sku }}</small></span></div></td><td>{{ product.categoryName || '—' }}<small class="d-block text-secondary">{{ product.brandName || 'No brand' }}</small></td><td>{{ product.vendorId ?? 'Unassigned' }}</td><td>{{ (product.salePrice ?? product.basePrice) | currency:'BDT':'symbol':'1.2-2' }}<small class="d-block text-secondary" *ngIf="product.salePrice">Base {{ product.basePrice | currency:'BDT':'symbol':'1.2-2' }}</small></td><td>{{ product.stockQuantity }}</td><td><span class="badge rounded-pill" [class.text-bg-success]="product.active" [class.text-bg-secondary]="!product.active">{{ product.active ? 'Active' : 'Inactive' }}</span></td><td class="text-end"><div class="btn-group btn-group-sm"><button class="btn btn-outline-primary" type="button" (click)="selectedProduct = product">Details</button><button class="btn btn-outline-secondary" type="button" (click)="edit(product)">Edit</button><button class="btn btn-outline-secondary" type="button" (click)="toggleActive(product)">{{ product.active ? 'Deactivate' : 'Activate' }}</button></div></td></tr> }</tbody></table></div> }
-    @if (!loading && !visibleProducts.length) { <div class="empty-state"><i class="bi bi-box-seam"></i><strong>No catalog products found</strong><span>Adjust the search or add a product.</span></div> }
-    @if (!loading && filteredProducts.length) { <div class="table-footer"><span>Page {{ page }} of {{ pageCount }}</span><div class="btn-group btn-group-sm"><button class="btn btn-outline-secondary" [disabled]="page <= 1" (click)="setPage(page - 1)">Previous</button><button class="btn btn-outline-secondary" [disabled]="page >= pageCount" (click)="setPage(page + 1)">Next</button></div></div> }
+  <div class="card border-0 shadow-sm product-list">
+    <div class="list-toolbar">
+      <div>
+        <h2 class="h5 mb-0">Catalog products</h2>
+        <small class="text-secondary"
+          >{{ filteredProducts.length }} records</small
+        >
+      </div>
+      <div class="filter-controls">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span
+          ><input
+            class="form-control"
+            type="search"
+            placeholder="Search name, SKU or slug"
+            aria-label="Search products"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="page = 1"
+          />
+        </div>
+        <select
+          class="form-select"
+          aria-label="Filter product status"
+          [(ngModel)]="activeFilter"
+          (ngModelChange)="page = 1"
+        >
+          <option value="">All status</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+    </div>
+    @if (loading) {
+      <div class="empty-state">
+        <span class="spinner-border spinner-border-sm me-2"></span>Loading
+        catalog products…
+      </div>
+    }
+    @if (!loading && visibleProducts.length) {
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category / brand</th>
+              <th>Vendor</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of visibleProducts; track product.id) {
+              <tr>
+                <td>
+                  <div class="product-cell">
+                    @if (imageUrl(product); as src) {
+                      <img [src]="src" [alt]="product.name" />
+                    } @else {
+                      <span class="product-placeholder"
+                        ><i class="bi bi-image"></i
+                      ></span>
+                    }
+                    <span
+                      ><strong>{{ product.name }}</strong
+                      ><small>{{ product.sku }}</small></span
+                    >
+                  </div>
+                </td>
+                <td>
+                  {{ product.categoryName || "—"
+                  }}<small class="d-block text-secondary">{{
+                    product.brandName || "No brand"
+                  }}</small>
+                </td>
+                <td>{{ product.vendorId ?? "Unassigned" }}</td>
+                <td>
+                  {{
+                    product.salePrice ?? product.basePrice
+                      | currency: "BDT" : "symbol" : "1.2-2"
+                  }}<small
+                    class="d-block text-secondary"
+                    *ngIf="product.salePrice"
+                    >Base
+                    {{
+                      product.basePrice | currency: "BDT" : "symbol" : "1.2-2"
+                    }}</small
+                  >
+                </td>
+                <td>{{ product.stockQuantity }}</td>
+                <td>
+                  <span
+                    class="badge rounded-pill"
+                    [class.text-bg-success]="product.active"
+                    [class.text-bg-secondary]="!product.active"
+                    >{{ product.active ? "Active" : "Inactive" }}</span
+                  >
+                </td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm">
+                    <button
+                      class="btn btn-outline-primary"
+                      type="button"
+                      (click)="selectedProduct = product"
+                    >
+                      Details</button
+                    ><button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="edit(product)"
+                    >
+                      Edit</button
+                    ><button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="toggleActive(product)"
+                    >
+                      {{ product.active ? "Deactivate" : "Activate" }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @if (!loading && !visibleProducts.length) {
+      <div class="empty-state">
+        <i class="bi bi-box-seam"></i><strong>No catalog products found</strong
+        ><span>Adjust the search or add a product.</span>
+      </div>
+    }
+    @if (!loading && filteredProducts.length) {
+      <div class="table-footer">
+        <span>Page {{ page }} of {{ pageCount }}</span>
+        <div class="btn-group btn-group-sm">
+          <button
+            class="btn btn-outline-secondary"
+            [disabled]="page <= 1"
+            (click)="setPage(page - 1)"
+          >
+            Previous</button
+          ><button
+            class="btn btn-outline-secondary"
+            [disabled]="page >= pageCount"
+            (click)="setPage(page + 1)"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    }
   </div>
-  @if (selectedProduct; as product) { <div class="details-backdrop" (click)="selectedProduct = null"><section class="product-details card border-0 shadow" role="dialog" aria-modal="true" [attr.aria-label]="product.name + ' details'" (click)="$event.stopPropagation()"><div class="card-header"><div><p class="eyebrow mb-1">PRODUCT DETAILS</p><h2 class="h5 mb-0">{{ product.name }}</h2></div><button class="btn-close" type="button" aria-label="Close details" (click)="selectedProduct = null"></button></div><div class="card-body"><p class="text-secondary">{{ product.description || 'No description provided.' }}</p><dl class="product-detail-grid"><div><dt>SKU</dt><dd>{{ product.sku }}</dd></div><div><dt>Slug</dt><dd>{{ product.slug }}</dd></div><div><dt>Category</dt><dd>{{ product.categoryName || '—' }}</dd></div><div><dt>Brand</dt><dd>{{ product.brandName || '—' }}</dd></div><div><dt>Vendor ID</dt><dd>{{ product.vendorId ?? '—' }}</dd></div><div><dt>Stock</dt><dd>{{ product.stockQuantity }}</dd></div></dl><h3 class="h6 mt-3">Stored product images</h3>@if (product.images?.length) { <div class="stored-images">@for (image of product.images; track image.id) { <div><img [src]="imageUrlFromPath(image.url)" [alt]="image.altText || product.name"><small>{{ image.primaryImage ? 'Primary' : 'Image' }} · {{ image.contentType || 'image' }}</small></div> }</div> } @else { <p class="small text-secondary">No images are stored for this product.</p> }</div></section></div> }
+  @if (selectedProduct; as product) {
+    <div class="details-backdrop" (click)="selectedProduct = null">
+      <section
+        class="product-details card border-0 shadow"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-label]="product.name + ' details'"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="card-header">
+          <div>
+            <p class="eyebrow mb-1">PRODUCT DETAILS</p>
+            <h2 class="h5 mb-0">{{ product.name }}</h2>
+          </div>
+          <button
+            class="btn-close"
+            type="button"
+            aria-label="Close details"
+            (click)="selectedProduct = null"
+          ></button>
+        </div>
+        <div class="card-body">
+          <p class="text-secondary">
+            {{ product.description || "No description provided." }}
+          </p>
+          <dl class="product-detail-grid">
+            <div>
+              <dt>SKU</dt>
+              <dd>{{ product.sku }}</dd>
+            </div>
+            <div>
+              <dt>Slug</dt>
+              <dd>{{ product.slug }}</dd>
+            </div>
+            <div>
+              <dt>Category</dt>
+              <dd>{{ product.categoryName || "—" }}</dd>
+            </div>
+            <div>
+              <dt>Brand</dt>
+              <dd>{{ product.brandName || "—" }}</dd>
+            </div>
+            <div>
+              <dt>Vendor ID</dt>
+              <dd>{{ product.vendorId ?? "—" }}</dd>
+            </div>
+            <div>
+              <dt>Stock</dt>
+              <dd>{{ product.stockQuantity }}</dd>
+            </div>
+          </dl>
+          <h3 class="h6 mt-3">Stored product images</h3>
+          @if (product.images?.length) {
+            <div class="stored-images">
+              @for (image of product.images; track image.id) {
+                <div>
+                  <img
+                    [src]="imageUrlFromPath(image.url)"
+                    [alt]="image.altText || product.name"
+                  /><small
+                    >{{ image.primaryImage ? "Primary" : "Image" }} ·
+                    {{ image.contentType || "image" }}</small
+                  >
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="small text-secondary">
+              No images are stored for this product.
+            </p>
+          }
+        </div>
+      </section>
+    </div>
+  }
 </section>

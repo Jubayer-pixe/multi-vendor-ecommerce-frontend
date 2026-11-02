@@ -97,3 +97,19 @@ export interface CatalogProductDto {
   imageIds: number[];
   images: CatalogImageDto[] | null;
 }
+
+export interface AdminProductCreateRequest {
+  name: string;
+  slug: string;
+  description: string | null;
+  sku: string;
+  basePrice: number;
+  salePrice: number | null;
+  categoryId: number | null;
+  categoryName: string | null;
+  subCategoryId: number | null;
+  brandId: number | null;
+  brandName: string | null;
+  stockQuantity: number;
+  active: boolean;
+}
