@@ -1,244 +1,250 @@
 <!-- HERO SECTION -->
 <section class="hero-section">
+  <div class="hero-bg-shapes">
+    <span class="shape shape-1"></span>
+    <span class="shape shape-2"></span>
+    <span class="shape shape-3"></span>
+  </div>
+
   <div class="container">
     <div class="hero-slide hero-one">
+
+      <!-- Decorative blobs -->
+      <span class="hero-blob blob-a"></span>
+      <span class="hero-blob blob-b"></span>
+
       <div class="hero-content">
-        <span class="hero-badge"><i class="bi bi-shop"></i> MULTI-VENDOR MARKETPLACE</span>
-        <h1>Discover products <span>from every shop</span></h1>
-        <p>Browse the latest listings from our marketplace vendors. No account is needed to explore.</p>
+        <span class="hero-badge">
+          <i class="bi bi-shop"></i> MULTI-VENDOR MARKETPLACE
+        </span>
+
+        <h1>
+          Discover products
+          <span class="gradient-text">from every shop</span>
+        </h1>
+
+        <p>
+          Browse the latest listings from our marketplace vendors.
+          No account is needed to explore.
+        </p>
+
         <div class="hero-buttons">
-          <a routerLink="/products" class="btn btn-light hero-btn">Browse products <i class="bi bi-arrow-right"></i></a>
-          <a routerLink="/categories" class="btn btn-outline-light hero-btn-outline">Shop by category</a>
+          <a routerLink="/products" class="btn hero-btn">
+            Browse products <i class="bi bi-arrow-right"></i>
+          </a>
+          <a routerLink="/categories" class="btn hero-btn-outline">
+            <i class="bi bi-grid"></i> Shop by category
+          </a>
         </div>
-        <p class="mt-3 mb-0">{{ trendingProducts.length }} products · {{ categories.length }} categories</p>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <strong>{{ trendingProducts.length }}+</strong>
+            <span>Products</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>{{ categories.length }}+</strong>
+            <span>Categories</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>100%</strong>
+            <span>Trusted</span>
+          </div>
+        </div>
       </div>
-      <div class="hero-visual"><div class="hero-circle"></div><div class="floating-card card-one"><i class="bi bi-shop"></i><span>Many vendors</span></div><div class="floating-card card-two"><i class="bi bi-grid"></i><span>One marketplace</span></div></div>
+
+      <div class="hero-visual">
+        <div class="hero-circle"></div>
+        <div class="hero-circle inner"></div>
+
+        <div class="floating-card card-one">
+          <span class="icon-wrap"><i class="bi bi-shop"></i></span>
+          <div>
+            <strong>Many vendors</strong>
+            <small>Trusted sellers</small>
+          </div>
+        </div>
+
+        <div class="floating-card card-two">
+          <span class="icon-wrap"><i class="bi bi-grid"></i></span>
+          <div>
+            <strong>One marketplace</strong>
+            <small>Everything in one place</small>
+          </div>
+        </div>
+
+        <div class="floating-card card-three">
+          <span class="icon-wrap"><i class="bi bi-truck"></i></span>
+          <div>
+            <strong>Fast delivery</strong>
+            <small>Right to your door</small>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 <!-- CATEGORIES -->
 <section class="category-section">
-
   <div class="container">
-
     <div class="section-heading">
-
       <div>
-        <span class="section-label">
-          Explore
-        </span>
-
-        <h2>
-          Shop By Category
-        </h2>
-
-        <p>
-          Find everything you need in one place.
-        </p>
+        <span class="section-label">Explore</span>
+        <h2>Shop By Category</h2>
+        <p>Find everything you need in one place.</p>
       </div>
 
-      <a
-        routerLink="/products"
-        class="view-all"
-      >
-        View All
-        <i class="bi bi-arrow-right"></i>
+      <a routerLink="/products" class="view-all">
+        View All <i class="bi bi-arrow-right"></i>
       </a>
-
     </div>
-
 
     @if (categoryError) {
       <div class="alert alert-warning" role="alert">{{ categoryError }}</div>
     } @else if (categories.length === 0) {
-      <div class="text-center py-4">No categories are available yet.</div>
+      <div class="empty-state">
+        <i class="bi bi-grid"></i>
+        <p>No categories are available yet.</p>
+      </div>
     } @else {
-    <div class="category-grid">
-
-      <a
-        *ngFor="let category of categories"
-        routerLink="/products"
-        class="category-card"
-      >
-
-        <div class="category-image">
-
-          <img
-            [src]="category.image"
-            [alt]="category.name"
-          />
-
-          <div class="category-overlay">
-            <i
-              class="bi"
-              [ngClass]="category.icon"
-            ></i>
+      <div class="category-grid">
+        <a *ngFor="let category of categories; let i = index"
+           routerLink="/products"
+           class="category-card"
+           [style.animation-delay]="(i * 80) + 'ms'">
+          <div class="category-image">
+            <img [src]="category.image" [alt]="category.name" loading="lazy" />
+            <div class="category-overlay">
+              <span class="category-icon">
+                <i class="bi" [ngClass]="category.icon"></i>
+              </span>
+            </div>
           </div>
 
-        </div>
-
-        <div class="category-info">
-
-          <h3>
-            {{ category.name }}
-          </h3>
-
-          <p>
-            {{ category.productCount }} products
-          </p>
-
-          <span>
-            Explore
-            <i class="bi bi-arrow-up-right"></i>
-          </span>
-
-        </div>
-
-      </a>
-
-    </div>
+          <div class="category-info">
+            <h3>{{ category.name }}</h3>
+            <p>{{ category.productCount }} products</p>
+            <span class="explore-link">
+              Explore <i class="bi bi-arrow-up-right"></i>
+            </span>
+          </div>
+        </a>
+      </div>
     }
-
   </div>
-
 </section>
-
 
 <!-- TRENDING PRODUCTS -->
 <section class="products-section trending-section">
-
   <div class="container">
-
     <div class="section-heading">
-
       <div>
-        <span class="section-label">
-          Marketplace catalog
-        </span>
-
-        <h2>
-          Products from all vendors
-        </h2>
-
-        <p>
-          Browse the latest active vendor listings.
-        </p>
+        <span class="section-label">Marketplace catalog</span>
+        <h2>Products from all vendors</h2>
+        <p>Browse the latest active vendor listings.</p>
       </div>
 
-      <a
-        routerLink="/products"
-        class="view-all"
-      >
-        View All
-        <i class="bi bi-arrow-right"></i>
+      <a routerLink="/products" class="view-all">
+        View All <i class="bi bi-arrow-right"></i>
       </a>
-
     </div>
-
 
     @if (loading) {
-      <div class="text-center py-5" role="status">Loading products from marketplace vendors…</div>
+      <div class="loading-state" role="status">
+        <span class="spinner-border text-primary" role="status"></span>
+        <p>Loading products from marketplace vendors…</p>
+      </div>
     } @else if (errorMessage) {
-      <div class="alert alert-warning" role="alert">
-        {{ errorMessage }}
-        <button type="button" class="btn btn-link" (click)="loadProducts()">Try again</button>
+      <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
+        <span>{{ errorMessage }}</span>
+        <button type="button" class="btn btn-sm btn-warning" (click)="loadProducts()">
+          Try again
+        </button>
       </div>
     } @else if (trendingProducts.length === 0) {
-      <div class="text-center py-5">No active products are listed yet.</div>
+      <div class="empty-state">
+        <i class="bi bi-box-seam"></i>
+        <p>No active products are listed yet.</p>
+      </div>
     } @else {
-    <div class="product-grid">
+      <div class="product-grid">
+        <div class="product-card" *ngFor="let product of trendingProducts">
 
-      <div
-        class="product-card"
-        *ngFor="let product of trendingProducts"
-      >
+          <div class="product-image">
+            <button type="button"
+                    class="wishlist-button"
+                    [class.active]="isInWishlist(product)"
+                    aria-label="Add product to wishlist"
+                    (click)="addToWishlist(product)">
+              <i class="bi" [ngClass]="isInWishlist(product) ? 'bi-heart-fill' : 'bi-heart'"></i>
+            </button>
 
-        <div class="product-image">
+            @if (product.discount > 0) {
+              <span class="discount-badge">-{{ product.discount }}%</span>
+            }
 
-          <button
-            class="wishlist-button"
-            (click)="addToWishlist(product)"
-          >
-            <i class="bi bi-heart"></i>
-          </button>
+            @if (getSelectedProductImage(product); as image) {
+              <img [src]="image" [alt]="product.name" loading="lazy" />
+            } @else {
+              <div class="image-placeholder">
+                <i class="bi bi-image"></i>
+              </div>
+            }
 
-          <img
-            [src]="product.image"
-            [alt]="product.name"
-          />
-
-          <div class="quick-view">
-            <a
-              [routerLink]="['/products', product.id]"
-            >
-              <i class="bi bi-eye"></i>
-              Quick View
-            </a>
+            <div class="quick-view">
+              <a [routerLink]="['/products', product.id]">
+                <i class="bi bi-eye"></i> Quick View
+              </a>
+            </div>
           </div>
 
-        </div>
+          @if (getProductImages(product).length > 1) {
+            <div class="home-product-thumbnails" aria-label="Product images">
+              @for (image of getProductImages(product); track image) {
+                <button type="button"
+                        class="home-product-thumbnail"
+                        [class.active]="getSelectedProductImage(product) === image"
+                        (click)="selectProductImage(product, image)"
+                        [attr.aria-label]="'Show another ' + product.name + ' image'">
+                  <img [src]="image" [alt]="product.name + ' image'" loading="lazy" />
+                </button>
+              }
+            </div>
+          }
 
+          <div class="product-info">
+            <span class="product-category">{{ product.category }}</span>
+            <h3>{{ product.name }}</h3>
 
-        <div class="product-info">
-
-          <span class="product-category">
-            {{ product.category }}
-          </span>
-
-          <h3>
-            {{ product.name }}
-          </h3>
-
-          <div class="rating" *ngIf="product.reviews > 0">
-
-            <span>
-              <i class="bi bi-star-fill"></i>
-              {{ product.rating }}
-            </span>
-
-            <small>
-              ({{ product.reviews }} reviews)
-            </small>
-
-          </div>
-
-
-          <div class="price-row">
-
-            <div>
-              <strong>
-                ৳{{ product.price | number }}
-              </strong>
-
-              <del *ngIf="product.oldPrice > product.price">
-                ৳{{ product.oldPrice | number }}
-              </del>
+            <div class="rating" *ngIf="product.reviews > 0">
+              <span>
+                <i class="bi bi-star-fill"></i>
+                {{ product.rating }}
+              </span>
+              <small>({{ product.reviews }} reviews)</small>
             </div>
 
-            <span class="discount" *ngIf="product.discount > 0">
-              -{{ product.discount }}%
-            </span>
+            <div class="price-row">
+              <div class="price-wrap">
+                <strong>৳{{ product.price | number }}</strong>
+                <del *ngIf="product.oldPrice > product.price">
+                  ৳{{ product.oldPrice | number }}
+                </del>
+              </div>
+            </div>
 
+            <button type="button"
+                    class="add-cart-btn"
+                    (click)="addToCart(product)">
+              <i class="bi bi-cart-plus"></i>
+              Add to Cart
+            </button>
           </div>
-
-
-          <button
-            class="add-cart-btn"
-            (click)="addToCart(product)"
-          >
-            <i class="bi bi-cart-plus"></i>
-            Add to Cart
-          </button>
-
         </div>
-
       </div>
-
-    </div>
     }
-
   </div>
-
 </section>
-
-

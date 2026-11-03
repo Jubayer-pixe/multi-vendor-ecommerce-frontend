@@ -10,6 +10,8 @@ import {
   VendorUserOption,
 } from './admin-vendor.model';
 import { AdminVendorService } from './admin-vendor.service';
+import { VendorRegistrationRequest } from '../../core/models/vendor-request.model';
+import { VendorRequestService } from '../../core/services/vendor-request.service';
 
 @Component({
   selector: 'app-vendors',
@@ -23,6 +25,12 @@ export class VendorsComponent implements OnInit {
   vendorUsers: VendorUserOption[] = [];
   vendorProducts: AdminVendorProduct[] = [];
   vendorOrders: AdminVendorOrder[] = [];
+
+  vendorRequests: VendorRegistrationRequest[] = [];
+  requestStatusFilter = '';
+  loadingRequests = false;
+  processingRequestId: number | null = null;
+
   loading = false;
   loadingDetails = false;
   creating = false;
@@ -36,10 +44,51 @@ export class VendorsComponent implements OnInit {
   selectedUserName = '';
   form: VendorRequest = this.emptyForm();
 
-  constructor(private vendorService: AdminVendorService) {}
+  constructor(
+    private vendorService: AdminVendorService,
+    private vendorRequestService: VendorRequestService,
+  ) {}
 
   ngOnInit(): void {
     this.load();
+    this.loadVendorRequests();
+  }
+  loadVendorRequests(): void {
+    this.vendorRequestService.adminList().subscribe({
+      next: (requests) => {
+        this.vendorRequests = requests;
+      },
+      error: (error) => {
+        console.error('Failed to load vendor requests', error);
+      },
+    });
+  }
+  approveRequest(id: number): void {
+    this.vendorRequestService.approve(id).subscribe({
+      next: () => {
+        this.loadVendorRequests();
+        this.load(); // reload vendor list too
+      },
+      error: (error) => {
+        console.error('Approve failed', error);
+      },
+    });
+  }
+
+  rejectRequest(id: number): void {
+    const reason = window.prompt('Please enter rejection reason:');
+    if (!reason || !reason.trim()) {
+      return;
+    }
+
+    this.vendorRequestService.reject(id, reason.trim()).subscribe({
+      next: () => {
+        this.loadVendorRequests();
+      },
+      error: (error) => {
+        console.error('Reject failed', error);
+      },
+    });
   }
 
   load(): void {
@@ -207,13 +256,99 @@ export class VendorsComponent implements OnInit {
       rating: null,
     };
   }
-  private resetForm(): void {
-    this.selectedUserName = '';
-    this.form = this.emptyForm();
-  }
+ private resetForm(): void {
+  this.selectedUserName = '';
+  this.editingVendorId = null;
+  this.form = this.emptyForm();
+}
   private messageFor(error: any, fallback: string): string {
     if (error.status === 401 || error.status === 403)
       return 'Administrator access is required for this action.';
     return error.error?.message || error.error?.detail || fallback;
   }
+  get filteredVendorRequests(): VendorRegistrationRequest[] {
+    return this.vendorRequests.filter(
+      (request) =>
+        !this.requestStatusFilter ||
+        request.status === this.requestStatusFilter,
+    );
+  }
+  editingVendorId: number | null = null;
+
+openEdit(vendor: AdminVendor): void {
+  this.selectedVendor = vendor;
+  this.showCreate = true;
+  this.editingVendorId = vendor.id;
+  this.selectedUserName = vendor.userName;
+  this.form = {
+    ...vendor,
+    phone: vendor.phone ?? null,
+  };
+}
+
+saveVendor(): void {
+  if (this.editingVendorId === null) {
+    this.createVendor();
+    return;
+  }
+
+  const request: VendorRequest = {
+    ...this.form,
+    id: this.editingVendorId,
+    businessName: this.form.businessName.trim(),
+    contactPerson: this.form.contactPerson.trim(),
+    email: this.form.email.trim(),
+    phone: this.form.phone?.trim() || null,
+  };
+
+  this.creating = true;
+  this.errorMessage = '';
+  this.successMessage = '';
+
+  this.vendorService.update(request).subscribe({
+    next: (saved) => {
+      this.vendors = this.vendors.map((vendor) =>
+        vendor.id === saved.id ? saved : vendor,
+      );
+      this.selectedVendor = saved;
+      this.creating = false;
+      this.showCreate = false;
+      this.resetForm();
+      this.successMessage = `${saved.businessName} updated successfully.`;
+    },
+    error: (error) => {
+      this.creating = false;
+      this.errorMessage = this.messageFor(error, 'Unable to update vendor.');
+    },
+  });
+}
+
+deleteVendor(vendor: AdminVendor): void {
+  const confirmed = window.confirm(
+    `Delete vendor "${vendor.businessName}"?`,
+  );
+
+  if (!confirmed) return;
+
+  this.errorMessage = '';
+  this.successMessage = '';
+
+  this.vendorService.delete(vendor.id).subscribe({
+    next: () => {
+      this.vendors = this.vendors.filter((item) => item.id !== vendor.id);
+
+      if (this.selectedVendor?.id === vendor.id) {
+        this.selectedVendor = null;
+      }
+
+      this.successMessage = `${vendor.businessName} deleted successfully.`;
+    },
+    error: (error) => {
+      this.errorMessage = this.messageFor(
+        error,
+        'Unable to delete vendor. The vendor may have related orders or records.',
+      );
+    },
+  });
+}
 }

@@ -14,18 +14,15 @@ import { WishlistService } from '../../shared/services/wishlist.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink
-  ],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-
   categories: Category[] = [];
 
   trendingProducts: Product[] = [];
+  selectedImageByProduct: Record<number, string> = {};
 
   featuredProducts: Product[] = [];
   loading = true;
@@ -33,70 +30,75 @@ export class HomeComponent implements OnInit {
   categoryError = '';
   private catalogProducts: Product[] = [];
 
-constructor(
-  private categoryService: CategoryService,
-  private productService: ProductService,
-  private cartService: CartService,
-  private wishlistService: WishlistService
-) {}
+  constructor(
+    private categoryService: CategoryService,
+    private productService: ProductService,
+    private cartService: CartService,
+    private wishlistService: WishlistService,
+  ) {}
 
   ngOnInit(): void {
-
     this.loadCategories();
 
     this.loadProducts();
-
   }
 
   loadCategories(): void {
-
     this.categoryService.getCategories().subscribe({
-      next: categories => this.categories = categories.map(category => ({
-        ...category,
-        productCount: this.catalogProducts.filter(product => product.categoryId === category.id).length
-      })),
-      error: () => this.categoryError = 'Categories could not be loaded.'
+      next: (categories) =>
+        (this.categories = categories.map((category) => ({
+          ...category,
+          productCount: this.catalogProducts.filter(
+            (product) => product.categoryId === category.id,
+          ).length,
+        }))),
+      error: () => (this.categoryError = 'Categories could not be loaded.'),
     });
-
   }
 
   loadProducts(): void {
     this.loading = true;
     this.errorMessage = '';
     this.productService.getProductsFromBackend().subscribe({
-      next: products => {
-        products = products.map(product => ({ ...product, image: this.productService.toDisplayImage(product) }));
-        this.trendingProducts = products.filter(product => product.active !== false);
+      next: (products) => {
+        products = products.map((product) => ({
+          ...product,
+          image: this.productService.toDisplayImage(product),
+        }));
+        this.trendingProducts = products.filter(
+          (product) => product.active !== false,
+        );
         this.catalogProducts = this.trendingProducts;
-        this.categories = this.categories.map(category => ({
+        this.categories = this.categories.map((category) => ({
           ...category,
-          productCount: this.catalogProducts.filter(product => product.categoryId === category.id).length
+          productCount: this.catalogProducts.filter(
+            (product) => product.categoryId === category.id,
+          ).length,
         }));
         this.featuredProducts = [];
         this.loading = false;
       },
       error: () => {
-        this.errorMessage = 'We could not load the vendor catalog. Please try again.';
+        this.errorMessage =
+          'We could not load the vendor catalog. Please try again.';
         this.loading = false;
-      }
+      },
     });
-
   }
 
-addToCart(product: Product): void {
+  addToCart(product: Product): void {
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+    };
 
-  const cartItem: CartItem = {
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image: product.image,
-    quantity: 1
-  };
+    this.cartService.addToCart(cartItem);
 
-  this.cartService.addToCart(cartItem);
-
-  alert(`${product.name} added to cart!`);
-}
+    alert(`${product.name} added to cart!`);
+  }
 
   addToWishlist(product: Product): void {
     this.wishlistService.addToWishlist({
@@ -106,8 +108,33 @@ addToCart(product: Product): void {
       oldPrice: product.oldPrice,
       image: product.image,
       category: product.category,
-      rating: product.rating
+      rating: product.rating,
     });
   }
 
+  getProductImages(product: Product): string[] {
+    const paths = (product.imagePaths ?? []).filter(
+      (path): path is string => !!path,
+    );
+
+    if (paths.length) {
+      return [...new Set(paths)];
+    }
+
+    return product.image ? [product.image] : [];
+  }
+
+  getSelectedProductImage(product: Product): string {
+    return (
+      this.selectedImageByProduct[product.id] ||
+      this.productService.toDisplayImage(product)
+    );
+  }
+
+  selectProductImage(product: Product, image: string): void {
+    this.selectedImageByProduct[product.id] = image;
+  }
+  isInWishlist(product: Product): boolean {
+  return this.wishlistService.isInWishlist?.(product.id) ?? false;
+}
 }

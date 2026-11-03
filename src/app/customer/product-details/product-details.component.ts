@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -17,27 +16,32 @@ interface ProductDetails extends Product {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './product-details.component.html',
-  styleUrl: './product-details.component.scss'
+  styleUrl: './product-details.component.scss',
 })
 export class ProductDetailsComponent implements OnInit {
-
   productId!: number;
   quantity = 1;
 
   product: ProductDetails | null = null;
   loading = true;
   errorMessage = '';
+  galleryImages: string[] = [];
+  selectedImage = '';
+
+  selectImage(image: string): void {
+    this.selectedImage = image;
+  }
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    private productService: ProductService
+    private productService: ProductService,
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
 
       if (!Number.isInteger(id) || id <= 0) {
@@ -58,12 +62,22 @@ export class ProductDetailsComponent implements OnInit {
 
     this.productService.getProductByIdFromBackend(id).subscribe({
       next: (data) => {
+        const images = (data.imagePaths ?? []).filter(
+          (path): path is string => !!path,
+        );
+
+        this.galleryImages = images.length
+          ? images
+          : [this.productService.toDisplayImage(data)];
+
+        this.selectedImage = this.galleryImages[0];
+
         this.product = {
           ...data,
-          image: this.productService.toDisplayImage(data),
+          image: this.selectedImage,
           description:
             data.description ||
-            `Discover ${data.name}, a quality ${data.category.toLowerCase()} product selected for the ShopNest marketplace.`
+            `Discover ${data.name}, a quality ${data.category.toLowerCase()} product selected for the ShopNest marketplace.`,
         };
 
         this.loading = false;
@@ -82,7 +96,7 @@ export class ProductDetailsComponent implements OnInit {
         }
 
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -96,7 +110,7 @@ export class ProductDetailsComponent implements OnInit {
       oldPrice: this.product.oldPrice,
       image: this.product.image,
       category: this.product.category,
-      rating: this.product.rating
+      rating: this.product.rating,
     });
 
     alert('Product added to wishlist!');
@@ -105,8 +119,7 @@ export class ProductDetailsComponent implements OnInit {
   increaseQuantity(): void {
     if (!this.product) return;
 
-    if (this.product.stock != null &&
-        this.quantity >= this.product.stock) {
+    if (this.product.stock != null && this.quantity >= this.product.stock) {
       alert('Available stock-এর বেশি quantity নেওয়া যাবে না।');
       return;
     }
@@ -123,8 +136,10 @@ export class ProductDetailsComponent implements OnInit {
   addToCart(): void {
     if (!this.product) return;
 
-    if (this.product.active === false ||
-        (this.product.stock != null && this.product.stock <= 0)) {
+    if (
+      this.product.active === false ||
+      (this.product.stock != null && this.product.stock <= 0)
+    ) {
       alert('এই product বর্তমানে available নেই।');
       return;
     }
@@ -134,7 +149,7 @@ export class ProductDetailsComponent implements OnInit {
       name: this.product.name,
       price: this.product.price,
       image: this.product.image,
-      quantity: this.quantity
+      quantity: this.quantity,
     });
 
     alert('Product added to cart!');

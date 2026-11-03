@@ -1,101 +1,224 @@
+<div class="register-wrapper">
+  <div class="register-card card border-0 shadow-lg">
 
-<form (ngSubmit)="register()" #registerForm="ngForm">
-
-  <div class="mb-3">
-    <label class="form-label">Username</label>
-    <input
-      type="text"
-      class="form-control"
-      name="username"
-      [(ngModel)]="username"
-      required
-      placeholder="Enter username">
-  </div>
-
-  <div class="row">
-    <div class="col-md-6 mb-3">
-      <label class="form-label">First Name</label>
-      <input
-        type="text"
-        class="form-control"
-        name="firstName"
-        [(ngModel)]="firstName"
-        required
-        placeholder="First name">
+    <!-- Header -->
+    <div class="register-header text-center text-white">
+      <div class="brand-icon mb-2">
+        <i class="bi bi-shield-lock-fill"></i>
+      </div>
+      <h3 class="fw-bold mb-1">Create your account</h3>
+      <p class="mb-0 small opacity-75">Join us in just a few steps</p>
     </div>
 
-    <div class="col-md-6 mb-3">
-      <label class="form-label">Last Name</label>
-      <input
-        type="text"
-        class="form-control"
-        name="lastName"
-        [(ngModel)]="lastName"
-        required
-        placeholder="Last name">
+    <div class="card-body p-4 p-md-5">
+      <form (ngSubmit)="register()" #registerForm="ngForm" novalidate>
+
+        <!-- Account Type Toggle -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold small text-uppercase text-muted">
+            I want to register as
+          </label>
+          <div class="account-type-toggle">
+            <input type="radio" class="btn-check" id="typeCustomer"
+                   name="accountType" value="CUSTOMER"
+                   [(ngModel)]="accountType">
+            <label class="btn btn-outline-primary" for="typeCustomer">
+              <i class="bi bi-person me-1"></i> Customer
+            </label>
+
+            <input type="radio" class="btn-check" id="typeVendor"
+                   name="accountType" value="VENDOR"
+                   [(ngModel)]="accountType">
+            <label class="btn btn-outline-primary" for="typeVendor">
+              <i class="bi bi-shop me-1"></i> Vendor
+            </label>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="username"
+                 name="username" placeholder="Username"
+                 [(ngModel)]="username" #usernameRef="ngModel" required>
+          <label for="username"><i class="bi bi-person-circle me-1"></i> Username</label>
+          @if (usernameRef.invalid && usernameRef.touched) {
+            <div class="invalid-feedback d-block">Username is required.</div>
+          }
+        </div>
+
+        <!-- Names -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="firstName"
+                     name="firstName" placeholder="First Name"
+                     [(ngModel)]="firstName" #firstNameRef="ngModel" required>
+              <label for="firstName">First Name</label>
+              @if (firstNameRef.invalid && firstNameRef.touched) {
+                <div class="invalid-feedback d-block">Required.</div>
+              }
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="lastName"
+                     name="lastName" placeholder="Last Name"
+                     [(ngModel)]="lastName" #lastNameRef="ngModel" required>
+              <label for="lastName">Last Name</label>
+              @if (lastNameRef.invalid && lastNameRef.touched) {
+                <div class="invalid-feedback d-block">Required.</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="email"
+                 name="email" placeholder="name@example.com"
+                 [(ngModel)]="email" #emailRef="ngModel" required email>
+          <label for="email"><i class="bi bi-envelope me-1"></i> Email Address</label>
+          @if (emailRef.invalid && emailRef.touched) {
+            <div class="invalid-feedback d-block">
+              @if (emailRef.errors?.['required']) { Email is required. }
+              @if (emailRef.errors?.['email']) { Please enter a valid email. }
+            </div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="form-floating mb-3 password-field">
+          <input [type]="showPassword ? 'text' : 'password'"
+                 class="form-control" id="password"
+                 name="password" placeholder="Password"
+                 [(ngModel)]="password" #passwordRef="ngModel"
+                 required minlength="8">
+          <label for="password"><i class="bi bi-lock me-1"></i> Password</label>
+          <button type="button" class="btn-toggle-password"
+                  (click)="showPassword = !showPassword"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+          @if (passwordRef.invalid && passwordRef.touched) {
+            <div class="invalid-feedback d-block">
+              @if (passwordRef.errors?.['required']) { Password is required. }
+              @if (passwordRef.errors?.['minlength']) { Minimum 8 characters. }
+            </div>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="confirmPassword"
+                 name="confirmPassword" placeholder="Confirm Password"
+                 [(ngModel)]="confirmPassword" #confirmRef="ngModel" required>
+          <label for="confirmPassword"><i class="bi bi-lock-fill me-1"></i> Confirm Password</label>
+          @if (confirmPassword && password !== confirmPassword) {
+            <div class="invalid-feedback d-block">Passwords do not match.</div>
+          }
+        </div>
+
+        <!-- Vendor Section -->
+        @if (accountType === 'VENDOR') {
+          <div class="vendor-section border rounded-3 p-3 p-md-4 mb-3">
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-shop-window fs-4 text-primary me-2"></i>
+              <h6 class="fw-bold mb-0">Vendor Information</h6>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="businessName"
+                         name="businessName" placeholder="Business Name"
+                         [(ngModel)]="businessName" required>
+                  <label for="businessName">Business Name *</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="businessEmail"
+                         name="businessEmail" placeholder="Business Email"
+                         [(ngModel)]="businessEmail" required email>
+                  <label for="businessEmail">Business Email *</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="contactPerson"
+                         name="contactPerson" placeholder="Contact Person"
+                         [(ngModel)]="contactPerson" required>
+                  <label for="contactPerson">Contact Person *</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="businessPhone"
+                         name="businessPhone" placeholder="Business Phone"
+                         [(ngModel)]="businessPhone">
+                  <label for="businessPhone">Business Phone</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="businessAddress"
+                            name="businessAddress" placeholder="Business Address"
+                            style="height: 90px"
+                            [(ngModel)]="businessAddress"></textarea>
+                  <label for="businessAddress">Business Address</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="businessDescription"
+                            name="businessDescription" placeholder="Business Description"
+                            style="height: 90px"
+                            [(ngModel)]="businessDescription"></textarea>
+                  <label for="businessDescription">Business Description</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="tradeLicenseNumber"
+                         name="tradeLicenseNumber" placeholder="Trade License Number"
+                         [(ngModel)]="tradeLicenseNumber">
+                  <label for="tradeLicenseNumber">Trade License Number</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Alerts -->
+        @if (errorMessage) {
+          <div class="alert alert-danger d-flex align-items-start gap-2 py-2">
+            <i class="bi bi-exclamation-circle-fill mt-1"></i>
+            <div>{{ errorMessage }}</div>
+          </div>
+        }
+        @if (successMessage) {
+          <div class="alert alert-success d-flex align-items-start gap-2 py-2">
+            <i class="bi bi-check-circle-fill mt-1"></i>
+            <div>{{ successMessage }}</div>
+          </div>
+        }
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-lg w-100 mt-2 fw-semibold"
+                [disabled]="loading || registerForm.invalid">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Creating account...
+          } @else {
+            <i class="bi bi-person-plus-fill me-2"></i>
+            Create Account
+          }
+        </button>
+
+        <p class="text-center text-muted small mt-3 mb-0">
+          Already have an account? <a routerLink="/login" class="fw-semibold text-decoration-none">Sign in</a>
+        </p>
+      </form>
     </div>
   </div>
-
-  <div class="mb-3">
-    <label class="form-label">Email Address</label>
-    <input
-      type="email"
-      class="form-control"
-      name="email"
-      [(ngModel)]="email"
-      required
-      email
-      placeholder="Enter email">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Password</label>
-<input
-  type="password"
-  class="form-control"
-  name="password"
-  [(ngModel)]="password"
-  required
-  minlength="8"
-  maxlength="72"
-  placeholder="Create password">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Confirm Password</label>
-    <input
-      type="password"
-      class="form-control"
-      name="confirmPassword"
-      [(ngModel)]="confirmPassword"
-      required
-      placeholder="Confirm password">
-  </div>
-
-  @if (errorMessage) {
-    <div class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-  }
-
-  @if (successMessage) {
-    <div class="alert alert-success">
-      {{ successMessage }}
-    </div>
-  }
-
-  <button
-    type="submit"
-    class="btn btn-primary w-100"
-    [disabled]="loading || registerForm.invalid">
-
-    @if (loading) {
-      <span class="spinner-border spinner-border-sm me-2"></span>
-      Creating account...
-    } @else {
-      <i class="bi bi-person-plus me-2"></i>
-      Create Account
-    }
-  </button>
-
-</form>
+</div>

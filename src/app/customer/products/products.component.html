@@ -137,41 +137,65 @@
     <div class="products-grid">
         @for (product of filteredProducts; track product.id) {
         <article class="product-card">
-            <div class="product-image-wrap">
-                @if (product.badge) {
-                <span class="product-badge">{{ product.badge }}</span>
-                } @else if (product.premium) {
-                <span class="product-badge premium-badge">
-                    <i class="bi bi-gem"></i> Premium
-                </span>
-                }
+           <div class="product-image-wrap">
+  @if (product.badge) {
+    <span class="product-badge">{{ product.badge }}</span>
+  } @else if (product.premium) {
+    <span class="product-badge premium-badge">
+      <i class="bi bi-gem"></i> Premium
+    </span>
+  }
 
-                @if (product.oldPrice && product.oldPrice > product.price) {
-                <span class="discount-badge">
-                    -{{ getDiscount(product.price, product.oldPrice) }}%
-                </span>
-                }
+  @if (product.oldPrice && product.oldPrice > product.price) {
+    <span class="discount-badge">
+      -{{ getDiscount(product.price, product.oldPrice) }}%
+    </span>
+  }
 
-                <button type="button" class="wishlist-btn" aria-label="Add product to wishlist"
-                    (click)="addToWishlist(product)">
-                    <i class="bi bi-heart"></i>
-                </button>
+  <button
+    type="button"
+    class="wishlist-btn"
+    aria-label="Add product to wishlist"
+    (click)="addToWishlist(product)"
+  >
+    <i class="bi bi-heart"></i>
+  </button>
 
-                <div class="product-image">
-                    @if (product.image) {
-                    <img [src]="product.image" [alt]="product.name" loading="lazy" (error)="onImageError($event)" />
-                    } @else {
-                    <div class="image-placeholder">
-                        <i class="bi bi-box-seam"></i>
-                    </div>
-                    }
-                </div>
+  <div class="product-main-image">
+    @if (getSelectedProductImage(product); as image) {
+      <img [src]="image" [alt]="product.name" loading="lazy" />
+    } @else {
+      <div class="image-placeholder">
+        <i class="bi bi-box-seam"></i>
+      </div>
+    }
 
-                <button type="button" class="quick-add-btn" (click)="addToCart(product)">
-                    <i class="bi bi-bag-plus"></i>
-                    Quick Add
-                </button>
-            </div>
+    <button
+      type="button"
+      class="quick-add-btn"
+      (click)="addToCart(product)"
+    >
+      <i class="bi bi-bag-plus"></i>
+      Quick Add
+    </button>
+  </div>
+
+  @if (getProductImages(product).length > 1) {
+    <div class="product-thumbnails" aria-label="Product images">
+      @for (image of getProductImages(product); track image) {
+        <button
+          type="button"
+          class="product-thumbnail"
+          [class.active]="getSelectedProductImage(product) === image"
+          (click)="selectProductImage(product, image)"
+          [attr.aria-label]="'Show another ' + product.name + ' image'"
+        >
+          <img [src]="image" [alt]="product.name + ' image'" loading="lazy" />
+        </button>
+      }
+    </div>
+  }
+</div>
 
             <div class="product-info">
                 <span class="product-category">{{ product.category }}</span>
@@ -182,7 +206,6 @@
                     <i class="bi bi-eye"></i>
                     View Details
                 </button>
-
 
                 <div class="product-rating">
                     <span class="stars">
@@ -200,7 +223,8 @@
                             ৳{{ product.price | number:'1.0-2' }}
                         </strong>
 
-                        @if (product.oldPrice && product.oldPrice > product.price) {
+                        @if (product.oldPrice && product.oldPrice >
+                        product.price) {
                         <del class="old-price">
                             ৳{{ product.oldPrice | number:'1.0-2' }}
                         </del>
@@ -239,7 +263,8 @@
         </div>
         <div>
             <h3>Shopping made simple</h3>
-            <p>Discover your favorites and enjoy a smooth shopping experience.</p>
+            <p>Discover your favorites and enjoy a smooth shopping
+                experience.</p>
         </div>
         <i class="bi bi-stars promo-decoration"></i>
     </div>

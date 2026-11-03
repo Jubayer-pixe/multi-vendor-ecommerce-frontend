@@ -32,3 +32,17 @@ export interface CurrentUser {
   role: UserRole;
   username: string;
 }
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  accountType?: 'CUSTOMER' | 'VENDOR';
+  businessName?: string;
+  contactPerson?: string;
+  businessPhone?: string;
+  businessAddress?: string;
+  businessDescription?: string;
+  tradeLicenseNumber?: string;
+}

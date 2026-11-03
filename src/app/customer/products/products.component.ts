@@ -20,6 +20,8 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
 
+  selectedImageByProduct: Record<number, string> = {};
+
   categories: string[] = [];
 
   searchText = '';
@@ -114,4 +116,28 @@ export class ProductsComponent implements OnInit {
     this.sortBy = 'featured';
     this.applyFilters();
   }
+
+
+  getProductImages(product: Product): string[] {
+  const paths = (product.imagePaths ?? []).filter(
+    (path): path is string => !!path,
+  );
+
+  if (paths.length) {
+    return [...new Set(paths)];
+  }
+
+  return product.image ? [product.image] : [];
+}
+
+getSelectedProductImage(product: Product): string {
+  return (
+    this.selectedImageByProduct[product.id] ||
+    this.productService.toDisplayImage(product)
+  );
+}
+
+selectProductImage(product: Product, image: string): void {
+  this.selectedImageByProduct[product.id] = image;
+}
 }

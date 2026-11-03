@@ -1,4 +1,3 @@
-
 <section class="product-details-section py-5">
   <div class="container">
 
@@ -11,159 +10,151 @@
     </div>
 
     @if (loading) {
-      <div class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-3">Loading product details...</p>
-      </div>
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3">Loading product details...</p>
+    </div>
     } @else if (errorMessage) {
-      <div class="alert alert-warning text-center p-4">
-        <h5>{{ errorMessage }}</h5>
-        <a routerLink="/products" class="btn btn-primary mt-2">
-          Back to Products
-        </a>
-      </div>
+    <div class="alert alert-warning text-center p-4">
+      <h5>{{ errorMessage }}</h5>
+      <a routerLink="/products" class="btn btn-primary mt-2">
+        Back to Products
+      </a>
+    </div>
     } @else if (product) {
 
-      <!-- তোমার বর্তমান row g-5 design এখানে রাখবে -->
-      <div class="row g-5">
+    <!-- তোমার বর্তমান row g-5 design এখানে রাখবে -->
+    <div class="row g-5">
 
-        <div class="col-lg-6">
+      <div class="col-lg-6">
+        <div class="product-gallery">
           <div class="product-image">
-            @if (product.imageUrl || product.image) {
-              <img
-                [src]="product.imageUrl || product.image"
-                [alt]="product.name"
-                class="img-fluid">
+            @if (selectedImage) {
+            <img [src]="selectedImage" [alt]="product.name" class="img-fluid" />
             } @else {
-              <div class="text-center p-5">
-                <i class="bi bi-image fs-1"></i>
-                <p>Image unavailable</p>
-              </div>
+            <div class="text-center p-5">
+              <i class="bi bi-image fs-1"></i>
+              <p>Image unavailable</p>
+            </div>
             }
 
             @if (product.discount > 0) {
-              <span class="sale-badge">
-                -{{ product.discount }}%
-              </span>
-            }
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <small class="text-primary fw-semibold">
-            {{ product.category }}
-          </small>
-
-          <h1 class="product-title mt-2">
-            {{ product.name }}
-          </h1>
-
-          <div class="rating mb-3">
-            <i class="bi bi-star-fill"></i>
-            <span class="rating-number">{{ product.rating }}</span>
-            <span class="text-muted">
-              ({{ product.reviews }} Reviews)
-            </span>
-          </div>
-
-          <div class="price-section mb-4">
-            <span class="current-price">
-              ৳{{ product.price | number:'1.2-2' }}
-            </span>
-
-            @if (product.oldPrice > product.price) {
-              <span class="old-price">
-                ৳{{ product.oldPrice | number:'1.2-2' }}
-              </span>
+            <span class="sale-badge">-{{ product.discount }}%</span>
             }
           </div>
 
-          <p class="description">{{ product.description }}</p>
-
-          @if (product.stock != null) {
-            <p>
-              Stock:
-              <strong>{{ product.stock }}</strong>
-            </p>
+          @if (galleryImages.length > 1) {
+          <div class="product-thumbnails" aria-label="Product images">
+            @for (image of galleryImages; track image; let i = $index) {
+            <button type="button" class="thumbnail-button" [class.active]="selectedImage === image"
+              (click)="selectImage(image)" [attr.aria-label]="'Show product image ' + (i + 1)">
+              <img [src]="image" [alt]="product.name + ' image ' + (i + 1)" />
+            </button>
+            }
+          </div>
           }
+        </div>
+      </div>
 
-          <hr>
+      <div class="col-lg-6">
+        <small class="text-primary fw-semibold">
+          {{ product.category }}
+        </small>
 
-          <div class="quantity-section mb-4">
-            <label class="fw-semibold mb-2 d-block">Quantity</label>
+        <h1 class="product-title mt-2">
+          {{ product.name }}
+        </h1>
 
-            <div class="quantity-control">
-              <button
-                type="button"
-                class="quantity-btn"
-                (click)="decreaseQuantity()">
-                <i class="bi bi-dash"></i>
-              </button>
+        <div class="rating mb-3">
+          <i class="bi bi-star-fill"></i>
+          <span class="rating-number">{{ product.rating }}</span>
+          <span class="text-muted">
+            ({{ product.reviews }} Reviews)
+          </span>
+        </div>
 
-              <span class="quantity">{{ quantity }}</span>
+        <div class="price-section mb-4">
+          <span class="current-price">
+            ৳{{ product.price | number:'1.2-2' }}
+          </span>
 
-              <button
-                type="button"
-                class="quantity-btn"
-                (click)="increaseQuantity()"
-                [disabled]="product.stock != null &&
+          @if (product.oldPrice > product.price) {
+          <span class="old-price">
+            ৳{{ product.oldPrice | number:'1.2-2' }}
+          </span>
+          }
+        </div>
+
+        <p class="description">{{ product.description }}</p>
+
+        @if (product.stock != null) {
+        <p>
+          Stock:
+          <strong>{{ product.stock }}</strong>
+        </p>
+        }
+
+        <hr>
+
+        <div class="quantity-section mb-4">
+          <label class="fw-semibold mb-2 d-block">Quantity</label>
+
+          <div class="quantity-control">
+            <button type="button" class="quantity-btn" (click)="decreaseQuantity()">
+              <i class="bi bi-dash"></i>
+            </button>
+
+            <span class="quantity">{{ quantity }}</span>
+
+            <button type="button" class="quantity-btn" (click)="increaseQuantity()" [disabled]="product.stock != null &&
                             quantity >= product.stock">
-                <i class="bi bi-plus"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="action-buttons">
-            <button
-              type="button"
-              class="btn btn-primary btn-lg"
-              (click)="addToCart()">
-              <i class="bi bi-cart-plus"></i> Add to Cart
+              <i class="bi bi-plus"></i>
             </button>
-
-            <button
-              type="button"
-              class="btn btn-dark btn-lg"
-              (click)="buyNow()">
-              <i class="bi bi-lightning-charge"></i> Buy Now
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-outline-danger"
-              (click)="addToWishlist()">
-              <i class="bi bi-heart"></i> Add to Wishlist
-            </button>
-          </div>
-
-          <div class="product-features mt-5">
-            <div class="feature">
-              <i class="bi bi-truck"></i>
-              <div>
-                <strong>Free Delivery</strong>
-                <small>On orders over ৳2000</small>
-              </div>
-            </div>
-
-            <div class="feature">
-              <i class="bi bi-shield-check"></i>
-              <div>
-                <strong>Secure Payment</strong>
-                <small>100% secure payment</small>
-              </div>
-            </div>
-
-            <div class="feature">
-              <i class="bi bi-arrow-repeat"></i>
-              <div>
-                <strong>Easy Return</strong>
-                <small>7 days return policy</small>
-              </div>
-            </div>
           </div>
         </div>
 
+        <div class="action-buttons">
+          <button type="button" class="btn btn-primary btn-lg" (click)="addToCart()">
+            <i class="bi bi-cart-plus"></i> Add to Cart
+          </button>
+
+          <button type="button" class="btn btn-dark btn-lg" (click)="buyNow()">
+            <i class="bi bi-lightning-charge"></i> Buy Now
+          </button>
+
+          <button type="button" class="btn btn-outline-danger" (click)="addToWishlist()">
+            <i class="bi bi-heart"></i> Add to Wishlist
+          </button>
+        </div>
+
+        <div class="product-features mt-5">
+          <div class="feature">
+            <i class="bi bi-truck"></i>
+            <div>
+              <strong>Free Delivery</strong>
+              <small>On orders over ৳2000</small>
+            </div>
+          </div>
+
+          <div class="feature">
+            <i class="bi bi-shield-check"></i>
+            <div>
+              <strong>Secure Payment</strong>
+              <small>100% secure payment</small>
+            </div>
+          </div>
+
+          <div class="feature">
+            <i class="bi bi-arrow-repeat"></i>
+            <div>
+              <strong>Easy Return</strong>
+              <small>7 days return policy</small>
+            </div>
+          </div>
+        </div>
       </div>
+
+    </div>
     }
   </div>
 </section>
