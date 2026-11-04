@@ -143,7 +143,13 @@
 
           <!-- Buttons -->
 
+          @if (downloadError) { <div class="alert alert-warning mt-3" role="alert">{{ downloadError }}</div> }
+
           <div class="action-buttons mt-4">
+
+            <button type="button" class="btn btn-primary" (click)="downloadInvoice()" [disabled]="downloading" aria-label="Download invoice PDF">
+              <i class="bi bi-file-earmark-pdf"></i> {{ downloading ? 'Preparing PDF…' : 'Download Invoice PDF' }}
+            </button>
 
             <a
               routerLink="/orders"

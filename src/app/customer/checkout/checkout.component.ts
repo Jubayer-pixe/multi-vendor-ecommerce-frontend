@@ -89,8 +89,17 @@ export class CheckoutComponent {
     });
   }
 
+  abandonCheckoutAttempt(): void {
+    if (this.submitting) return;
+    this.checkoutService.abandonAttempt();
+  }
+
   private getErrorMessage(error: HttpErrorResponse): string {
     const body = error.error;
+    const detail = typeof body === 'string' ? body : body?.detail || body?.message || body?.reason || '';
+    if (error.status === 409 && detail.includes('Idempotency-Key')) {
+      return 'Checkout details changed after a failed attempt. Return to the cart and start checkout again.';
+    }
     if (typeof body === 'string' && body.trim()) return body;
     return body?.message || body?.reason || body?.detail || body?.error || error.message ||
       'Could not place your order. Please try again.';

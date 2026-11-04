@@ -1,6 +1,74 @@
-<section class="container-fluid py-4 admin-reports" aria-labelledby="reports-heading">
-  <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><p class="eyebrow mb-1">PLATFORM ANALYTICS</p><h1 id="reports-heading" class="h2 mb-1">Reports</h1><p class="text-secondary mb-0">Live aggregate metrics returned by the ADMIN dashboard API.</p></div><button class="btn btn-outline-primary" type="button" (click)="load()" [disabled]="loading"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button></div>
-  @if (loading) { <div class="alert alert-info">Loading report data…</div> }
-  @if (errorMessage) { <div class="alert alert-danger">{{ errorMessage }}</div> }
-  @if (report; as data) { <div class="card border-0 shadow-sm report-card"><div class="card-header"><div><p class="eyebrow mb-1">CURRENT TOTALS</p><h2 class="h5 mb-0">Operational metrics</h2></div></div><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Metric</th><th class="text-end">Value</th></tr></thead><tbody>@for (metric of data.metrics | keyvalue; track metric.key) { <tr><td>{{ metric.key | titlecase }}</td><td class="text-end fw-semibold">{{ metric.value | number }}</td></tr> }</tbody></table></div><div class="alert alert-warning m-3 mb-0 small"><strong>Report limitations:</strong> the backend has no date-range reporting endpoint or documented sales/revenue aggregation rule. These figures are current counts only; no revenue, forecast, or export is fabricated.</div></div> }
-</section>
+<main class="report-page" aria-labelledby="reports-heading">
+  <header class="report-heading">
+    <div class="heading-copy">
+      <div class="heading-icon" aria-hidden="true"><i class="bi bi-receipt-cutoff"></i></div>
+      <div>
+        <p class="eyebrow">COMMERCE INSIGHTS</p>
+        <h1 id="reports-heading">Order &amp; invoice report</h1>
+        <p class="heading-description">Review customer orders, payment status, and invoice availability.</p>
+      </div>
+    </div>
+    <button class="refresh-button" type="button" (click)="load()" [disabled]="loading" aria-label="Refresh order report">
+      <i class="bi bi-arrow-clockwise" aria-hidden="true"></i><span>Refresh</span>
+    </button>
+  </header>
+
+  <form class="filter-panel" (ngSubmit)="applyFilters()" aria-label="Order report filters">
+    <div class="panel-heading">
+      <div><h2><i class="bi bi-funnel" aria-hidden="true"></i> Refine report</h2><p>Choose a date range or search by order and customer.</p></div>
+    </div>
+    <div class="filter-grid">
+      <div class="filter-field">
+        <label for="startDate">From</label>
+        <input id="startDate" name="startDate" class="form-control" type="date" [(ngModel)]="filters.startDate" [attr.max]="filters.endDate || null">
+      </div>
+      <div class="filter-field">
+        <label for="endDate">Through</label>
+        <input id="endDate" name="endDate" class="form-control" type="date" [(ngModel)]="filters.endDate" [attr.min]="filters.startDate || null">
+        <small>Both dates are included</small>
+      </div>
+      <div class="filter-field">
+        <label for="orderStatus">Order status</label>
+        <select id="orderStatus" name="status" class="form-select" [(ngModel)]="filters.status">
+          <option value="">All statuses</option><option value="PENDING">Pending</option><option value="CONFIRMED">Confirmed</option><option value="PROCESSING">Processing</option><option value="SHIPPED">Shipped</option><option value="DELIVERED">Delivered</option><option value="CANCELLED">Cancelled</option><option value="REFUNDED">Refunded</option>
+        </select>
+      </div>
+      <div class="filter-field search-field">
+        <label for="orderSearch">Order or customer</label>
+        <div class="search-control"><i class="bi bi-search" aria-hidden="true"></i><input id="orderSearch" name="search" class="form-control" type="search" [(ngModel)]="filters.search" placeholder="Search by number or name"></div>
+      </div>
+      <button class="apply-button" type="submit" [disabled]="loading"><i class="bi bi-search" aria-hidden="true"></i> Apply filters</button>
+    </div>
+  </form>
+
+  @if (loading) { <div class="state-card loading-state" role="status"><span class="loading-indicator" aria-hidden="true"></span><span>Loading order report…</span></div> }
+  @if (errorMessage) { <div class="state-card error-state" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>{{ errorMessage }}</span><button type="button" (click)="load()">Try again</button></div> }
+  @if (actionError) { <div class="state-card warning-state" role="alert"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span>{{ actionError }}</span></div> }
+  @if (!loading && !errorMessage && report?.empty) { <div class="state-card empty-state" role="status"><div class="empty-icon"><i class="bi bi-inbox" aria-hidden="true"></i></div><h2>No orders found</h2><p>Try another date range or clear one of the filters.</p></div> }
+
+  @if (report && !report.empty) {
+    <section class="results-panel" aria-label="Order report results">
+      <div class="results-heading"><div><h2>Orders</h2><p aria-live="polite">{{ report.totalElements }} matching {{ report.totalElements === 1 ? 'order' : 'orders' }}</p></div><span class="page-indicator">Page {{ report.number + 1 }} <span>of {{ report.totalPages }}</span></span></div>
+      <div class="table-scroll"><table class="report-table">
+        <caption class="visually-hidden">Filtered customer orders and invoice actions</caption>
+        <thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col">Order date</th><th scope="col" class="numeric-cell">Total</th><th scope="col">Order status</th><th scope="col">Payment</th><th scope="col">Invoice</th></tr></thead>
+        <tbody>@for (order of report.content; track order.id) {
+          <tr>
+            <th scope="row"><span class="order-number">{{ order.orderNumber }}</span><span class="order-id">Order #{{ order.id }}</span></th>
+            <td class="customer-cell">{{ order.customerName }}</td>
+            <td class="date-cell">{{ order.orderDate | date:'mediumDate' }}<span>{{ order.orderDate | date:'shortTime' }}</span></td>
+            <td class="numeric-cell total-cell">{{ order.total | currency:'BDT':'symbol':'1.2-2':'en-BD' }}</td>
+            <td><span class="status-pill" [class]="'status-pill status-' + order.orderStatus.toLowerCase()">{{ order.orderStatus }}</span></td>
+            <td><span class="payment-value">{{ order.paymentStatus || 'Not recorded' }}</span></td>
+            <td class="invoice-cell">
+              @if (order.invoiceAvailable) {
+                <div class="invoice-actions"><button class="icon-action view-action" type="button" (click)="viewInvoice(order)" [disabled]="actionOrderId === order.id" [attr.aria-label]="'View invoice for ' + order.orderNumber" title="View invoice"><i class="bi bi-eye" aria-hidden="true"></i><span>View</span></button><button class="icon-action download-action" type="button" (click)="downloadInvoice(order)" [disabled]="actionOrderId === order.id" [attr.aria-label]="'Download invoice for ' + order.orderNumber" title="Download invoice"><i class="bi bi-download" aria-hidden="true"></i><span>PDF</span></button></div>
+              } @else { <span class="unavailable-label"><i class="bi bi-dash-circle" aria-hidden="true"></i> Unavailable</span> }
+            </td>
+          </tr>
+        }</tbody>
+      </table></div>
+      <footer class="pagination-bar"><span>Showing page {{ report.number + 1 }} of {{ report.totalPages }}</span><div class="pagination-actions" role="group" aria-label="Report pagination"><button type="button" (click)="previousPage()" [disabled]="report.first || loading"><i class="bi bi-chevron-left" aria-hidden="true"></i> Previous</button><button type="button" (click)="nextPage()" [disabled]="report.last || loading">Next <i class="bi bi-chevron-right" aria-hidden="true"></i></button></div></footer>
+    </section>
+  }
+</main>
